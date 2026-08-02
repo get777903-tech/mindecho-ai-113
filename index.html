@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="description" content="MindEcho AI — Subscription & DSCLAIMER Signing (mindecho-ai-113)">
-<title>MindEcho AI — DSCLAIMER & Agreement Signing (v113)</title>
+<meta name="description" content="MindEcho AI — Платформа эмоциональной и психологической AI-фасилитации">
+<title>MindEcho AI — Главная страница и Оформление подписки (v113)</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <!-- EmailJS SDK -->
@@ -58,6 +58,23 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
 /* ── SCREENS ── */
 .screen{display:none;flex-direction:column;flex:1;padding:18px;max-width:680px;margin:0 auto;width:100%}
 .screen.on{display:flex}
+
+/* ── INFO / LANDING PAGE (SCREEN 0) ── */
+.hero{text-align:center;padding:24px 10px;margin-bottom:20px}
+.hero-badge{display:inline-block;padding:6px 14px;background:rgba(108,142,255,.12);border:1px solid rgba(108,142,255,.3);border-radius:20px;color:var(--accent);font-size:.75rem;font-weight:700;margin-bottom:14px;letter-spacing:.05em;text-transform:uppercase}
+.hero-title{font-size:1.8rem;font-weight:800;line-height:1.25;margin-bottom:12px;background:linear-gradient(135deg,#fff,var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-desc{font-size:.92rem;color:var(--muted);line-height:1.6;max-width:540px;margin:0 auto 24px}
+
+.features-grid{display:grid;gap:14px;margin-bottom:24px}
+@media(min-width:520px){.features-grid{grid-template-columns:1fr 1fr}}
+.feature-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px}
+.feature-icon{font-size:24px;margin-bottom:8px}
+.feature-h{font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:6px}
+.feature-p{font-size:.8rem;color:var(--muted);line-height:1.5}
+
+.info-banner{background:linear-gradient(135deg,rgba(108,142,255,.1),rgba(167,139,250,.1));border:1px solid rgba(108,142,255,.2);border-radius:14px;padding:18px;margin-bottom:24px;text-align:center}
+.info-banner h3{font-size:1rem;font-weight:700;color:var(--accent);margin-bottom:6px}
+.info-banner p{font-size:.82rem;color:var(--muted);line-height:1.5;margin-bottom:14px}
 
 .sec-title{font-size:1.2rem;font-weight:800;margin-bottom:3px}
 .sec-sub{font-size:.82rem;color:var(--muted);margin-bottom:18px}
@@ -321,7 +338,8 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
     <p>DSCLAIMER</p>
   </div>
   <div class="pills">
-    <div class="pill active" id="p1">1</div>
+    <div class="pill active" id="p0">i</div>
+    <div class="pill" id="p1">1</div>
     <div class="pill" id="p2">2</div>
     <div class="pill" id="p3">3</div>
     <div class="pill" id="p4">4</div>
@@ -329,8 +347,47 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
 </div>
 
 <div class="wrap">
+  <!-- SCREEN 0: MAIN INFO PAGE (ИНФОРМАЦИОННАЯ СТРАНИЦА ПЕРЕД ВЫБОРОМ ТАРИФА) -->
+  <div class="screen on" id="s0">
+    <div class="hero">
+      <div class="hero-badge">Инновационная AI-Платформа</div>
+      <h2 class="hero-title">MindEcho AI — Искусственный Интеллект для Вашего Развития</h2>
+      <p class="hero-desc">Экосистема психологической и эмоциональной AI-фасилитации, поддерживающая персональный голосовой клонинг и индивидуальные рекомендации.</p>
+      <button class="btn-main" onclick="goStep1()">Перейти к выбору тарифного плана →</button>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎙️</div>
+        <div class="feature-h">Голосовой Клонинг</div>
+        <div class="feature-p">Технология бережного сопереживания и голосовой поддержки родителей для гармоничного развития.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-h">Конфиденциальность & ПЭП</div>
+        <div class="feature-p">Полная защита данных с юридическим заверением Простой Электронной Подписью (ПЭП).</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-h">AI-Аналитика</div>
+        <div class="feature-p">Интеллектуальные алгоритмы анализа эмоций и персональные рекомендации в реальном времени.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📂</div>
+        <div class="feature-h">Google Drive Интеграция</div>
+        <div class="feature-p">Автоматическая отправка двуязычных PDF-подтверждений напрямую в ваше хранилище.</div>
+      </div>
+    </div>
+
+    <div class="info-banner">
+      <h3>Быстрое оформление и подписание DSCLAIMER</h3>
+      <p>Выберите подходящий тарифный план (Free или Pro) и завершите подписание соглашения за пару кликов.</p>
+      <button class="btn-main" onclick="goStep1()">Выбрать Тариф & Подписать DSCLAIMER →</button>
+    </div>
+  </div>
+
   <!-- STEP 1: Plan Selection -->
-  <div class="screen on" id="s1">
+  <div class="screen" id="s1">
     <div class="sec-title">Выберите тарифный план</div>
     <div class="sec-sub">После оформления подписки автоматически открывается DSCLAIMER</div>
     <div class="plans-grid">
@@ -361,6 +418,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
       </div>
     </div>
     <button class="btn-main" onclick="goStep2()">Оформить подписку и открыть DSCLAIMER →</button>
+    <button class="btn-ghost" onclick="goStep0()">← Назад на главную информацию</button>
   </div>
 
   <!-- STEP 2: Authorization -->
@@ -498,11 +556,12 @@ document.getElementById('ndaBox').addEventListener('scroll', function(){ if(this
 document.getElementById('rdChk').addEventListener('change', updateBtn1);
 function updateBtn1(){ document.getElementById('btn1').disabled=!(scrolled&&document.getElementById('rdChk').checked); }
 
+function goStep0(){ show('s0'); }
 function goStep1(){ show('s1'); }
 function goStep2(){ show('s2'); }
 function goStep3(){ const n=document.getElementById('fName').value.trim(), e=document.getElementById('fEmail').value.trim(); if(!n||!e){ alert('Заполните ФИО и Email'); return; } show('s3'); setTimeout(initCanvas,80); }
 function goStep4(n){ show('s4'); document.getElementById('dName').textContent=n; }
-function show(id){ ['s1','s2','s3','s4'].forEach(s=>{ const el=document.getElementById(s); if(el) el.classList.toggle('on', s===id); }); window.scrollTo(0,0); }
+function show(id){ ['s0','s1','s2','s3','s4'].forEach(s=>{ const el=document.getElementById(s); if(el) el.classList.toggle('on', s===id); }); window.scrollTo(0,0); }
 
 const canvas=document.getElementById('signatureCanvas'), ctx=canvas.getContext('2d');
 function initCanvas(){ const r=Math.max(window.devicePixelRatio||1,1), rect=canvas.getBoundingClientRect(); canvas.width=rect.width*r; canvas.height=rect.height*r; ctx.scale(r,r); ctx.lineWidth=2.8; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.strokeStyle='#111827'; }
