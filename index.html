@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="description" content="MindEcho AI — Платформа эмоциональной и психологической AI-фасилитации">
-<title>MindEcho AI — Главная страница и Оформление подписки (v113)</title>
+<meta name="description" content="MindEcho AI — Subscription, Authorization & Terms Signing (mindecho-ai-113)">
+<title>MindEcho AI — Checkout & Agreement Signing (v113)</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <!-- EmailJS SDK -->
@@ -43,8 +43,8 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
 .logo{width:38px;height:38px;border-radius:11px;flex-shrink:0;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
   display:flex;align-items:center;justify-content:center;font-size:20px}
-.logo-text h1{font-size:.95rem;font-weight:800;letter-spacing:-.02em;line-height:1.2;color:#fff}
-.logo-text p{font-size:.72rem;color:var(--accent);font-weight:700;letter-spacing:.05em}
+.logo-text h1{font-size:.95rem;font-weight:700;letter-spacing:-.02em;line-height:1.2}
+.logo-text p{font-size:.7rem;color:var(--muted)}
 .pills{display:flex;gap:6px;margin-left:auto;flex-shrink:0}
 .pill{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border);
   color:var(--muted);font-size:.72rem;font-weight:700;
@@ -58,23 +58,6 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
 /* ── SCREENS ── */
 .screen{display:none;flex-direction:column;flex:1;padding:18px;max-width:680px;margin:0 auto;width:100%}
 .screen.on{display:flex}
-
-/* ── INFO / LANDING PAGE (SCREEN 0) ── */
-.hero{text-align:center;padding:24px 10px;margin-bottom:20px}
-.hero-badge{display:inline-block;padding:6px 14px;background:rgba(108,142,255,.12);border:1px solid rgba(108,142,255,.3);border-radius:20px;color:var(--accent);font-size:.75rem;font-weight:700;margin-bottom:14px;letter-spacing:.05em;text-transform:uppercase}
-.hero-title{font-size:1.8rem;font-weight:800;line-height:1.25;margin-bottom:12px;background:linear-gradient(135deg,#fff,var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-desc{font-size:.92rem;color:var(--muted);line-height:1.6;max-width:540px;margin:0 auto 24px}
-
-.features-grid{display:grid;gap:14px;margin-bottom:24px}
-@media(min-width:520px){.features-grid{grid-template-columns:1fr 1fr}}
-.feature-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px}
-.feature-icon{font-size:24px;margin-bottom:8px}
-.feature-h{font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:6px}
-.feature-p{font-size:.8rem;color:var(--muted);line-height:1.5}
-
-.info-banner{background:linear-gradient(135deg,rgba(108,142,255,.1),rgba(167,139,250,.1));border:1px solid rgba(108,142,255,.2);border-radius:14px;padding:18px;margin-bottom:24px;text-align:center}
-.info-banner h3{font-size:1rem;font-weight:700;color:var(--accent);margin-bottom:6px}
-.info-banner p{font-size:.82rem;color:var(--muted);line-height:1.5;margin-bottom:14px}
 
 .sec-title{font-size:1.2rem;font-weight:800;margin-bottom:3px}
 .sec-sub{font-size:.82rem;color:var(--muted);margin-bottom:18px}
@@ -110,7 +93,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
   overflow-y:auto;padding:18px 20px;font-size:.86rem;line-height:1.8;color:#c5cdd4;height:42vh}
 .nda-box::-webkit-scrollbar{width:4px}
 .nda-box::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
-.nda-box h2{font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:10px;text-align:center;letter-spacing:.02em}
+.nda-box h2{font-size:.98rem;font-weight:700;color:var(--text);margin-bottom:10px;text-align:center}
 .nda-box h3{font-size:.85rem;font-weight:700;color:var(--accent);margin:14px 0 5px}
 .nda-box p{margin-bottom:8px;color:#b8c2d4}
 .nda-box ul{margin:4px 0 8px 16px}
@@ -131,7 +114,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
 .grid2{display:grid;gap:12px;margin-bottom:12px}
 @media(min-width:520px){.grid2{grid-template-columns:1fr 1fr}}
 .field label{display:block;font-size:.73rem;font-weight:600;color:var(--muted);margin-bottom:5px;letter-spacing:.05em;text-transform:uppercase}
-.field input{width:100%;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:9px;color:var(--text);font-size:.92rem;outline:none;transition:.2s;font-family:inherit}
+.field input{width:100%;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:99px;color:var(--text);font-size:.92rem;outline:none;transition:.2s;font-family:inherit}
 .field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(108,142,255,.14)}
 .field input::placeholder{color:var(--muted)}
 
@@ -162,7 +145,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
 .btn-download{padding:14px 20px;background:linear-gradient(135deg,var(--success),#059669);color:#fff;border:none;border-radius:12px;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-next{padding:14px 20px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:12px;font-size:.95rem;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center}
 
-/* ── PRINTABLE BILINGUAL TEMPLATE FOR HIGH-RES FULL-SIZE PDF ── */
+/* ── PRINTABLE BILINGUAL TEMPLATE FOR HIGH-RES PDF ── */
 #pdfTemplateWrapper {
   position: fixed;
   top: 0;
@@ -178,7 +161,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
   background: #ffffff;
   color: #0f172a;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  padding: 44px 50px;
+  padding: 42px 48px;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
 }
@@ -335,11 +318,10 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
   <div class="logo">🧠</div>
   <div class="logo-text">
     <h1>MindEcho AI</h1>
-    <p>DSCLAIMER</p>
+    <p>Subscription & Terms Signing (v113)</p>
   </div>
   <div class="pills">
-    <div class="pill active" id="p0">i</div>
-    <div class="pill" id="p1">1</div>
+    <div class="pill active" id="p1">1</div>
     <div class="pill" id="p2">2</div>
     <div class="pill" id="p3">3</div>
     <div class="pill" id="p4">4</div>
@@ -347,49 +329,10 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
 </div>
 
 <div class="wrap">
-  <!-- SCREEN 0: MAIN INFO PAGE (ИНФОРМАЦИОННАЯ СТРАНИЦА ПЕРЕД ВЫБОРОМ ТАРИФА) -->
-  <div class="screen on" id="s0">
-    <div class="hero">
-      <div class="hero-badge">Инновационная AI-Платформа</div>
-      <h2 class="hero-title">MindEcho AI — Искусственный Интеллект для Вашего Развития</h2>
-      <p class="hero-desc">Экосистема психологической и эмоциональной AI-фасилитации, поддерживающая персональный голосовой клонинг и индивидуальные рекомендации.</p>
-      <button class="btn-main" onclick="goStep1()">Перейти к выбору тарифного плана →</button>
-    </div>
-
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🎙️</div>
-        <div class="feature-h">Голосовой Клонинг</div>
-        <div class="feature-p">Технология бережного сопереживания и голосовой поддержки родителей для гармоничного развития.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔒</div>
-        <div class="feature-h">Конфиденциальность & ПЭП</div>
-        <div class="feature-p">Полная защита данных с юридическим заверением Простой Электронной Подписью (ПЭП).</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <div class="feature-h">AI-Аналитика</div>
-        <div class="feature-p">Интеллектуальные алгоритмы анализа эмоций и персональные рекомендации в реальном времени.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📂</div>
-        <div class="feature-h">Google Drive Интеграция</div>
-        <div class="feature-p">Автоматическая отправка двуязычных PDF-подтверждений напрямую в ваше хранилище.</div>
-      </div>
-    </div>
-
-    <div class="info-banner">
-      <h3>Быстрое оформление и подписание DSCLAIMER</h3>
-      <p>Выберите подходящий тарифный план (Free или Pro) и завершите подписание соглашения за пару кликов.</p>
-      <button class="btn-main" onclick="goStep1()">Выбрать Тариф & Подписать DSCLAIMER →</button>
-    </div>
-  </div>
-
   <!-- STEP 1: Plan Selection -->
-  <div class="screen" id="s1">
+  <div class="screen on" id="s1">
     <div class="sec-title">Выберите тарифный план</div>
-    <div class="sec-sub">После оформления подписки автоматически открывается DSCLAIMER</div>
+    <div class="sec-sub">Select your plan to continue to Terms of Service & NDA</div>
     <div class="plans-grid">
       <div class="plan-card selected" id="cardFree" onclick="selectPlan('free')">
         <div class="plan-badge">Популярный</div>
@@ -397,7 +340,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
         <div class="plan-price">0 ₽ <span>/ навсегда</span></div>
         <ul class="plan-features">
           <li>Базовый AI-фасилитатор</li>
-          <li>Подписание DSCLAIMER & NDA</li>
+          <li>Подписание Политиков & NDA</li>
         </ul>
       </div>
       <div class="plan-card" id="cardPaid" onclick="selectPlan('paid')">
@@ -417,14 +360,13 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
         <div class="field"><label>Срок / CVC</label><input type="text" placeholder="12/28 123"></div>
       </div>
     </div>
-    <button class="btn-main" onclick="goStep2()">Оформить подписку и открыть DSCLAIMER →</button>
-    <button class="btn-ghost" onclick="goStep0()">← Назад на главную информацию</button>
+    <button class="btn-main" onclick="goStep2()">Продолжить к авторизации →</button>
   </div>
 
   <!-- STEP 2: Authorization -->
   <div class="screen" id="s2">
     <div class="sec-title">Авторизация аккаунта</div>
-    <div class="sec-sub">Выберите способ входа для подтверждения личности в DSCLAIMER</div>
+    <div class="sec-sub">Выберите способ входа для подтверждения личности</div>
     <div class="auth-btns">
       <button class="btn-auth" onclick="authWith('google')">
         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#ea4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.9C6.2 7.4 8.9 5 12 5z"/><path fill="#4285f4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#fbbc05" d="M5.3 14.7c-.2-.7-.4-1.5-.4-2.7s.2-2 .4-2.7L1.6 6.4C.6 8.4 0 10.6 0 13s.6 4.6 1.6 6.6l3.7-2.9z"/><path fill="#34a853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.4-6.7-5.3L1.6 16C3.5 19.8 7.4 23 12 23z"/></svg>
@@ -440,45 +382,43 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
       <div class="field"><label>Email *</label><input type="email" id="fEmail" placeholder="example@email.com"></div>
     </div>
     <div id="authStatus" style="font-size:.82rem;color:var(--success);margin-bottom:12px;display:none;text-align:center"></div>
-    <button class="btn-main" onclick="goStep3()">Открыть DSCLAIMER и Соглашение →</button>
+    <button class="btn-main" onclick="goStep3()">Перейти к соглашению (Terms & NDA) →</button>
     <button class="btn-ghost" onclick="goStep1()">← Назад к выбору тарифа</button>
   </div>
 
-  <!-- STEP 3: DSCLAIMER & NDA Signing -->
+  <!-- STEP 3: NDA Signing -->
   <div class="screen" id="s3">
-    <div class="sec-title">DSCLAIMER & Пользовательское Соглашение</div>
-    <div class="sec-sub">Ознакомьтесь с документом DSCLAIMER и поставьте подпись</div>
+    <div class="sec-title">Пользовательское Соглашение & NDA</div>
+    <div class="sec-sub">Прочтите документ и поставьте подпись</div>
     <div class="lang-tabs">
       <button class="lt on" id="ltRU" onclick="setLang('ru')">🇷🇺 Русский</button>
       <button class="lt" id="ltEN" onclick="setLang('en')">🇬🇧 English</button>
     </div>
     <div class="nda-box" id="ndaBox">
       <div id="lRU">
-        <h2>DSCLAIMER И ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ</h2>
-        <p class="center">Документ Google Docs: <a href="https://docs.google.com/document/d/1Ul8ULeZtZbQWu2rTcaZ8NC6wugJFCadp5Av6mXJZV1U/edit?usp=sharing" target="_blank" style="color:var(--accent)">MindEcho_Disclaimer_Document.pdf</a></p>
+        <h2>ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ И NDA</h2>
+        <p class="center">Документ Google Docs: <a href="https://docs.google.com/document/d/15ZGpk381gG30U1GciKvGXhSg_6rN1sye2FsVVmrjgMU/edit?usp=sharing" target="_blank" style="color:var(--accent)">MindEcho_Agreement_Document.pdf</a></p>
         <div class="pbox">
           <h3>Раскрывающая сторона:</h3>
           <p>Konstantyn Shlomovich, Паспорт No. 35260680, разработчик и единственный правообладатель проекта <b>MindEcho AI</b>.</p>
         </div>
-        <h3>1. Ограничение ответственности (DSCLAIMER)</h3>
-        <p>1.1. Сервис MindEcho AI предоставляется исключительно в информационных, исследовательских и образовательных целях. Продукт <b>НЕ ЯВЛЯЕТСЯ МЕДИЦИНСКОЙ ПОМОЩЬЮ</b>, врачебной консультацией или психологической терапией.</p>
-        <p>1.2. Konstantyn Shlomovich не несёт ответственности за применение рекомендаций или любые косвенные последствия. Пользователь принимает сервис «как есть» (AS IS).</p>
+        <h3>1. Предмет Соглашения</h3>
+        <p>1.1. Раскрывающая сторона передаёт, а Принимающая сторона принимает Конфиденциальную информацию исключительно в целях использования сервиса MindEcho AI.</p>
         <h3>2. Способы авторизации и ПЭП</h3>
         <p>Стороны признают, что идентификация через <b>Google Account</b>, <b>Apple ID</b> или логин/пароль с проставлением графической подписи имеет полную юридическую силу Простой Электронной Подписи (ПЭП).</p>
       </div>
       <div id="lEN" style="display:none">
-        <h2>DSCLAIMER & TERMS OF SERVICE</h2>
-        <p class="center">Google Document: <a href="https://docs.google.com/document/d/1Ul8ULeZtZbQWu2rTcaZ8NC6wugJFCadp5Av6mXJZV1U/edit?usp=sharing" target="_blank" style="color:var(--accent)">MindEcho_Disclaimer_Document.pdf</a></p>
+        <h2>TERMS OF SERVICE & NDA AGREEMENT</h2>
+        <p class="center">Google Document: <a href="https://docs.google.com/document/d/15ZGpk381gG30U1GciKvGXhSg_6rN1sye2FsVVmrjgMU/edit?usp=sharing" target="_blank" style="color:var(--accent)">MindEcho_Agreement_Document.pdf</a></p>
         <div class="pbox"><h3>Disclosing Party:</h3><p>Konstantyn Shlomovich, Passport No. 35260680, developer and sole rights holder of <b>MindEcho AI</b>.</p></div>
-        <h3>1. DSCLAIMER & Limitation of Liability</h3>
-        <p>1.1. MindEcho AI is provided strictly for educational purposes and is <b>NOT a medical service</b> or psychological therapy.</p>
-        <p>1.2. Konstantyn Shlomovich is not liable for indirect damages. The service is accepted "AS IS".</p>
+        <h3>1. Subject of the Agreement</h3>
+        <p>Confidential Information is transferred solely for evaluation, development, or use of MindEcho AI ecosystem.</p>
       </div>
     </div>
     <div class="shint" id="shint">↓ Прокрутите до конца ↓</div>
     <div class="chk-row">
       <input type="checkbox" id="rdChk" disabled>
-      <label for="rdChk"><b>Я прочёл(а) и принимаю DSCLAIMER и Соглашение на двух языках (RU + EN).</b></label>
+      <label for="rdChk"><b>Я прочёл(а) и принимаю Соглашение и NDA на двух языках (RU + EN).</b></label>
     </div>
     <div class="cvs-label">Поставьте подпись пальцем или мышкой *</div>
     <div class="cvs-wrap"><canvas id="signatureCanvas"></canvas></div>
@@ -489,7 +429,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
     <div id="statusBox" class="status"></div>
     <button class="btn-main" id="btnSign" onclick="submitSign()">
       <div class="spin" id="spinner"></div>
-      <span id="btnTxt">✅ Подписать DSCLAIMER и сохранить в Google Диск</span>
+      <span id="btnTxt">✅ Подписать и сохранить в Google Диск</span>
     </button>
     <button class="btn-ghost" onclick="goStep2()">← Назад к авторизации</button>
   </div>
@@ -498,11 +438,11 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
   <div class="screen" id="s4">
     <div class="done-card">
       <div class="done-icon">✅</div>
-      <div class="done-title">DSCLAIMER подписан!</div>
+      <div class="done-title">Соглашение подписано!</div>
       <div class="done-name" id="dName"></div>
-      <div class="done-sub">Подписанный двуязычный документ DSCLAIMER (RU + EN) сохранён на вашем устройстве и отправлен на ваш <b>Google Диск (get777903@gmail.com)</b>.</div>
+      <div class="done-sub">Подписанный двуязычный документ (RU + EN) сохранён на вашем устройстве и отправлен на ваш <b>Google Диск</b>.</div>
       <div class="action-btns">
-        <button class="btn-download" onclick="downloadPDF()">📄 Скачать подписанный DSCLAIMER (RU + EN)</button>
+        <button class="btn-download" onclick="downloadPDF()">📄 Скачать подписанный PDF (RU + EN)</button>
         <a href="https://docs.google.com/document/d/15ZGpk381gG30U1GciKvGXhSg_6rN1sye2FsVVmrjgMU/edit?usp=sharing" target="_blank" class="btn-next">🚀 Открыть документ MindEcho AI</a>
       </div>
     </div>
@@ -513,21 +453,21 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
 <div id="pdfTemplateWrapper">
   <div class="pdf-printable" id="pdfPrintable">
     <div class="pdf-header">
-      <div><h1>MindEcho AI</h1><p>Bilingual DSCLAIMER & Terms Agreement (v113)</p></div>
+      <div><h1>MindEcho AI</h1><p>Bilingual Terms of Service & NDA Agreement (v113)</p></div>
     </div>
-    <div class="pdf-main-title">DSCLAIMER И ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ / DSCLAIMER & TERMS</div>
+    <div class="pdf-main-title">ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ И NDA / TERMS OF SERVICE & NDA</div>
     <div class="pdf-parties">
       <h4>РАСКРЫВАЮЩАЯ СТОРОНА / DISCLOSING PARTY:</h4>
       <p><b>Konstantyn Shlomovich</b>, Passport No. 35260680, developer and sole rights holder of MindEcho AI.</p>
       <h4>ПРИНИМАЮЩАЯ СТОРОНА / RECEIVING PARTY:</h4>
       <p><b><span id="pdfSignerName">Иванов Иван</span></b> (<span id="pdfSignerEmail">example@gmail.com</span>).</p>
       <p>Способ авторизации: <b><span id="pdfAuthMethod">[x] Google Account / Apple ID / Manual</span></b></p>
-      <p>Ссылка на документ: <b>https://docs.google.com/document/d/1Ul8ULeZtZbQWu2rTcaZ8NC6wugJFCadp5Av6mXJZV1U/edit</b></p>
+      <p>Ссылка на документ: <b>https://docs.google.com/document/d/15ZGpk381gG30U1GciKvGXhSg_6rN1sye2FsVVmrjgMU/edit</b></p>
     </div>
-    <div class="pdf-section-header">🇷🇺 ЧАСТЬ 1: РУССКАЯ ВЕРСИЯ (DSCLAIMER)</div>
-    <div class="pdf-body"><p>MindEcho AI — технологическая экосистема и AI-платформа. Сервис НЕ ЯВЛЯЕТСЯ МЕДИЦИНСКОЙ ПОМОЩЬЮ. Конфиденциальная информация сохраняется в тайне.</p></div>
-    <div class="pdf-section-header">🇬🇧 PART 2: ENGLISH VERSION (DSCLAIMER)</div>
-    <div class="pdf-body"><p>MindEcho AI is provided strictly for educational purposes and is NOT a medical service. Confidential information is kept in strict confidence.</p></div>
+    <div class="pdf-section-header">🇷🇺 ЧАСТЬ 1: РУССКАЯ ВЕРСИЯ</div>
+    <div class="pdf-body"><p>MindEcho AI — технологическая экосистема и AI-платформа. Конфиденциальная информация сохраняется в тайне. Срок действия NDA: 4 года.</p></div>
+    <div class="pdf-section-header">🇬🇧 PART 2: ENGLISH VERSION</div>
+    <div class="pdf-body"><p>MindEcho AI is an AI ecosystem designed for psychological facilitation. Confidential information is kept in strict confidence.</p></div>
     <div class="pdf-stamp-box">
       <div class="pdf-stamp-info">
         <h3>✅ ЕДИНЫЙ ШТАМП ЭЛЕКТРОННОЙ ПОДПИСИ (ПЭП)</h3>
@@ -547,7 +487,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple
 
 <script>
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbziOn0HCDEMob1kzHkwJkj__zOFNnFHRL-iA7UFByz0YRS2JXouAcCXz1XdiGP240o1VA/exec';
-let selectedPlan = 'free', authMethod = 'Manual Entry', signed = false, scrolled = false, drawing = false, generatedPdfBlob = null, generatedFileName = 'MindEcho_DSCLAIMER_Signed_v113.pdf';
+let selectedPlan = 'free', authMethod = 'Manual Entry', signed = false, scrolled = false, drawing = false, generatedPdfBlob = null, generatedFileName = 'MindEcho_Terms_NDA_Signed_v113.pdf';
 
 function selectPlan(p){ selectedPlan = p; document.getElementById('cardFree').classList.toggle('selected', p==='free'); document.getElementById('cardPaid').classList.toggle('selected', p==='paid'); document.getElementById('paymentBox').classList.toggle('active', p==='paid'); }
 function authWith(p){ if(p==='google'){ authMethod='Google Account'; document.getElementById('fName').value='Иванов Иван (Google Verified)'; document.getElementById('fEmail').value='get777903@gmail.com'; }else{ authMethod='Apple ID'; document.getElementById('fName').value='User Apple (Apple ID Verified)'; document.getElementById('fEmail').value='user@privatated.appleid.com'; } const s=document.getElementById('authStatus'); s.textContent='✅ Авторизовано через '+authMethod; s.style.display='block'; }
@@ -556,12 +496,11 @@ document.getElementById('ndaBox').addEventListener('scroll', function(){ if(this
 document.getElementById('rdChk').addEventListener('change', updateBtn1);
 function updateBtn1(){ document.getElementById('btn1').disabled=!(scrolled&&document.getElementById('rdChk').checked); }
 
-function goStep0(){ show('s0'); }
 function goStep1(){ show('s1'); }
 function goStep2(){ show('s2'); }
 function goStep3(){ const n=document.getElementById('fName').value.trim(), e=document.getElementById('fEmail').value.trim(); if(!n||!e){ alert('Заполните ФИО и Email'); return; } show('s3'); setTimeout(initCanvas,80); }
 function goStep4(n){ show('s4'); document.getElementById('dName').textContent=n; }
-function show(id){ ['s0','s1','s2','s3','s4'].forEach(s=>{ const el=document.getElementById(s); if(el) el.classList.toggle('on', s===id); }); window.scrollTo(0,0); }
+function show(id){ ['s1','s2','s3','s4'].forEach(s=>{ const el=document.getElementById(s); if(el) el.classList.toggle('on', s===id); }); window.scrollTo(0,0); }
 
 const canvas=document.getElementById('signatureCanvas'), ctx=canvas.getContext('2d');
 function initCanvas(){ const r=Math.max(window.devicePixelRatio||1,1), rect=canvas.getBoundingClientRect(); canvas.width=rect.width*r; canvas.height=rect.height*r; ctx.scale(r,r); ctx.lineWidth=2.8; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.strokeStyle='#111827'; }
@@ -599,7 +538,7 @@ async function submitSign(){
   wrapper.style.opacity='1'; wrapper.style.zIndex='99999';
   await new Promise(r=>setTimeout(r,250));
 
-  generatedFileName='MindEcho_DSCLAIMER_Bilingual_v113_'+name.replace(/\s+/g,'_')+'_'+signId+'.pdf';
+  generatedFileName='MindEcho_Terms_Bilingual_v113_'+name.replace(/\s+/g,'_')+'_'+signId+'.pdf';
 
   try {
     const element=document.getElementById('pdfPrintable');
