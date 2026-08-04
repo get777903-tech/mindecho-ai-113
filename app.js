@@ -874,7 +874,7 @@ function playMP3AudioTrack(forceStart = false) {
     appState.isPlayingAudio = false;
     document.getElementById('play-btn').innerText = "▶";
   } else {
-    if (forceStart) appState.audioTrack.currentTime = 0;
+    // Always resume from where it was paused
     appState.audioTrack.play().then(() => {
       appState.isPlayingAudio = true;
       document.getElementById('play-btn').innerText = "⏸";
