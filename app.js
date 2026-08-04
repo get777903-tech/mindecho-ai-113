@@ -874,7 +874,7 @@ function playMP3AudioTrack(forceStart = false) {
     appState.isPlayingAudio = false;
     document.getElementById('play-btn').innerText = "▶";
   } else {
-    appState.audioTrack.currentTime = 0;
+    if (forceStart) appState.audioTrack.currentTime = 0;
     appState.audioTrack.play().then(() => {
       appState.isPlayingAudio = true;
       document.getElementById('play-btn').innerText = "⏸";
@@ -893,7 +893,11 @@ function togglePlayAudio() {
     appState.isPlayingAudio = false;
     document.getElementById('play-btn').innerText = "▶";
   } else {
-    generatePersonalMeditation();
+    if (appState.audioTrack && appState.audioTrack.currentTime > 0) {
+      playMP3AudioTrack(false);
+    } else {
+      generatePersonalMeditation();
+    }
   }
 }
 
