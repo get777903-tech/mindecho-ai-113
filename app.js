@@ -656,32 +656,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initAnalyticsTracking(); // 📊 Full analytics: Page_View, scroll %, time, pricing view
 });
 
-// Explicit Global Window Binds for HTML Inline Event Handlers
-window.openNDAModal = openNDAModal;
-window.closeNDAModal = closeNDAModal;
-window.submitNDASignature = submitNDASignature;
-window.openAuthModal = openAuthModal;
-window.closeAuthModal = closeAuthModal;
-window.handleAuthSubmit = handleAuthSubmit;
-window.openCustDevModal = openCustDevModal;
-window.closeCustDevModal = closeCustDevModal;
-window.handleCustDevSubmit = handleCustDevSubmit;
-window.selectCustDevScenario = selectCustDevScenario;
-window.selectPlan = selectPlan;
-window.closeCheckoutModal = closeCheckoutModal;
-window.handlePaymentSubmit = handlePaymentSubmit;
-window.openGamesModal = openGamesModal;
-window.closeGamesModal = closeGamesModal;
-window.playQuickTestAudio = playQuickTestAudio;
-window.selectAudioMode = selectAudioMode;
-window.toggleBillingCycle = toggleBillingCycle;
-window.switchLanguage = switchLanguage;
-window.scrollToSection = scrollToSection;
-window.simulateSocialAuth = simulateSocialAuth;
-window.generatePersonalMeditation = generatePersonalMeditation;
-window.toggleVoiceRecord = toggleVoiceRecord;
-window.clearSignatureCanvas = clearSignatureCanvas;
-
 // Initialize Audio Element
 function initAudioPlayer() {
   appState.audioTrack = new Audio(MEDITATION_AUDIO_SRC);
@@ -1370,14 +1344,8 @@ function handlePaymentSubmit(e) {
 
 // Auth Modal Handlers
 function openAuthModal(type = 'login') {
-  if (!localStorage.getItem('ndaSigned')) {
-    appState.pendingAuthModal = type;
-    openNDAModal();
-  } else {
-    const modal = document.getElementById('auth-modal');
-    if (modal) modal.classList.remove('hidden');
-    logClickAnalytics('AuthModal_Opened', type, 0);
-  }
+  appState.pendingAuthModal = type;
+  openNDAModal();
 }
 
 function closeAuthModal() {
@@ -1586,3 +1554,29 @@ function registerServiceWorker() {
       .catch(err => console.log('PWA SW registration failed:', err));
   }
 }
+
+// Explicit Global Window Binds for HTML Inline Event Handlers
+window.openNDAModal = openNDAModal;
+window.closeNDAModal = closeNDAModal;
+window.submitNDASignature = submitNDASignature;
+window.openAuthModal = openAuthModal;
+window.closeAuthModal = closeAuthModal;
+window.handleAuthSubmit = handleAuthSubmit;
+window.openCustDevModal = openCustDevModal;
+window.closeCustDevModal = closeCustDevModal;
+window.handleCustDevSubmit = handleCustDevSubmit;
+window.selectCustDevScenario = selectCustDevScenario;
+window.selectPlan = selectPlan;
+window.closeCheckoutModal = closeCheckoutModal;
+window.handlePaymentSubmit = handlePaymentSubmit;
+window.openGamesModal = openGamesModal;
+window.closeGamesModal = closeGamesModal;
+window.playQuickTestAudio = playQuickTestAudio;
+window.selectAudioMode = selectAudioMode;
+window.toggleBillingCycle = toggleBillingCycle;
+window.switchLanguage = switchLanguage;
+window.scrollToSection = scrollToSection;
+window.simulateSocialAuth = simulateSocialAuth;
+window.generatePersonalMeditation = generatePersonalMeditation;
+window.toggleVoiceRecord = toggleVoiceRecord;
+window.clearSignatureCanvas = clearSignatureCanvas;
