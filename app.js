@@ -1185,12 +1185,20 @@ async function submitNDASignature() {
   if (appState.pendingCheckout) {
     appState.pendingCheckout = false;
     if (appState.selectedPrice === 0) {
-      openAuthModal('free');
+      const modal = document.getElementById('auth-modal');
+      if (modal) modal.classList.remove('hidden');
+      logClickAnalytics('AuthModal_Opened', 'free', 0);
     } else {
       document.getElementById('checkout-plan-name').innerText = appState.selectedPlan;
       document.getElementById('checkout-plan-price').innerText = `$${appState.selectedPrice}`;
       document.getElementById('checkout-modal').classList.remove('hidden');
     }
+  } else if (appState.pendingAuthModal) {
+    const type = appState.pendingAuthModal;
+    appState.pendingAuthModal = null;
+    const modal = document.getElementById('auth-modal');
+    if (modal) modal.classList.remove('hidden');
+    logClickAnalytics('AuthModal_Opened', type, 0);
   } else {
     scrollToSection('generator');
   }
@@ -1362,8 +1370,14 @@ function handlePaymentSubmit(e) {
 
 // Auth Modal Handlers
 function openAuthModal(type = 'login') {
-  document.getElementById('auth-modal').classList.remove('hidden');
-  logClickAnalytics('AuthModal_Opened', type, 0);
+  if (!localStorage.getItem('ndaSigned')) {
+    appState.pendingAuthModal = type;
+    openNDAModal();
+  } else {
+    const modal = document.getElementById('auth-modal');
+    if (modal) modal.classList.remove('hidden');
+    logClickAnalytics('AuthModal_Opened', type, 0);
+  }
 }
 
 function closeAuthModal() {
