@@ -14,6 +14,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -43,7 +45,7 @@
         <a href="#modes" data-i18n="nav_modes">Аудиорежимы</a>
         <a href="#generator" data-i18n="nav_generator">Студия</a>
         <a href="#pricing" data-i18n="nav_pricing">Тарифы</a>
-        <a href="#" onclick="openNDAModal(); return false;" data-i18n="nav_nda">DSCLAIMER</a>
+        <a href="#" onclick="openNDAModal(); return false;" data-i18n="nav_nda">DISCLAIMER</a>
         <a href="#" onclick="openCustDevModal(); return false;" class="nav-custdev-btn" data-i18n="nav_custdev">🎁 Опрос + подарок</a>
       </nav>
 
@@ -66,28 +68,45 @@
     <div class="hero-glow hero-glow-2"></div>
     <div class="container hero-container">
       <div class="hero-content">
-        <div class="badge-pill">
+        <!-- Top Action Button: Быстрое тестирование рассказа-медитации (Включает аудиозапись!) -->
+        <div style="margin-bottom: 8px;">
+          <button class="btn btn-primary btn-lg btn-orange btn-block" onclick="playQuickTestAudio()" style="font-weight: 700; font-size: 16px; padding: 12px 18px; box-shadow: 0 8px 25px rgba(255, 107, 0, 0.5);">
+            ▶️ Быстрое тестирование рассказа-медитации (Включить аудио)
+          </button>
+        </div>
+
+        <div class="badge-pill" style="margin-bottom: 8px; padding: 6px 14px;">
           <span class="pulse-dot"></span>
           <span data-i18n="hero_badge">ИИ + Детская Нейропсихология + КПТ/ACT + Психосоматика</span>
         </div>
-        <h1 class="hero-title" data-i18n="hero_title">
+        <h1 class="hero-title" data-i18n="hero_title" style="margin-bottom: 8px; font-size: 44px; line-height: 1.15;">
           Превращаем родительскую рутину в <span class="text-gradient">бережную терапию</span>
         </h1>
-        <p class="hero-subtitle" data-i18n="hero_subtitle">
+        <p class="hero-subtitle" data-i18n="hero_subtitle" style="margin-bottom: 12px; font-size: 16px;">
           Мы создаем глобальное технологическое решение для защиты ментального здоровья семей. Легальный способ сохранить эмоциональные ресурсы родителей и вырастить счастливого ребенка.
         </p>
 
-        <div class="hero-buttons">
+        <div class="hero-buttons" style="margin-bottom: 14px; gap: 10px; display: flex; flex-direction: column;">
           <button class="btn btn-primary btn-lg btn-orange" onclick="scrollToSection('modes')" data-i18n="btn_try_free">
-            ✨ Попробовать! Рассказ-медитация мягко исцеляет дневные стрессы, обиды и страхи ребенка прямо в процессе засыпания и с утра
+            ✨ Попробовать! Рассказ-медитация с голосом мамы или папы
           </button>
-          <button class="btn btn-secondary btn-lg" onclick="openAuthModal('donation')" data-i18n="btn_support_project">
-            [ Поддержать проект / Получить ссылку ]
-          </button>
+          <p style="font-size: 14px; color: #ffffff; font-weight: 700; margin-top: 5px; margin-bottom: 8px; line-height: 1.4; text-align: center; text-shadow: 0 1px 4px rgba(0,0,0,0.5);" data-i18n="btn_try_free_sub">
+            мягко исцеляет дневные стрессы, обиды и страхи ребенка прямо в процессе засыпания или заряд утренней уверенности
+          </p>
+
+          <!-- Перемещенные 2 кнопки на одной строчке ВМЕСТО "Поддержать проект / получить ссылку" -->
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <a href="games.html" onclick="openGamesModal(); return false;" class="btn btn-secondary btn-md" style="flex: 1; min-width: 160px; text-align: center; justify-content: center; text-decoration: none; padding: 12px 16px; font-weight: 700; background: #a855f7; border: none; color: #fff;" data-i18n="btn_games">
+              🎮 Игры развивающие речь + эмоциональный интеллект
+            </a>
+            <button class="btn btn-primary btn-md" onclick="scrollToSection('generator')" style="flex: 1; min-width: 160px; justify-content: center; padding: 12px 16px; font-weight: 700; background: #a855f7; border: none; color: #fff;" data-i18n="btn_prayer">
+              🙏 Создание молитвы-медитации
+            </button>
+          </div>
         </div>
 
         <!-- Trust Badges -->
-        <div class="trust-strip">
+        <div class="trust-strip" style="padding-top: 12px; gap: 16px;">
           <div class="trust-item" data-i18n="trust_privacy">🛡 Privacy-First (Банковское шифрование)</div>
           <div class="trust-item" data-i18n="trust_supervisor">🧠 Валидировано Агентом-Супервизором</div>
           <div class="trust-item" data-i18n="trust_global">🌏 платформа для каждого и всего мира</div>
@@ -177,16 +196,16 @@
     </div>
   </section>
 
-  <!-- 3 Audio Modes Selector Section -->
+  <!-- 4 Audio Modes Selector Section -->
   <section id="modes" class="section modes-section">
     <div class="container">
       <div class="section-header text-center">
         <span class="section-tag" data-i18n="tag_modes">Быстрый запуск</span>
-        <h2 class="section-title" data-i18n="title_modes">3 Входных Аудиорежима Терапии</h2>
+        <h2 class="section-title" data-i18n="title_modes">4 Специализированных Аудиорежима Терапии</h2>
         <p class="section-subtitle" data-i18n="sub_modes">Выберите требуемый сценарий для мгновенной генерации рассказа-медитации или помощи</p>
       </div>
 
-      <div class="modes-grid">
+      <div class="modes-grid" style="grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));">
         <!-- Mode 1: Morning -->
         <div class="mode-card glass-card border-blue" onclick="selectAudioMode('morning')">
           <div class="mode-icon">☀️</div>
@@ -203,7 +222,15 @@
           <button class="btn btn-secondary btn-sm" data-i18n="btn_start_bedtime">Запустить сонную терапию</button>
         </div>
 
-        <!-- Mode 3: Emergency Tantrum -->
+        <!-- Mode 3: Prayer Meditation -->
+        <div class="mode-card glass-card border-cyan" onclick="selectAudioMode('prayer')">
+          <div class="mode-icon">🙏</div>
+          <h3 data-i18n="mode_prayer_title">Молитва-медитация</h3>
+          <p data-i18n="mode_prayer_desc">Духовный покой, благодарность, умиротворение и благословение светлого настроя для семьи.</p>
+          <button class="btn btn-secondary btn-sm" style="background: #a855f7; border: none; color: #fff;" onclick="scrollToSection('generator'); selectAudioMode('prayer'); setTimeout(() => { generatePersonalMeditation(); }, 100);" data-i18n="btn_start_prayer">Включить Молитву-Медитацию</button>
+        </div>
+
+        <!-- Mode 4: Emergency Tantrum -->
         <div class="mode-card glass-card border-orange highlight-emergency" onclick="selectAudioMode('emergency')">
           <div class="mode-icon">🚨</div>
           <h3 data-i18n="mode_emergency_title">Экстренная помощь при истерике</h3>
@@ -283,7 +310,7 @@
           <div class="form-row">
             <div class="form-group">
               <label for="child-name" data-i18n="label_child_name">Имя ребенка:</label>
-              <input type="text" id="child-name" value="София" class="form-input">
+              <input type="text" id="child-name" value="Анна" placeholder="Например: Анна, София, Александр" class="form-input">
             </div>
             <div class="form-group">
               <label for="child-gender" data-i18n="label_child_gender">Пол ребенка:</label>
@@ -302,6 +329,7 @@
             <div class="form-group">
               <label for="audio-mode-source" data-i18n="label_audio_source">Источник аудио-озвучки:</label>
               <select id="audio-mode-source" class="form-select">
+                <option value="parent" data-i18n="opt_source_parent">🎙 голос папы или мамы</option>
                 <option value="mp3" data-i18n="opt_source_mp3">🎵 Студийная MP3 фонограмма</option>
                 <option value="tts" data-i18n="opt_source_tts">🤖 Динамический ИИ-диктор (Низкий тембр)</option>
               </select>
@@ -323,12 +351,13 @@
                 <option value="bedtime" data-i18n="opt_mode_bedtime">🌙 Перед сном (Засыпание)</option>
                 <option value="morning" data-i18n="opt_mode_morning">☀️ Утренняя (Уверенность)</option>
                 <option value="emergency" data-i18n="opt_mode_emergency">🚨 Экстренная (Заземление)</option>
+                <option value="prayer" data-i18n="opt_mode_prayer">🙏 Молитва-медитация (Духовный покой)</option>
               </select>
             </div>
           </div>
 
           <button class="btn btn-primary btn-block btn-lg btn-orange" onclick="generatePersonalMeditation()" data-i18n="btn_generate">
-            ✨ Сгенерировать и озвучить рассказ-медитацию
+            ✨ Создать рассказ-медитацию с голосом мамы или папы
           </button>
         </div>
 
@@ -511,10 +540,10 @@
 
       <div class="social-auth">
         <button class="btn btn-social" onclick="simulateSocialAuth('Google')">
-          <span class="social-icon">🔴</span> <span data-i18n="btn_auth_google">Вход через Google Account</span>
+          <span class="social-icon">🔴</span> <span data-i18n="btn_auth_google">Вход через аккаунт Google</span>
         </button>
         <button class="btn btn-social" onclick="simulateSocialAuth('Apple')">
-          <span class="social-icon">🍏</span> <span data-i18n="btn_auth_apple">Вход через Apple Store ID</span>
+          <span class="social-icon">🍏</span> <span data-i18n="btn_auth_apple">Вход через Apple ID</span>
         </button>
       </div>
 
@@ -534,13 +563,6 @@
         <div class="form-group">
           <label for="auth-phone" data-i18n="label_auth_phone">WhatsApp/Telegram:</label>
           <input type="tel" id="auth-phone" placeholder="WhatsApp / Telegram (+7...)" class="form-input">
-        </div>
-
-        <div class="form-group">
-          <label for="auth-address" data-i18n="label_auth_address">email address</label>
-          <input type="text" id="auth-address" placeholder="Москва / Тель-Авив / Нью-Йорк" class="form-input">
-        </div>
-
         <div class="checkbox-group">
           <input type="checkbox" id="terms-agree" required>
           <label for="terms-agree" data-i18n="label_terms_agree">Я согласен с Условиями использования и политикой конфиденциальности.</label>
@@ -562,6 +584,11 @@
         <div class="form-group">
           <label data-i18n="label_card_name">Имя на карте:</label>
           <input type="text" required placeholder="ALEXANDER IVANOV" class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="label_auth_phone">WhatsApp / Telegram (Обязательно):</label>
+          <input type="tel" id="checkout-phone" required placeholder="WhatsApp / Telegram (+7...)" class="form-input">
         </div>
 
         <div class="form-group">
@@ -615,16 +642,16 @@
 
       <div class="form-group">
         <label for="nda-user-name" data-i18n="label_nda_name">Ваше ФИО Подписанта:</label>
-        <input type="text" id="nda-user-name" placeholder="Иванов Александр Петрович" class="form-input">
+        <input type="text" id="nda-user-name" required placeholder="Иванов Александр Петрович" class="form-input">
       </div>
       
       <div class="form-group">
-        <label>WhatsApp / Telegram:</label>
-        <input type="text" id="nda-user-contact" placeholder="+7 999 000 00 00" class="form-input">
+        <label data-i18n="label_auth_phone">WhatsApp / Telegram (Обязательно):</label>
+        <input type="tel" id="nda-user-contact" required placeholder="WhatsApp / Telegram (+7...)" class="form-input">
       </div>
 
       <div class="form-group">
-        <label>e-mail address:</label>
+        <label data-i18n="label_nda_email">Ваш E-mail адрес:</label>
         <input type="email" id="nda-user-email" placeholder="email@example.com" class="form-input">
       </div>
 
@@ -661,6 +688,10 @@
         <div class="custdev-questions-grid" id="custdev-q-container">
           <!-- Dynamic CustDev questions injected via JS -->
         </div>
+        <div style="margin-top:15px; margin-bottom:15px">
+            <label style="display:block; margin-bottom:6px; font-weight:600;" data-i18n="label_custdev_phone">WhatsApp / Telegram (Обязательно для получения подарка):</label>
+            <input type="text" id="cd-input-contact" placeholder="Ваш WhatsApp или Telegram (+7...)" class="form-input" style="width:100%; border:1px solid rgba(255,255,255,0.2)" required>
+        </div>
 
         <button type="submit" class="btn btn-primary btn-block btn-orange" data-i18n="btn_submit_custdev">
           🚀 Отправить ответы и получить подарок
@@ -669,7 +700,73 @@
     </div>
   </div>
 
+  <!-- Games Modal -->
+  <div id="games-modal" class="modal-backdrop hidden">
+    <div class="modal-card glass-card" style="max-width: 750px; max-height: 85vh; overflow-y: auto;">
+      <button class="modal-close" onclick="closeGamesModal()">✕</button>
+      <h3 style="font-size: 22px; margin-bottom: 6px;">🎮 Развивающие и Терапевтические Игры</h3>
+      <p class="modal-subtitle" style="font-size: 13.5px; margin-bottom: 16px;">Игры для развития эмоционального интеллекта, сообразительности и уверенности в себе.</p>
+
+      <div style="text-align: left; margin-top: 10px;">
+        <!-- Game 1 -->
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--bg-card-border); border-radius: 14px; padding: 18px; margin-bottom: 16px;">
+          <span style="background: rgba(37,99,235,0.25); color: var(--color-cyan); padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 700;">🎲 Игра 1</span>
+          <h4 style="font-size: 18px; margin: 8px 0 4px; color: #fff;">1. Игра «Alias» (Скажи иначе)</h4>
+          <p style="font-size: 13.5px; color: var(--text-muted); line-height: 1.5;"><strong>Описание:</strong> Командная игра на скорость и сообразительность. Задача игрока — за ограниченное время (по песочным часам) объяснить своей команде как можно больше слов из карточки, не используя однокоренные слова, прямые переводы и сам загаданный термин.</p>
+          <div style="background: rgba(255,255,255,0.03); border-left: 3px solid var(--color-orange); padding: 10px 14px; margin-top: 10px; font-size: 13px; border-radius: 0 8px 8px 0;">
+            <strong style="color: var(--color-orange);">Пример объяснения слова («Микроскоп»):</strong><br>
+            «Это такой прибор для ученых и биологов! Он стоит на столе в лаборатории, и в него смотрят одним глазом, чтобы разглядеть очень-очень маленькие клетки, бактерии или капельку воды в сильном увеличении!»
+          </div>
+        </div>
+
+        <!-- Game 2 -->
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--bg-card-border); border-radius: 14px; padding: 18px; margin-bottom: 16px;">
+          <span style="background: rgba(168,85,247,0.25); color: var(--color-purple); padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 700;">🚨 Игра 2</span>
+          <h4 style="font-size: 18px; margin: 8px 0 4px; color: #fff;">2. Игра «Спасательное (Экспертное) бюро»</h4>
+          <p style="font-size: 13.5px; color: var(--text-muted); line-height: 1.5;"><strong>Описание:</strong> Ролевая игра для развития эмоционального интеллекта и навыков самопомощи. Участники выступают в роли экспертов-психологов, которые разбирают письма от людей, попавших в сложную эмоциональную ситуацию, и составляют для них пошаговую инструкцию по решению проблемы.</p>
+          <div style="background: rgba(255,255,255,0.03); border-left: 3px solid var(--color-purple); padding: 10px 14px; margin-top: 10px; font-size: 13px; border-radius: 0 8px 8px 0;">
+            <strong style="color: var(--color-purple);">Пример ситуации и разбора:</strong><br>
+            <em>Ситуация:</em> «Я набрала слишком много кружков и секций, ничего не успеваю, жутко устаю и вчера расплакалась из-за пустяка. Мне кажется, что я ни с чем не справляюсь. Как мне вернуть силы?»<br><br>
+            <strong>План экспертов:</strong>
+            <ol style="margin-left: 18px; margin-top: 6px;">
+              <li>Сделать паузу и дать себе один полный день отдыха без учебы и гаджетов.</li>
+              <li>Выписать все свои занятия на лист бумаги и честно отметить те, которые вызывают стресс, а не радость.</li>
+              <li>Поговорить с родителями и временно отказаться или поставить на паузу 1–2 самых тяжелых кружка.</li>
+              <li>Ввести правило: каждый день делать 30 минут «времени для себя» (чтение, прогулка, рисование).</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Game 3 -->
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--bg-card-border); border-radius: 14px; padding: 18px; margin-bottom: 16px;">
+          <span style="background: rgba(236,72,153,0.25); color: var(--color-pink); padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 700;">⭐ Игра 3</span>
+          <h4 style="font-size: 18px; margin: 8px 0 4px; color: #fff;">3. Игра «Интервью из будущего»</h4>
+          <p style="font-size: 13.5px; color: var(--text-muted); line-height: 1.5;"><strong>Описание:</strong> Терапевтическая ролевая игра, развивающая уверенность и поддерживающий внутренний голос. Игра проходит в формате ТВ-шоу: участницы выступают в роли самих себя в возрасте 25 лет — успешных, мудрых и счастливых. Ведущий берет у них интервью о том, как они преодолевали трудности своего 10-летнего возраста.</p>
+          <div style="background: rgba(255,255,255,0.03); border-left: 3px solid var(--color-pink); padding: 10px 14px; margin-top: 10px; font-size: 13px; border-radius: 0 8px 8px 0;">
+            <strong style="color: var(--color-pink);">Пример ситуации и разбора:</strong><br>
+            <em>Ситуация (вопрос интервьюера):</em> «София, сейчас вы успешный профессионал и лидер. Но вспомните, когда вам было 10 лет, вы очень переживали из-за ссоры с близкой подругой. Что помогло вам тогда справиться и какой совет вы дали бы себе маленькой из сегодняшнего дня?»<br><br>
+            <em>Ответ из будущего:</em><br>
+            «Тогда мне казалось, что это конец света. Но я сделала шаг первой — просто подошла и честно сказала: "Мне жаль, что мы поссорились, ты мне дорога". Это научило меня разговаривать открыто. Своей 10-летней версии я бы сказала: "Не бойся сделать первый шаг и не переживай — истинные друзья всегда поймут тебя, а эта ссора сделает твою мудрость только сильнее"».
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
+        <a href="games.html" class="btn btn-secondary btn-block" style="text-decoration: none; text-align: center; flex: 1; min-width: 200px;">📄 Открыть на отдельной странице</a>
+        <button class="btn btn-primary btn-orange btn-block" onclick="closeGamesModal(); scrollToSection('generator');" style="flex: 1; min-width: 200px;">✨ Создать медитацию</button>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="app.js?v=20260730"></script>
+  <script>
+    function openGamesModal() {
+      document.getElementById('games-modal').classList.remove('hidden');
+    }
+    function closeGamesModal() {
+      document.getElementById('games-modal').classList.add('hidden');
+    }
+  </script>
 </body>
 </html>
