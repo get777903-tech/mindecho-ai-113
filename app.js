@@ -501,7 +501,25 @@ const i18n = {
   }
 };
 
-// Russian Meditation Template Text
+// ElevenLabs Voice Cloning Configuration — Version 31
+const ELEVENLABS_VOICE_CONFIG_V31 = {
+  style: 0.0,
+  similarity_boost: 0.70,
+  stability: 0.70,
+  speed: 0.70,
+  prompt: "A deep, warm, soothing male voice with a low pitch, calm velvet tone, relaxed pace for bedtime meditation."
+};
+
+// Russian Meditation Template Text — Version 31 (SSML Pauses & Timings)
+const MEDITATION_TEMPLATE_V31_RU = `
+Я хочу взять тебя {NAME} ... — ... .  ... — … . <break time="3.0s"/>  с собой в небольшое путешествие <break time="4.0s"/> в волшебное место, где мысли становятся реальностью . ... — ... .  ... — … .
+
+И чтобы мы смогли туда попасть .<break time="5.0s"/>  нам нужно будет раскрыть свою душу <break time="6.0s"/>  Так что слушай меня внимательно, {NAME} <break time="7.0s"/>  и давай отправимся в это доброе и чудесное путешествие <break time="3.0s"/> , <break time="2.0s"/> 
+
+... — ... Закрой глазки и начни дышать спокойно и ровно. ... — ... .  ... — … . Успокойся и расслабься ... — ... расслабься... — ... Обрати внимание на свой носик... — ... Найди его, не открывая глаз. Почувствуй его мысленно.
+`;
+
+// Russian Meditation Template Text (Base)
 const BASE_MEDITATION_TEMPLATE_RU = `
 {NAME}, я хочу взять тебя с собой в небольшое путешествие в волшебное место, где мысли становятся реальностью... И чтобы мы смогли туда попасть, нам нужно будет раскрыть свою душу. Так что слушай меня внимательно и давай отправимся в это весёлое путешествие.
 
@@ -834,17 +852,7 @@ function generatePersonalMeditation() {
   if (appState.lang === 'he') {
     customText = BASE_MEDITATION_TEMPLATE_HE.replace(/{NAME}/g, name);
   } else {
-    const genderEnd = isGirl ? 'а' : '';
-    const genderAdj = isGirl ? 'ая' : 'ый';
-    const genderWizard = isGirl ? 'ца' : '';
-    const genderFriend = isGirl ? 'ой' : 'ом';
-
-    customText = BASE_MEDITATION_TEMPLATE_RU
-      .replace(/{NAME}/g, name)
-      .replace(/{GENDER_END}/g, genderEnd)
-      .replace(/{GENDER_ADJ}/g, genderAdj)
-      .replace(/{GENDER_WIZARD}/g, genderWizard)
-      .replace(/{GENDER_FRIEND}/g, genderFriend);
+    customText = MEDITATION_TEMPLATE_V31_RU.replace(/{NAME}/g, name);
   }
 
   const typeSelect = document.getElementById('meditation-type');
