@@ -293,13 +293,13 @@
         <!-- Left Column: Settings & Voice Recorder -->
         <div class="generator-controls">
           <div class="form-group">
-            <label data-i18n="label_mic_rec">🎙 Запись вашего голоса (до 30 сек для ElevenLabs):</label>
+            <label data-i18n="label_mic_rec">🎙 Запись вашего голоса / вопросов:</label>
             <div class="mic-recorder-box">
               <button id="mic-btn" class="mic-btn" onclick="toggleVoiceRecord()">
                 <span class="mic-icon">🎙</span>
               </button>
               <div class="mic-status">
-                <span id="mic-text" data-i18n="mic_press_text">Нажмите для записи голоса (до 30 сек)</span>
+                <span id="mic-text" data-i18n="mic_press_text">Нажмите для записи голоса</span>
                 <div id="mic-wave" class="mic-wave hidden">
                   <span></span><span></span><span></span><span></span>
                 </div>
@@ -384,28 +384,6 @@
               <span id="player-time">00:00</span>
             </div>
           </div>
-
-          <!-- ElevenLabs Voice Cloning Info Card (Version 31) -->
-          <div id="elevenlabs-info-card" class="elevenlabs-card glass-card" style="margin-top: 16px; padding: 16px; border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 12px; background: rgba(6, 182, 212, 0.08);">
-            <h4 style="font-size: 13px; font-weight: 800; color: var(--color-cyan); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-              <span>⚡</span> Настройки клонирования голоса для ElevenLabs (Версия 31 — ~1 мин):
-            </h4>
-            <div style="font-size: 12px; color: #CBD5E1; line-height: 1.6; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; font-family: monospace;">
-              <div><strong>Style:</strong> 0.0</div>
-              <div><strong>Similarity Boost:</strong> 0.70</div>
-              <div><strong>Stability:</strong> 0.70</div>
-              <div><strong>Speed:</strong> 0.70</div>
-              <div><strong>Voice Prompt:</strong> A deep, warm, soothing male voice with a low pitch, calm velvet tone, relaxed pace for bedtime meditation.</div>
-            </div>
-            <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
-              <button class="btn btn-secondary btn-sm" onclick="copyElevenLabsConfig()" style="font-size: 11px; padding: 6px 12px;">
-                📋 Скопировать настройки ElevenLabs
-              </button>
-              <a id="download-voice-btn" href="parent_voice_sample_30s.webm" download="parent_voice_sample_30s.webm" class="btn btn-outline btn-sm" style="font-size: 11px; padding: 6px 12px; color: var(--color-cyan); text-decoration: none;">
-                💾 Скачать запись голоса (30 сек)
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -456,6 +434,10 @@
           <div class="plan-header">
             <h3 data-i18n="plan_title_basic">Базовый</h3>
             <p data-i18n="plan_basic_sub">Для ежедневных подстроек</p>
+            <div class="card-billing-toggle">
+              <button class="card-cycle-btn btn-monthly active" onclick="setCardBilling('monthly')" data-i18n="billing_monthly">Ежемесячно</button>
+              <button class="card-cycle-btn btn-annual" onclick="setCardBilling('annual')" data-i18n="billing_annual">Оплата за год <span class="discount-badge">-67% Скидка</span></button>
+            </div>
             <div class="plan-price price-basic">$7 <span data-i18n="plan_per_month">/ месяц</span></div>
             <div class="annual-subtext price-basic-annual hidden">$29.99 / год ($2.49/мес)</div>
           </div>
@@ -474,6 +456,10 @@
           <div class="plan-header">
             <h3 data-i18n="plan_title_premium">Премиум</h3>
             <p data-i18n="plan_premium_sub">Полный покой и гармония семьи</p>
+            <div class="card-billing-toggle">
+              <button class="card-cycle-btn btn-monthly active" onclick="setCardBilling('monthly')" data-i18n="billing_monthly">Ежемесячно</button>
+              <button class="card-cycle-btn btn-annual" onclick="setCardBilling('annual')" data-i18n="billing_annual">Оплата за год <span class="discount-badge">-67% Скидка</span></button>
+            </div>
             <div class="plan-price price-premium">$14.99 <span data-i18n="plan_per_month">/ месяц</span></div>
             <div class="annual-subtext price-premium-annual hidden">$59.99 / год ($4.99/мес)</div>
           </div>
@@ -491,6 +477,10 @@
           <div class="plan-header">
             <h3 data-i18n="plan_title_platinum">Платиновый</h3>
             <p data-i18n="plan_plat_sub">Максимальный ресурс и поддержка</p>
+            <div class="card-billing-toggle">
+              <button class="card-cycle-btn btn-monthly active" onclick="setCardBilling('monthly')" data-i18n="billing_monthly">Ежемесячно</button>
+              <button class="card-cycle-btn btn-annual" onclick="setCardBilling('annual')" data-i18n="billing_annual">Оплата за год <span class="discount-badge">-67% Скидка</span></button>
+            </div>
             <div class="plan-price price-platinum">$24.99 <span data-i18n="plan_per_month">/ месяц</span></div>
             <div class="annual-subtext price-platinum-annual hidden">$99.99 / год ($8.33/мес)</div>
           </div>
@@ -783,7 +773,7 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=20260808_audio_stop_v3"></script>
+  <script src="app.js?v=20260808_v113_final_stable"></script>
   <script>
     function openGamesModal() {
       document.getElementById('games-modal').classList.remove('hidden');
