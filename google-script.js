@@ -1,14 +1,25 @@
-﻿/**
- * MindEcho AI 2026 — Google Apps Script v2.0
- * mindecho-ai-111 — Admin Dashboard Analytics
+/**
+ * MindEcho AI 2026 — Google Apps Script v2.1
+ * mindecho-ai-113 — Admin Analytics + Disclaimer PDF Upload to Google Drive
  * Spreadsheet ID: 1Nk0lLgBdcVsuPtQch0mRHf81gpyUMz3zHYJROVcUNV4
+ * Google Drive Folder: root / get777903@gmail.com
  */
 const SPREADSHEET_ID = "1Nk0lLgBdcVsuPtQch0mRHf81gpyUMz3zHYJROVcUNV4";
 const MAX_ROWS = 500;
 const ADMIN_READ_KEY = "mindecho_read_key_2026";
+// Target Google Drive folder ID (My Drive root = null means root folder)
+const DRIVE_FOLDER_ID = "0AFF5I_yKUz4MUk9PVA";
 
 function doPost(e) {
   try {
+    const data = JSON.parse(e.postData.contents);
+
+    // ---- PDF UPLOAD BRANCH ----
+    if (data.action === 'uploadDisclaimerPDF') {
+      return handleDisclaimerPDFUpload(data);
+    }
+
+    // ---- ANALYTICS BRANCH ----
     const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
     let sheets = ss.getSheets();
     let sheet = sheets[sheets.length - 1];
@@ -18,7 +29,6 @@ function doPost(e) {
     } else if (sheet.getLastRow() === 0) {
       createHeader(sheet);
     }
-    const data = JSON.parse(e.postData.contents);
     sheet.appendRow([
       data.timestamp || new Date().toLocaleString("ru-RU"),
       data.event_type || "unknown",
@@ -40,6 +50,73 @@ function doPost(e) {
     ]);
     return json200({ status: "success" });
   } catch (err) {
+    return json200({ status: "error", message: err.toString() });
+  }
+}
+
+/**
+ * Saves base64-encoded PDF to Google Drive folder and logs to spreadsheet.
+ */
+function handleDisclaimerPDFUpload(data) {
+  try {
+    const filename = data.filename || ("MindEchoAI_Disclaimer_" + new Date().getTime() + ".pdf");
+    const base64 = data.fileBase64 || "";
+    const decoded = Utilities.base64Decode(base64);
+    const blob = Utilities.newBlob(decoded, "application/pdf", filename);
+
+    // Save to Google Drive target folder
+    var folder;
+    try {
+      folder = DriveApp.getFolderById(DRIVE_FOLDER_ID);
+    } catch(e) {
+      folder = DriveApp.getRootFolder();
+    }
+    var file = folder.createFile(blob);
+    var fileUrl = file.getUrl();
+
+    // Log to spreadsheet
+    try {
+      const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+      let sheets = ss.getSheets();
+      let sheet = sheets[sheets.length - 1];
+      if (sheet.getLastRow() === 0) { createHeader(sheet); }
+      sheet.appendRow([
+        new Date().toLocaleString("ru-RU"),
+        "NDA_PDF_Uploaded",
+        "SYSTEM",
+        data.userName || "-",
+        data.email || "-",
+        data.contact || "-",
+        "Disclaimer_PDF",
+        0,
+        "ru+en",
+        "web",
+        "direct",
+        "NDA_Modal",
+        0,
+        0,
+        "-",
+        false,
+        fileUrl
+      ]);
+    } catch(logErr) {}
+
+    // Send email notification to owner
+    try {
+      MailApp.sendEmail({
+        to: "get777903@gmail.com",
+        subject: "MindEcho AI — New Disclaimer PDF signed: " + (data.userName || "Unknown"),
+        htmlBody: "<h2>MindEcho AI — Disclaimer Signed</h2>"
+          + "<p><b>Name / FIO:</b> " + (data.userName || "-") + "</p>"
+          + "<p><b>WhatsApp / Telegram:</b> " + (data.contact || "-") + "</p>"
+          + "<p><b>Email:</b> " + (data.email || "-") + "</p>"
+          + "<p><b>Date / Data:</b> " + (data.dateStr || "-") + "</p>"
+          + "<p><b>Google Drive file:</b> <a href='" + fileUrl + "'>" + filename + "</a></p>"
+      });
+    } catch(mailErr) {}
+
+    return json200({ status: "success", file_url: fileUrl });
+  } catch(err) {
     return json200({ status: "error", message: err.toString() });
   }
 }
