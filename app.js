@@ -240,8 +240,8 @@ const i18n = {
     tag_studio: "Meditation Studio",
     title_studio: "Personal Narrative Meditation",
     sub_studio: "Parent Voice Recording + Studio MP3 + Dynamic AI Speech",
-    label_mic_rec: "🎙 Record Your Voice (up to 30s for ElevenLabs):",
-    mic_press_text: "Click microphone to record voice (up to 30s)",
+    label_mic_rec: "🎙 Record Your Voice / Questions:",
+    mic_press_text: "Click microphone to record voice",
     label_child_name: "Child's Name:",
     label_child_gender: "Gender:",
     opt_girl: "Girl",
@@ -501,25 +501,7 @@ const i18n = {
   }
 };
 
-// ElevenLabs Voice Cloning Configuration — Version 31
-const ELEVENLABS_VOICE_CONFIG_V31 = {
-  style: 0.0,
-  similarity_boost: 0.70,
-  stability: 0.70,
-  speed: 0.70,
-  prompt: "A deep, warm, soothing male voice with a low pitch, calm velvet tone, relaxed pace for bedtime meditation."
-};
-
-// Russian Meditation Template Text — Version 31 (SSML Pauses & Timings)
-const MEDITATION_TEMPLATE_V31_RU = `
-Я хочу взять тебя {NAME} ... — ... .  ... — … . <break time="3.0s"/>  с собой в небольшое путешествие <break time="4.0s"/> в волшебное место, где мысли становятся реальностью . ... — ... .  ... — … .
-
-И чтобы мы смогли туда попасть .<break time="5.0s"/>  нам нужно будет раскрыть свою душу <break time="6.0s"/>  Так что слушай меня внимательно, {NAME} <break time="7.0s"/>  и давай отправимся в это доброе и чудесное путешествие <break time="3.0s"/> , <break time="2.0s"/> 
-
-... — ... Закрой глазки и начни дышать спокойно и ровно. ... — ... .  ... — … . Успокойся и расслабься ... — ... расслабься... — ... Обрати внимание на свой носик... — ... Найди его, не открывая глаз. Почувствуй его мысленно.
-`;
-
-// Russian Meditation Template Text (Base)
+// Russian Meditation Template Text
 const BASE_MEDITATION_TEMPLATE_RU = `
 {NAME}, я хочу взять тебя с собой в небольшое путешествие в волшебное место, где мысли становятся реальностью... И чтобы мы смогли туда попасть, нам нужно будет раскрыть свою душу. Так что слушай меня внимательно и давай отправимся в это весёлое путешествие.
 
@@ -783,43 +765,19 @@ async function toggleVoiceRecord() {
       appState.mediaRecorder.onstop = () => {
         const blob = new Blob(appState.recordedChunks, { type: 'audio/webm' });
         appState.recordedAudioUrl = URL.createObjectURL(blob);
-        
-        // Convert audio Blob to Base64 to save in Supabase database for ElevenLabs voice generation
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const base64Audio = reader.result;
-          logClickAnalytics('Voice_Recorded_30s', 'Parent_Voice_ElevenLabs_Sample', 0, {
-            voice_base64: base64Audio.substring(0, 100000),
-            duration: (appState.recordSeconds || 30) + 's',
-            format: 'audio/webm',
-            elevenlabs_ready: true
-          });
-        };
-        reader.readAsDataURL(blob);
-
-        micText.innerHTML = appState.lang === 'he'
-          ? `הקלטת קול (30 שנ') הושלמה! <a href="${appState.recordedAudioUrl}" download="parent_voice_sample_30s.webm" style="color:var(--color-cyan);text-decoration:underline;">💾 הורד קובץ</a>`
-          : `Запись голоса (30 сек) завершена! <a href="${appState.recordedAudioUrl}" download="parent_voice_sample_30s.webm" style="color:var(--color-cyan);font-weight:700;text-decoration:underline;">💾 Скачать файл для ElevenLabs</a>`;
+        micText.innerText = appState.lang === 'he' ? "ההקלטה הושלמה! (ניתן להקשיב)" : "Запись голоса завершена! (Сохранено)";
       };
 
       appState.mediaRecorder.start();
       appState.isRecording = true;
       micBtn.classList.add('recording');
+      micText.innerText = appState.lang === 'he' ? "מקליט קול... דבר עכשיו" : "Идет запись вашего голоса... Говорите";
       micWave.classList.remove('hidden');
 
-      // Live 30-second countdown timer
-      if (appState.recordTimer) clearInterval(appState.recordTimer);
-      appState.recordTimer = setInterval(() => {
-        appState.recordSeconds = (appState.recordSeconds || 0) + 1;
-        micText.innerText = appState.lang === 'he'
-          ? `מקליט קול ל-ElevenLabs... (${appState.recordSeconds}/30 שנ')`
-          : `🎙 Запись голоса для ElevenLabs... (${appState.recordSeconds}/30 сек)`;
-
-        if (appState.recordSeconds >= 30) {
-          clearInterval(appState.recordTimer);
-          if (appState.isRecording) toggleVoiceRecord();
-        }
-      }, 1000);
+      // Auto stop after 5 seconds
+      setTimeout(() => {
+        if (appState.isRecording) toggleVoiceRecord();
+      }, 5000);
 
     } catch (err) {
       console.warn("Microphone access denied:", err);
@@ -852,7 +810,17 @@ function generatePersonalMeditation() {
   if (appState.lang === 'he') {
     customText = BASE_MEDITATION_TEMPLATE_HE.replace(/{NAME}/g, name);
   } else {
-    customText = MEDITATION_TEMPLATE_V31_RU.replace(/{NAME}/g, name);
+    const genderEnd = isGirl ? 'а' : '';
+    const genderAdj = isGirl ? 'ая' : 'ый';
+    const genderWizard = isGirl ? 'ца' : '';
+    const genderFriend = isGirl ? 'ой' : 'ом';
+
+    customText = BASE_MEDITATION_TEMPLATE_RU
+      .replace(/{NAME}/g, name)
+      .replace(/{GENDER_END}/g, genderEnd)
+      .replace(/{GENDER_ADJ}/g, genderAdj)
+      .replace(/{GENDER_WIZARD}/g, genderWizard)
+      .replace(/{GENDER_FRIEND}/g, genderFriend);
   }
 
   const typeSelect = document.getElementById('meditation-type');
@@ -879,23 +847,23 @@ function generatePersonalMeditation() {
   }
 
   appState.isPlayingAudio = false;
-  const subtitleEl = document.getElementById('player-subtitle');
-  if (subtitleEl) subtitleEl.innerText = appState.lang === 'he' ? "סיפור מדיטציה בקול הנבחר" : "рассказ медитацию выбранным голосом";
 
   if (appState.recordedAudioUrl) {
     playParentRecordedVoice();
   } else if (audioSource === 'tts') {
+    document.getElementById('player-subtitle').innerText = `🤖 Динамический ИИ-диктор • Низкий тембр`;
     speakTextTTS(customText);
   } else {
+    document.getElementById('player-subtitle').innerText = `🎵 Студийная MP3 фонограмма • Без музыки`;
     playMP3AudioTrack(true);
   }
 
   logClickAnalytics('Meditation_Generated', name, 0, { audio_source: audioSource });
 }
 
-// Stop all active audio playbacks (SpeechSynthesis, MP3 Track, Parent Voice Clip)
+// Stop all active audio playbacks safely
 function stopAllAudio() {
-  if (window.speechSynthesis) {
+  if (window.speechSynthesis && window.speechSynthesis.speaking) {
     window.speechSynthesis.cancel();
   }
   if (appState.audioTrack) {
@@ -903,7 +871,6 @@ function stopAllAudio() {
   }
   if (appState.parentAudioTrack) {
     appState.parentAudioTrack.pause();
-    appState.parentAudioTrack = null;
   }
   appState.isPlayingAudio = false;
   const playBtn = document.getElementById('play-btn');
@@ -924,7 +891,7 @@ function playParentRecordedVoice() {
     if (subtitleEl) subtitleEl.innerText = appState.lang === 'he' ? "סיפור מדיטציה בקול הנבחר" : "рассказ медитацию выбранным голосом";
 
     appState.parentAudioTrack.play().then(() => {
-      console.log("▶ Playing parent recorded voice...");
+      console.log("▶ Playing parent recorded audio...");
     }).catch(err => {
       console.warn("Parent recorded audio play error:", err);
       playMP3AudioTrack(true);
@@ -941,12 +908,12 @@ function playParentRecordedVoice() {
 
 // Play Studio Audio Track (meditation1.mp3)
 function playMP3AudioTrack(forceStart = false) {
+  const subtitleEl = document.getElementById('player-subtitle');
+  if (subtitleEl) subtitleEl.innerText = appState.lang === 'he' ? "סיפור מדיטציה בקול הנבחר" : "рассказ медитацию выбранным голосом";
+
   if (!appState.audioTrack) {
     initAudioPlayer();
   }
-
-  const subtitleEl = document.getElementById('player-subtitle');
-  if (subtitleEl) subtitleEl.innerText = appState.lang === 'he' ? "סיפור מדיטציה בקול הנבחר" : "рассказ медитацию выбранным голосом";
 
   if (forceStart) {
     stopAllAudio();
@@ -1003,29 +970,12 @@ function togglePlayAudio() {
 
 // Speech Synthesis TTS (Slow calm voice with dynamic voice selection)
 function speakTextTTS(text) {
-  stopAllAudio();
+  if (appState.audioTrack) appState.audioTrack.pause();
   if (!window.speechSynthesis) {
     alert("В вашем браузере недоступен SpeechSynthesis. Проигрывается MP3 фонограмма.");
     playMP3AudioTrack(true);
     return;
   }
-
-  if (window.speechSynthesis.resume) {
-    window.speechSynthesis.resume();
-  }
-
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 0.6;
-  utterance.pitch = 0.75;
-  utterance.lang = appState.lang === 'he' ? 'he-IL' : 'ru-RU';
-
-  utterance.onstart = () => {
-    appState.isPlayingAudio = true;
-    const playBtn = document.getElementById('play-btn');
-    if (playBtn) playBtn.innerText = "⏸";
-    const subtitleEl = document.getElementById('player-subtitle');
-    if (subtitleEl) subtitleEl.innerText = appState.lang === 'he' ? "סיפור מדיטציה בקול הנבחר" : "рассказ медитацию выбранным голосом";
-  };
 
   window.speechSynthesis.cancel();
   if (window.speechSynthesis.resume) {
@@ -1326,9 +1276,26 @@ function handleCustDevSubmit(e) {
 }
 
 // Pricing Toggle (Monthly vs Annual)
-function toggleBillingCycle() {
-  const isAnnual = document.getElementById('billing-switch').checked;
+function setCardBilling(cycle) {
+  const isAnnual = (cycle === 'annual');
+  toggleBillingCycle(isAnnual);
+}
+
+function toggleBillingCycle(forcedAnnual) {
+  const switchEl = document.getElementById('billing-switch');
+  const isAnnual = (typeof forcedAnnual === 'boolean') ? forcedAnnual : (switchEl ? switchEl.checked : false);
   appState.isAnnualBilling = isAnnual;
+  if (switchEl) switchEl.checked = isAnnual;
+
+  document.querySelectorAll('.card-cycle-btn').forEach(btn => {
+    if (isAnnual) {
+      if (btn.classList.contains('btn-annual')) btn.classList.add('active');
+      else btn.classList.remove('active');
+    } else {
+      if (btn.classList.contains('btn-monthly')) btn.classList.add('active');
+      else btn.classList.remove('active');
+    }
+  });
 
   const basicPrice   = document.querySelector('.price-basic');
   const premiumPrice = document.querySelector('.price-premium');
@@ -1639,17 +1606,6 @@ window.switchLanguage = switchLanguage;
 window.scrollToSection = scrollToSection;
 window.simulateSocialAuth = simulateSocialAuth;
 window.generatePersonalMeditation = generatePersonalMeditation;
-function copyElevenLabsConfig() {
-  const configText = `ElevenLabs Voice Cloning Settings (Version 31):\nStyle: 0.0\nSimilarity Boost: 0.70\nStability: 0.70\nSpeed: 0.70\nVoice Prompt: A deep, warm, soothing male voice with a low pitch, calm velvet tone, relaxed pace for bedtime meditation.`;
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(configText).then(() => {
-      alert("📋 Настройки ElevenLabs скопированы в буфер обмена!");
-    }).catch(() => alert(configText));
-  } else {
-    alert(configText);
-  }
-}
-
 window.toggleVoiceRecord = toggleVoiceRecord;
 window.clearSignatureCanvas = clearSignatureCanvas;
-window.copyElevenLabsConfig = copyElevenLabsConfig;
+window.setCardBilling = setCardBilling;
