@@ -293,13 +293,13 @@
         <!-- Left Column: Settings & Voice Recorder -->
         <div class="generator-controls">
           <div class="form-group">
-            <label data-i18n="label_mic_rec">🎙 Запись вашего голоса / вопросов:</label>
+            <label data-i18n="label_mic_rec">🎙 Запись вашего голоса (до 30 сек для ElevenLabs):</label>
             <div class="mic-recorder-box">
               <button id="mic-btn" class="mic-btn" onclick="toggleVoiceRecord()">
                 <span class="mic-icon">🎙</span>
               </button>
               <div class="mic-status">
-                <span id="mic-text" data-i18n="mic_press_text">Нажмите для записи голоса</span>
+                <span id="mic-text" data-i18n="mic_press_text">Нажмите для записи голоса (до 30 сек)</span>
                 <div id="mic-wave" class="mic-wave hidden">
                   <span></span><span></span><span></span><span></span>
                 </div>
@@ -761,7 +761,7 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=20260807_v114_fix101"></script>
+  <script src="app.js?v=20260808_30s_elevenlabs"></script>
   <script>
     function openGamesModal() {
       document.getElementById('games-modal').classList.remove('hidden');
