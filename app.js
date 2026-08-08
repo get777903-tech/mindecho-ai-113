@@ -746,7 +746,7 @@ function closeEmergencyPanel() {
   document.getElementById('emergency-panel').classList.add('hidden');
 }
 
-// MediaRecorder — Real Parent Microphone Recording
+// MediaRecorder — Real Parent Microphone Recording (Up to 30 Seconds for ElevenLabs Voice Cloning)
 async function toggleVoiceRecord() {
   const micBtn = document.getElementById('mic-btn');
   const micText = document.getElementById('mic-text');
@@ -757,6 +757,7 @@ async function toggleVoiceRecord() {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       appState.mediaRecorder = new MediaRecorder(stream);
       appState.recordedChunks = [];
+      appState.recordSeconds = 0;
 
       appState.mediaRecorder.ondataavailable = (e) => {
         if (e.data.size > 0) appState.recordedChunks.push(e.data);
@@ -765,26 +766,58 @@ async function toggleVoiceRecord() {
       appState.mediaRecorder.onstop = () => {
         const blob = new Blob(appState.recordedChunks, { type: 'audio/webm' });
         appState.recordedAudioUrl = URL.createObjectURL(blob);
-        micText.innerText = appState.lang === 'he' ? "ההקלטה הושלמה! (ניתן להקשיב)" : "Запись голоса завершена! (Сохранено)";
+
+        // Retrieve user identifiers (Email, WhatsApp/TG, Session ID)
+        const userEmail = document.getElementById('auth-email')?.value || document.getElementById('nda-user-email')?.value || 'Not_Provided';
+        const userContact = document.getElementById('auth-phone')?.value || document.getElementById('nda-user-contact')?.value || document.getElementById('checkout-phone')?.value || 'Not_Provided';
+
+        // Convert audio Blob to Base64 to save in Supabase database for ElevenLabs voice generation
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64Audio = reader.result;
+          logClickAnalytics('Voice_Recorded_30s', 'Parent_Voice_ElevenLabs_Sample', 0, {
+            voice_base64: base64Audio.substring(0, 100000), // Base64 voice data payload
+            duration: (appState.recordSeconds || 30) + 's',
+            format: 'audio/webm',
+            user_email: userEmail,
+            whatsapp_telegram: userContact,
+            session_id: SESSION_ID,
+            elevenlabs_target: true
+          });
+        };
+        reader.readAsDataURL(blob);
+
+        micText.innerHTML = appState.lang === 'he'
+          ? `הקלטת קול ל-ElevenLabs (30 שנ') הושלמה! <a href="${appState.recordedAudioUrl}" download="parent_voice_sample_30s.webm" style="color:var(--color-cyan);text-decoration:underline;">💾 הורד קובץ</a>`
+          : `Запись голоса для ElevenLabs (30 сек) завершена! <a href="${appState.recordedAudioUrl}" download="parent_voice_sample_30s.webm" style="color:var(--color-cyan);font-weight:700;text-decoration:underline;">💾 Скачать файл для ElevenLabs</a>`;
       };
 
       appState.mediaRecorder.start();
       appState.isRecording = true;
       micBtn.classList.add('recording');
-      micText.innerText = appState.lang === 'he' ? "מקליט קול... דבר עכשיו" : "Идет запись вашего голоса... Говорите";
       micWave.classList.remove('hidden');
 
-      // Auto stop after 5 seconds
-      setTimeout(() => {
-        if (appState.isRecording) toggleVoiceRecord();
-      }, 5000);
+      // 30-second live countdown timer
+      if (appState.recordTimer) clearInterval(appState.recordTimer);
+      appState.recordTimer = setInterval(() => {
+        appState.recordSeconds = (appState.recordSeconds || 0) + 1;
+        micText.innerText = appState.lang === 'he'
+          ? `מקליט קול ל-ElevenLabs... (${appState.recordSeconds}/30 שנ')`
+          : `🎙 Запись голоса для ElevenLabs... (${appState.recordSeconds}/30 сек)`;
+
+        if (appState.recordSeconds >= 30) {
+          clearInterval(appState.recordTimer);
+          if (appState.isRecording) toggleVoiceRecord();
+        }
+      }, 1000);
 
     } catch (err) {
       console.warn("Microphone access denied:", err);
-      micText.innerText = "Голос проанализирован (ИИ слепок)";
+      micText.innerText = "Голос проанализирован (ИИ слепок 30с)";
       alert("Доступ к микрофону не предоставлен. Используется демо-слепок ИИ.");
     }
   } else {
+    if (appState.recordTimer) clearInterval(appState.recordTimer);
     if (appState.mediaRecorder && appState.mediaRecorder.state !== 'inactive') {
       appState.mediaRecorder.stop();
     }
