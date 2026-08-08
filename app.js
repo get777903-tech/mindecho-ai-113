@@ -1610,5 +1610,17 @@ window.switchLanguage = switchLanguage;
 window.scrollToSection = scrollToSection;
 window.simulateSocialAuth = simulateSocialAuth;
 window.generatePersonalMeditation = generatePersonalMeditation;
+function copyElevenLabsConfig() {
+  const configText = `ElevenLabs Voice Cloning Settings (Version 31):\nStyle: 0.0\nSimilarity Boost: 0.70\nStability: 0.70\nSpeed: 0.70\nVoice Prompt: A deep, warm, soothing male voice with a low pitch, calm velvet tone, relaxed pace for bedtime meditation.`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(configText).then(() => {
+      alert("📋 Настройки ElevenLabs скопированы в буфер обмена!");
+    }).catch(() => alert(configText));
+  } else {
+    alert(configText);
+  }
+}
+
 window.toggleVoiceRecord = toggleVoiceRecord;
 window.clearSignatureCanvas = clearSignatureCanvas;
+window.copyElevenLabsConfig = copyElevenLabsConfig;
