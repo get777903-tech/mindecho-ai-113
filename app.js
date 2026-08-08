@@ -101,7 +101,7 @@ const i18n = {
     opt_mode_psychosomatic: "🌿 Психосоматика (Здоровье)",
     btn_generate: "✨ Создать рассказ-медитацию с голосом мамы или папы",
     player_title_default: "Рассказ-Медитация",
-    player_sub_default: "Медленный спокойный голос родителя • Без музыки",
+    player_sub_default: "рассказ медитацию выбранным голосом",
     player_placeholder: 'Укажите имя и нажмите "Сгенерировать"...',
     tag_pricing: "Прозрачная монетизация",
     title_pricing: "Выберите Тариф Подписки",
@@ -258,7 +258,7 @@ const i18n = {
     opt_mode_emergency: "🚨 Emergency (Grounding)",
     btn_generate: "✨ Create Narrative Meditation with Parent's Voice",
     player_title_default: "Narrative Meditation",
-    player_sub_default: "Very Slow Deep Male Voice • Pure Speech",
+    player_sub_default: "рассказ медитацию выбранным голосом",
     player_placeholder: 'Enter name and click "Generate"...',
     tag_pricing: "Transparent Pricing",
     title_pricing: "Select Subscription Plan",
@@ -418,7 +418,7 @@ const i18n = {
     opt_mode_emergency: "🚨 חירום (קרקוע)",
     btn_generate: "✨ צור סיפור-מדיטציה בקול של אמא או אבא",
     player_title_default: "סיפור-מדיטציה",
-    player_sub_default: "קול גברי נמוך ואיטי מאוד • ללא מוזיקה",
+    player_sub_default: "סיפור מדיטציה בקול הנבחר",
     player_placeholder: 'הכנס שם ולחץ "צור"...',
     tag_pricing: "תמחור שקוף",
     title_pricing: "בחר תוכנית מנוי",
@@ -879,67 +879,82 @@ function generatePersonalMeditation() {
   }
 
   appState.isPlayingAudio = false;
+  const subtitleEl = document.getElementById('player-subtitle');
+  if (subtitleEl) subtitleEl.innerText = appState.lang === 'he' ? "סיפור מדיטציה בקול הנבחר" : "рассказ медитацию выбранным голосом";
 
   if (appState.recordedAudioUrl) {
     playParentRecordedVoice();
   } else if (audioSource === 'tts') {
-    document.getElementById('player-subtitle').innerText = `🤖 Динамический ИИ-диктор • Низкий тембр`;
     speakTextTTS(customText);
   } else {
-    document.getElementById('player-subtitle').innerText = `🎵 Студийная MP3 фонограмма • Без музыки`;
     playMP3AudioTrack(true);
   }
 
   logClickAnalytics('Meditation_Generated', name, 0, { audio_source: audioSource });
 }
 
+// Stop all active audio playbacks (SpeechSynthesis, MP3 Track, Parent Voice Clip)
+function stopAllAudio() {
+  if (window.speechSynthesis) {
+    window.speechSynthesis.cancel();
+  }
+  if (appState.audioTrack) {
+    appState.audioTrack.pause();
+  }
+  if (appState.parentAudioTrack) {
+    appState.parentAudioTrack.pause();
+    appState.parentAudioTrack = null;
+  }
+  appState.isPlayingAudio = false;
+  const playBtn = document.getElementById('play-btn');
+  if (playBtn) playBtn.innerText = "▶";
+}
+
 // Play Parent's Actual Recorded Voice Audio
 function playParentRecordedVoice() {
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
-  if (appState.audioTrack) appState.audioTrack.pause();
+  stopAllAudio();
 
   if (appState.recordedAudioUrl) {
-    const parentAudio = new Audio(appState.recordedAudioUrl);
+    appState.parentAudioTrack = new Audio(appState.recordedAudioUrl);
     appState.isPlayingAudio = true;
-    document.getElementById('play-btn').innerText = "⏸";
-    document.getElementById('player-subtitle').innerText = "🎙 Озвучивание записанным голосом родителя!";
+    const playBtn = document.getElementById('play-btn');
+    if (playBtn) playBtn.innerText = "⏸";
 
-    parentAudio.play().then(() => {
-      console.log("▶ Playing parent recorded audio...");
+    const subtitleEl = document.getElementById('player-subtitle');
+    if (subtitleEl) subtitleEl.innerText = appState.lang === 'he' ? "סיפור מדיטציה בקול הנבחר" : "рассказ медитацию выбранным голосом";
+
+    appState.parentAudioTrack.play().then(() => {
+      console.log("▶ Playing parent recorded voice...");
     }).catch(err => {
       console.warn("Parent recorded audio play error:", err);
       playMP3AudioTrack(true);
     });
 
-    parentAudio.onended = () => {
+    appState.parentAudioTrack.onended = () => {
       appState.isPlayingAudio = false;
-      document.getElementById('play-btn').innerText = "▶";
+      if (playBtn) playBtn.innerText = "▶";
     };
   } else {
-    alert("🎙 Вы еще не записали свой голос! Нажмите микрофон слева для записи отрывка вашего голоса.");
-    const micBtn = document.getElementById('mic-btn');
-    if (micBtn) {
-      micBtn.classList.add('recording');
-      setTimeout(() => micBtn.classList.remove('recording'), 3000);
-    }
-    document.getElementById('player-subtitle').innerText = "🎵 Студийная MP3 фонограмма (Голос не записан)";
     playMP3AudioTrack(true);
   }
 }
 
 // Play Studio Audio Track (meditation1.mp3)
 function playMP3AudioTrack(forceStart = false) {
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
-
   if (!appState.audioTrack) {
     initAudioPlayer();
   }
 
+  const subtitleEl = document.getElementById('player-subtitle');
+  if (subtitleEl) subtitleEl.innerText = appState.lang === 'he' ? "סיפור מדיטציה בקול הנבחר" : "рассказ медитацию выбранным голосом";
+
   if (forceStart) {
+    stopAllAudio();
     appState.audioTrack.currentTime = 0;
     appState.audioTrack.play().then(() => {
       appState.isPlayingAudio = true;
-      document.getElementById('play-btn').innerText = "⏸";
+      const playBtn = document.getElementById('play-btn');
+      if (playBtn) playBtn.innerText = "⏸";
     }).catch(err => {
       console.warn("MP3 playback fallback to speech synth:", err);
       const text = document.getElementById('meditation-text-box').innerText;
@@ -949,13 +964,13 @@ function playMP3AudioTrack(forceStart = false) {
   }
 
   if (appState.isPlayingAudio) {
-    appState.audioTrack.pause();
-    appState.isPlayingAudio = false;
-    document.getElementById('play-btn').innerText = "▶";
+    stopAllAudio();
   } else {
+    stopAllAudio();
     appState.audioTrack.play().then(() => {
       appState.isPlayingAudio = true;
-      document.getElementById('play-btn').innerText = "⏸";
+      const playBtn = document.getElementById('play-btn');
+      if (playBtn) playBtn.innerText = "⏸";
     }).catch(err => {
       console.warn("MP3 playback fallback to speech synth:", err);
       const text = document.getElementById('meditation-text-box').innerText;
@@ -976,27 +991,41 @@ function playQuickTestAudio() {
 
 function togglePlayAudio() {
   if (appState.isPlayingAudio) {
-    if (appState.audioTrack) appState.audioTrack.pause();
-    if (window.speechSynthesis) window.speechSynthesis.pause();
-    appState.isPlayingAudio = false;
-    document.getElementById('play-btn').innerText = "▶";
+    stopAllAudio();
   } else {
-    if (appState.audioTrack && appState.audioTrack.currentTime > 0) {
-      playMP3AudioTrack(false);
+    if (appState.recordedAudioUrl) {
+      playParentRecordedVoice();
     } else {
-      generatePersonalMeditation();
+      playMP3AudioTrack(true);
     }
   }
 }
 
 // Speech Synthesis TTS (Slow calm voice with dynamic voice selection)
 function speakTextTTS(text) {
-  if (appState.audioTrack) appState.audioTrack.pause();
+  stopAllAudio();
   if (!window.speechSynthesis) {
     alert("В вашем браузере недоступен SpeechSynthesis. Проигрывается MP3 фонограмма.");
     playMP3AudioTrack(true);
     return;
   }
+
+  if (window.speechSynthesis.resume) {
+    window.speechSynthesis.resume();
+  }
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = 0.6;
+  utterance.pitch = 0.75;
+  utterance.lang = appState.lang === 'he' ? 'he-IL' : 'ru-RU';
+
+  utterance.onstart = () => {
+    appState.isPlayingAudio = true;
+    const playBtn = document.getElementById('play-btn');
+    if (playBtn) playBtn.innerText = "⏸";
+    const subtitleEl = document.getElementById('player-subtitle');
+    if (subtitleEl) subtitleEl.innerText = appState.lang === 'he' ? "סיפור מדיטציה בקול הנבחר" : "рассказ медитацию выбранным голосом";
+  };
 
   window.speechSynthesis.cancel();
   if (window.speechSynthesis.resume) {
