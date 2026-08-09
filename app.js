@@ -671,11 +671,18 @@ function toggleFullStoryText() {
   }
 }
 
-// MediaRecorder — Real Parent Microphone Recording with 60s Countdown
+// MediaRecorder — Real Parent Microphone Recording with 60s Countdown & Audio Level Visualizer
+let micAudioContext = null;
+let micAnalyser = null;
+let micAnimFrame = null;
+let maxAudioVolumeRecorded = 0;
+
 async function toggleVoiceRecord() {
   const micBtn = document.getElementById('mic-btn');
   const micText = document.getElementById('mic-text');
   const micWave = document.getElementById('mic-wave');
+  const micLevelBox = document.getElementById('mic-level-box');
+  const micLevelFill = document.getElementById('mic-level-fill');
 
   // Auto-expand full story text for reading (and hide duplicate snippet)
   const fullStory = document.getElementById('story-full-text');
@@ -689,8 +696,55 @@ async function toggleVoiceRecord() {
 
   if (!appState.isRecording) {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      appState.mediaRecorder = new MediaRecorder(stream);
+      // Explicit audio constraints to ensure noise suppression & active audio input
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true
+        }
+      });
+
+      // Initialize Web Audio API Analyser for real-time volume VU Meter
+      try {
+        micAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const source = micAudioContext.createMediaStreamSource(stream);
+        micAnalyser = micAudioContext.createAnalyser();
+        micAnalyser.fftSize = 256;
+        source.connect(micAnalyser);
+
+        const dataArray = new Uint8Array(micAnalyser.frequencyBinCount);
+        maxAudioVolumeRecorded = 0;
+
+        function updateMicVolumeLevel() {
+          if (!appState.isRecording) return;
+          micAnalyser.getByteFrequencyData(dataArray);
+          let sum = 0;
+          for (let i = 0; i < dataArray.length; i++) {
+            sum += dataArray[i];
+          }
+          const average = sum / dataArray.length;
+          if (average > maxAudioVolumeRecorded) maxAudioVolumeRecorded = average;
+
+          const levelPercent = Math.min(100, Math.round((average / 128) * 100));
+          if (micLevelFill) micLevelFill.style.width = `${levelPercent}%`;
+
+          micAnimFrame = requestAnimationFrame(updateMicVolumeLevel);
+        }
+
+        if (micLevelBox) micLevelBox.classList.remove('hidden');
+        updateMicVolumeLevel();
+      } catch (audioCtxErr) {
+        console.warn("AudioContext visualizer notice:", audioCtxErr);
+      }
+
+      // Check supported MIME type
+      let mimeType = 'audio/webm;codecs=opus';
+      if (!MediaRecorder.isTypeSupported(mimeType)) {
+        mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : '';
+      }
+      
+      appState.mediaRecorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
       appState.recordedChunks = [];
 
       appState.mediaRecorder.ondataavailable = (e) => {
@@ -698,11 +752,27 @@ async function toggleVoiceRecord() {
       };
 
       appState.mediaRecorder.onstop = () => {
-        const blob = new Blob(appState.recordedChunks, { type: 'audio/webm' });
-        appState.recordedAudioUrl = URL.createObjectURL(blob);
-        micText.innerText = "Запись голоса (60 сек) завершена! (Сохранено)";
+        // Stop AudioContext & Analyser
+        if (micAnimFrame) cancelAnimationFrame(micAnimFrame);
+        if (micAudioContext) {
+          micAudioContext.close().catch(() => {});
+          micAudioContext = null;
+        }
+        if (micLevelBox) micLevelBox.classList.add('hidden');
+        if (micLevelFill) micLevelFill.style.width = '0%';
 
-        // Convert blob to Base64 and send to Supabase with user contact details
+        const blob = new Blob(appState.recordedChunks, { type: appState.mediaRecorder.mimeType || 'audio/webm' });
+        appState.recordedAudioUrl = URL.createObjectURL(blob);
+
+        // Signal check: Verify if audio stream contained real voice sound or was silent
+        if (maxAudioVolumeRecorded < 3 || blob.size < 5000) {
+          micText.innerText = "⚠️ Внимание: Голос не обнаружен (Записана тишина)";
+          alert("⚠️ Внимание: Запись оказалась тихой/пустой. Пожалуйста, убедитесь, что микрофон включён в настройках Windows и браузера, и разрешите доступ при запросе!");
+        } else {
+          micText.innerText = "🟢 Запись голоса (60 сек) завершена! (Сохранено)";
+        }
+
+        // Convert blob to Base64 and send analytics
         const reader = new FileReader();
         reader.readAsDataURL(blob);
         reader.onloadend = () => {
@@ -715,23 +785,24 @@ async function toggleVoiceRecord() {
             email: userEmail,
             phone: userContact,
             elevenlabs_target: true,
+            max_volume: maxAudioVolumeRecorded,
             audio_base64_sample: base64Audio.substring(0, 100000)
           });
         };
       };
 
-      appState.mediaRecorder.start();
+      appState.mediaRecorder.start(250); // Slice chunks every 250ms
       appState.isRecording = true;
       micBtn.classList.add('recording');
       micWave.classList.remove('hidden');
 
       let remainingSec = 60;
-      micText.innerText = `Идет запись голоса... (Осталось ${remainingSec} сек)`;
+      micText.innerText = `🔴 Идет запись голоса... Говорите в микрофон! (${remainingSec} сек)`;
       
       const recordTimerInterval = setInterval(() => {
         remainingSec--;
         if (remainingSec > 0 && appState.isRecording) {
-          micText.innerText = `Идет запись голоса... (Осталось ${remainingSec} сек)`;
+          micText.innerText = `🔴 Идет запись голоса... Говорите в микрофон! (${remainingSec} сек)`;
         } else {
           clearInterval(recordTimerInterval);
           if (appState.isRecording) {
@@ -741,9 +812,9 @@ async function toggleVoiceRecord() {
       }, 1000);
 
     } catch (err) {
-      console.warn("Microphone access denied:", err);
-      micText.innerText = "Голос проанализирован (ИИ слепок)";
-      alert("Доступ к микрофону не предоставлен. Используется демо-слепок ИИ.");
+      console.warn("Microphone access denied or missing:", err);
+      micText.innerText = "⚠️ Доступ к микрофону заблокирован";
+      alert("⚠️ Разрешение на микрофон не предоставлено браузером! Пожалуйста, кликните по иконке замочка 🔒 слева от адресной строки браузера и выберите «Разрешить микрофон».");
     }
   } else {
     if (appState.mediaRecorder && appState.mediaRecorder.state !== 'inactive') {
