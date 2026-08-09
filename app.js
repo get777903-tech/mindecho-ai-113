@@ -161,8 +161,8 @@ const translations = {
     opt_mode_morning: "☀️ Утренняя (Уверенность)",
     opt_mode_emergency: "🚨 Экстренная (Заземление)",
     opt_mode_prayer: "🙏 Молитва-медитация (Духовный покой)",
-    label_mic_rec: "🎙 Запись голоса (до 30 сек для ElevenLabs):",
-    mic_press_text: "Нажмите для записи голоса родителя или бабушки (до 30 сек)",
+    label_mic_rec: "🎙 Запись голоса родителя (60 секунд для ElevenLabs):",
+    mic_press_text: "Нажмите для записи голоса родителя или бабушки (60 секунд)",
     btn_generate: "✨ Создать рассказ-медитацию с голосом мамы, папы или бабушки",
     player_title_default: "Рассказ-Медитация",
     player_sub_default: "Самый родной и успокаивающий голос • Без музыки",
@@ -326,8 +326,8 @@ const translations = {
     opt_mode_morning: "☀️ Morning (Confidence)",
     opt_mode_emergency: "🚨 Emergency (Grounding)",
     opt_mode_prayer: "🙏 Prayer-Meditation (Spiritual Peace)",
-    label_mic_rec: "🎙 Voice Recording (up to 30 sec):",
-    mic_press_text: "Click to record parent's or grandmother's voice (up to 30 sec)",
+    label_mic_rec: "🎙 Parent Voice Recording (60 seconds for ElevenLabs):",
+    mic_press_text: "Click to record parent's or grandmother's voice (60 seconds)",
     btn_generate: "✨ Create meditation story with Mom's, Dad's, or Grandma's voice",
     player_title_default: "Meditation Story",
     player_sub_default: "Native soothing voice • No music",
@@ -491,8 +491,8 @@ const translations = {
     opt_mode_morning: "☀️ בוקר (ביטחון עצמי)",
     opt_mode_emergency: "🚨 חירום (קרקוע)",
     opt_mode_prayer: "🙏 מדיטציית תפילה (שלווה רוחנית)",
-    label_mic_rec: "🎙 הקלטת קול (עד 30 שניות):",
-    mic_press_text: "לחץ להקלטת קול של הורה או סבתא (עד 30 שניות)",
+    label_mic_rec: "🎙 הקלטת קול הורה (60 שניות עבור ElevenLabs):",
+    mic_press_text: "לחץ להקלטת קול של הורה או סבתא (60 שניות)",
     btn_generate: "✨ צור סיפור מדיטציה בקול של אמא, אבא או סבתא",
     player_title_default: "סיפור מדיטציה",
     player_sub_default: "קול מרגיע ומוכר • ללא מוזיקה",
@@ -654,31 +654,36 @@ function closeEmergencyPanel() {
 
 function toggleFullStoryText() {
   const fullStory = document.getElementById('story-full-text');
+  const snippetStory = document.getElementById('story-snippet-text');
   const btn = document.getElementById('btn-toggle-story-text');
   const langDict = translations[appState.lang || 'ru'] || translations.ru;
 
   if (fullStory) {
     if (fullStory.classList.contains('hidden')) {
       fullStory.classList.remove('hidden');
+      if (snippetStory) snippetStory.classList.add('hidden');
       if (btn) btn.innerText = langDict.btn_toggle_story_text_collapse || "Свернуть текст 🔼";
     } else {
       fullStory.classList.add('hidden');
+      if (snippetStory) snippetStory.classList.remove('hidden');
       if (btn) btn.innerText = langDict.btn_toggle_story_text || "Развернуть весь текст 📖";
     }
   }
 }
 
-// MediaRecorder — Real Parent Microphone Recording with 30s Countdown
+// MediaRecorder — Real Parent Microphone Recording with 60s Countdown
 async function toggleVoiceRecord() {
   const micBtn = document.getElementById('mic-btn');
   const micText = document.getElementById('mic-text');
   const micWave = document.getElementById('mic-wave');
 
-  // Auto-expand full story text for reading
+  // Auto-expand full story text for reading (and hide duplicate snippet)
   const fullStory = document.getElementById('story-full-text');
+  const snippetStory = document.getElementById('story-snippet-text');
   const btnStory = document.getElementById('btn-toggle-story-text');
   if (fullStory && fullStory.classList.contains('hidden')) {
     fullStory.classList.remove('hidden');
+    if (snippetStory) snippetStory.classList.add('hidden');
     if (btnStory) btnStory.innerText = "Свернуть текст 🔼";
   }
 
@@ -695,7 +700,7 @@ async function toggleVoiceRecord() {
       appState.mediaRecorder.onstop = () => {
         const blob = new Blob(appState.recordedChunks, { type: 'audio/webm' });
         appState.recordedAudioUrl = URL.createObjectURL(blob);
-        micText.innerText = "Запись голоса (до 30 сек) завершена! (Сохранено)";
+        micText.innerText = "Запись голоса (60 сек) завершена! (Сохранено)";
 
         // Convert blob to Base64 and send to Supabase with user contact details
         const reader = new FileReader();
@@ -705,7 +710,7 @@ async function toggleVoiceRecord() {
           const userEmail = localStorage.getItem('userEmail') || document.getElementById('auth-email')?.value || '-';
           const userContact = document.getElementById('nda-user-contact')?.value || document.getElementById('checkout-phone')?.value || '-';
 
-          logClickAnalytics('Voice_Recorded_30s', 'Parent_Voice_Sample', 0, {
+          logClickAnalytics('Voice_Recorded_60s', 'Parent_Voice_Sample', 0, {
             user_name: 'Пользователь',
             email: userEmail,
             phone: userContact,
@@ -720,7 +725,7 @@ async function toggleVoiceRecord() {
       micBtn.classList.add('recording');
       micWave.classList.remove('hidden');
 
-      let remainingSec = 30;
+      let remainingSec = 60;
       micText.innerText = `Идет запись голоса... (Осталось ${remainingSec} сек)`;
       
       const recordTimerInterval = setInterval(() => {
