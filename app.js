@@ -1021,20 +1021,43 @@ async function generatePersonalMeditation() {
   document.getElementById('player-subtitle').innerText = "⏳ Идет обработка и клонирование голоса родителя...";
   updateMeditationStatusBadge('loading', '⏳ Создание сказки-медитации с голосом родителя...');
 
-  // Active Voice Selection (Instant Cloned Voice or Default Voice ID)
-  let activeVoiceId = appState.clonedVoiceId || "C0qT9fWAA22Nx02a6QJY";
+  // Active Voice Selection (Instant Cloned Voice or Recorded Parent Sample)
+  let activeVoiceId = appState.clonedVoiceId;
 
-  // Perform Instant Voice Cloning if recorded parent audio exists
+  // Perform Instant Voice Cloning if user recorded/uploaded parent audio in current session
   if (appState.recordedAudioBlob && !appState.clonedVoiceId) {
-    updateMeditationStatusBadge('loading', '⏳ Клонирование голоса родителя в ElevenLabs...');
+    updateMeditationStatusBadge('loading', '⏳ Клонирование голоса родителя с вашей аудиозаписи...');
     const clonedId = await cloneParentVoiceElevenLabs(appState.recordedAudioBlob);
     if (clonedId) {
       activeVoiceId = clonedId;
     }
   }
 
-  // Format hypnotic text for Сказка-Медитация (Clean sentences, NO ellipses, 3s pauses after completed phrases)
-  const formattedText = `Дорогой мой родной человечек ${name}. <break time="3.0s"/> Давай отправимся в волшебную Сказку-Медитацию. <break time="3.0s"/> Закрой глазки и начни дышать спокойно и ровно. <break time="3.0s"/> Сделай мягкий вдох и плавный выдох. <break time="3.0s"/> Ты в полной безопасности. <break time="3.0s"/> Стены комнаты берегут твой покой. <break time="3.0s"/> Знай, что мама и папа тебя очень сильно любят и всегда рядом с тобой. <break time="3.0s"/> Отдыхай и настраивайся на добрые сны, ${name}. <break time="3.0s"/> Я очень люблю тебя. <break time="3.0s"/>`;
+  // If no cloned voice yet, clone from pre-recorded parent voice file in repository
+  if (!activeVoiceId) {
+    try {
+      updateMeditationStatusBadge('loading', '⏳ Клонирование из записанного голоса родителя...');
+      const localAudioRes = await fetch('audio/parent_voice_recording_1786451629905.webm');
+      if (localAudioRes.ok) {
+        const localBlob = await localAudioRes.blob();
+        const clonedId = await cloneParentVoiceElevenLabs(localBlob);
+        if (clonedId) {
+          activeVoiceId = clonedId;
+        }
+      }
+    } catch (fetchErr) {
+      console.warn("Local parent voice cloning notice:", fetchErr);
+    }
+  }
+
+  // Fallback to active parent voice ID
+  if (!activeVoiceId) {
+    activeVoiceId = "C0qT9fWAA22Nx02a6QJY";
+  }
+
+  // Format hypnotic text for Сказка-Медитация
+  // (Separated onto distinct lines with \n\n to guarantee UNIFORM slow pacing from first word)
+  const formattedText = `Дорогой мой родной человечек ${name}. <break time="3.5s"/>\n\nДавай отправимся в волшебную Сказку-Медитацию. <break time="3.5s"/>\n\nЗакрой глазки и начни дышать спокойно и ровно. <break time="3.5s"/>\n\nСделай мягкий вдох и плавный выдох. <break time="3.5s"/>\n\nТы в полной безопасности. <break time="3.5s"/>\n\nСтены комнаты берегут твой покой. <break time="3.5s"/>\n\nЗнай, что мама и папа тебя очень сильно любят и всегда рядом с тобой. <break time="3.5s"/>\n\nОтдыхай и настраивайся на добрые сны, ${name}. <break time="3.5s"/>\n\nЯ очень люблю тебя. <break time="3.5s"/>`;
 
   document.getElementById('meditation-text-box').innerText = formattedText;
 
@@ -1054,8 +1077,8 @@ async function generatePersonalMeditation() {
         text: formattedText,
         model_id: "eleven_multilingual_v2",
         voice_settings: {
-          stability: 0.85,
-          similarity_boost: 0.85,
+          stability: 0.50,
+          similarity_boost: 0.80,
           speed: 0.70,
           style: 0.0
         }
