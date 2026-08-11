@@ -1227,3 +1227,21 @@ h1, h2, h3, h4 {
   .nav-controls { justify-content: center; margin-top: 6px; }
   .custdev-scenario-selector { grid-template-columns: 1fr; }
 }
+
+/* Bold typography for small subtext & responsive boundaries */
+small, .text-muted, .placeholder-text, .section-subtitle, .modal-subtitle, label, .plan-free-sub, .annual-subtext, p, span {
+  font-weight: 600;
+}
+
+.btn, button {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+
+.mic-recorder-box, .mic-story-reader, .generator-card, .generator-preview {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+}
