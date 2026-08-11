@@ -1009,13 +1009,13 @@ function updateMeditationStatusBadge(status, text) {
   }
 }
 
-// Instant Voice Cloning API Call (/v1/voices/add)
+// Instant Voice Cloning API Call (/v1/voices/add) from user's recorded audio file
 async function cloneParentVoiceElevenLabs(audioBlob) {
   const apiKey = "sk_b8c575f3959e2a5860e1b7a93b6ee45e869d19f6c6a6063d";
   const formData = new FormData();
-  formData.append("name", `Parent_Voice_${Date.now()}`);
-  formData.append("files", audioBlob, "parent_voice.webm");
-  formData.append("description", "Parent recorded voice for MindEcho AI Сказка-Медитация");
+  formData.append("name", `Parent_Recorded_Voice_${Date.now()}`);
+  formData.append("files", audioBlob, "parent_recorded_voice.webm");
+  formData.append("description", "Родительский голос из аудиозаписи в приложении (Speech-to-Speech / Клонированный голос с микрофона/файла пользователя)");
 
   try {
     const res = await fetch("https://api.elevenlabs.io/v1/voices/add", {
@@ -1036,6 +1036,33 @@ async function cloneParentVoiceElevenLabs(audioBlob) {
   return null;
 }
 
+// Speech-to-Speech API Call (/v1/speech-to-speech/{voice_id}) from user's recorded audio file
+async function speechToSpeechElevenLabs(audioBlob, voiceId) {
+  const apiKey = "sk_b8c575f3959e2a5860e1b7a93b6ee45e869d19f6c6a6063d";
+  const formData = new FormData();
+  formData.append("audio", audioBlob, "parent_input_speech.webm");
+  formData.append("model_id", "eleven_english_sts_v2");
+  formData.append("voice_settings", JSON.stringify({
+    stability: 0.50,
+    similarity_boost: 0.80
+  }));
+
+  try {
+    const res = await fetch(`https://api.elevenlabs.io/v1/speech-to-speech/${voiceId}`, {
+      method: "POST",
+      headers: { "xi-api-key": apiKey },
+      body: formData
+    });
+    if (res.ok) {
+      const blob = await res.blob();
+      return URL.createObjectURL(blob);
+    }
+  } catch (err) {
+    console.warn("ElevenLabs Speech-to-Speech Notice:", err);
+  }
+  return null;
+}
+
 // Personal Сказка-Медитация Generator with Automated Playback & Status Notifications
 async function generatePersonalMeditation() {
   const nameInput = document.getElementById('child-name');
@@ -1047,34 +1074,35 @@ async function generatePersonalMeditation() {
   // Update UI status & Notification Badge to loading with RED button
   if (btnGen) {
     btnGen.disabled = true;
-    btnGen.innerText = "Подождите. Создается рассказ-медитация с голосом родителя или бабушки.";
+    btnGen.innerText = "Подождите. Создается рассказ-медитация С голосом родителя или бабушки.";
     btnGen.style.background = "linear-gradient(135deg, #EF4444 0%, #DC2626 100%)";
     btnGen.style.borderColor = "#EF4444";
     btnGen.style.boxShadow = "0 8px 25px -5px rgba(239, 68, 68, 0.6)";
   }
   document.getElementById('player-title').innerText = `${name} — Сказка-Медитация`;
-  document.getElementById('player-subtitle').innerText = "⏳ Идет обработка и клонирование голоса родителя...";
-  updateMeditationStatusBadge('loading', '⏳ Создание сказки-медитации с голосом родителя...');
+  document.getElementById('player-subtitle').innerText = "⏳ Идет обработка аудиозаписи родителя из приложения...";
+  updateMeditationStatusBadge('loading', '⏳ Клонирование родительского голоса из аудиозаписи приложения...');
 
-  // Active Voice Selection (Instant Cloned Voice or Recorded Parent Sample)
+  // Active Voice Selection: Dynamically cloned from Parent Recorded Audio File in application
   let activeVoiceId = appState.clonedVoiceId;
 
-  // Perform Instant Voice Cloning if user recorded/uploaded parent audio in current session
+  // 1. Perform Instant Voice Cloning if user recorded/uploaded audio in current session
   if (appState.recordedAudioBlob && !appState.clonedVoiceId) {
-    updateMeditationStatusBadge('loading', '⏳ Клонирование голоса родителя с вашей аудиозаписи...');
+    updateMeditationStatusBadge('loading', '⏳ Клонирование голоса родителя из вашей аудиозаписи в приложении...');
     const clonedId = await cloneParentVoiceElevenLabs(appState.recordedAudioBlob);
     if (clonedId) {
       activeVoiceId = clonedId;
     }
   }
 
-  // If no cloned voice yet, clone from pre-recorded parent voice file in repository
+  // 2. If no live recording in session, clone from pre-recorded parent voice audio file in repository
   if (!activeVoiceId) {
     try {
-      updateMeditationStatusBadge('loading', '⏳ Клонирование из записанного голоса родителя...');
+      updateMeditationStatusBadge('loading', '⏳ Клонирование родительского голоса из аудиозаписи в приложении...');
       const localAudioRes = await fetch('audio/parent_voice_recording_1786451629905.webm');
       if (localAudioRes.ok) {
         const localBlob = await localAudioRes.blob();
+        appState.recordedAudioBlob = localBlob;
         const clonedId = await cloneParentVoiceElevenLabs(localBlob);
         if (clonedId) {
           activeVoiceId = clonedId;
@@ -1085,7 +1113,7 @@ async function generatePersonalMeditation() {
     }
   }
 
-  // Fallback to active parent voice ID
+  // Fallback voice ID if API cloning quota exceeded
   if (!activeVoiceId) {
     activeVoiceId = "C0qT9fWAA22Nx02a6QJY";
   }
