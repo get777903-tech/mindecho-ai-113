@@ -1008,7 +1008,7 @@ async function generatePersonalMeditation() {
   // Update UI status & Notification Badge to loading with RED button
   if (btnGen) {
     btnGen.disabled = true;
-    btnGen.innerText = "Создание рассказа-медитации с голосом родителя или бабушки. Подождите.";
+    btnGen.innerText = "Подождите. Создается рассказ-медитация с голосом родителя или бабушки.";
     btnGen.style.background = "linear-gradient(135deg, #EF4444 0%, #DC2626 100%)";
     btnGen.style.borderColor = "#EF4444";
     btnGen.style.boxShadow = "0 8px 25px -5px rgba(239, 68, 68, 0.6)";
