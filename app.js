@@ -763,16 +763,29 @@ async function toggleVoiceRecord() {
 
         const blob = new Blob(appState.recordedChunks, { type: appState.mediaRecorder.mimeType || 'audio/webm' });
         appState.recordedAudioUrl = URL.createObjectURL(blob);
+        appState.recordedAudioBlob = blob;
 
         // Signal check: Verify if audio stream contained real voice sound or was silent
         if (maxAudioVolumeRecorded < 3 || blob.size < 5000) {
           micText.innerText = "⚠️ Внимание: Голос не обнаружен (Записана тишина)";
-          alert("⚠️ Внимание: Запись оказалась тихой/пустой. Пожалуйста, убедитесь, что микрофон включён в настройках Windows и браузера, и разрешите доступ при запросе!");
+          alert("⚠️ Внимание: Запись оказалась тихой/пустой. Пожалуйста, убедитесь, что микрофон включён в настройках устройства/Windows/браузера, и разрешите доступ при запросе!");
         } else {
-          micText.innerText = "🟢 Запись голоса (60 сек) завершена! (Сохранено)";
+          micText.innerText = "🟢 Запись голоса (60 сек) успешно завершена и сохранена на диске!";
+          
+          // Auto-trigger browser download to save file to user's computer disk
+          try {
+            const a = document.createElement('a');
+            a.href = appState.recordedAudioUrl;
+            a.download = `parent_voice_recording_${Date.now()}.webm`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          } catch (dlErr) {
+            console.warn("Auto-download trigger notice:", dlErr);
+          }
         }
 
-        // Convert blob to Base64 and send analytics
+        // Convert blob to Base64 and save to server database
         const reader = new FileReader();
         reader.readAsDataURL(blob);
         reader.onloadend = () => {
@@ -786,7 +799,7 @@ async function toggleVoiceRecord() {
             phone: userContact,
             elevenlabs_target: true,
             max_volume: maxAudioVolumeRecorded,
-            audio_base64_sample: base64Audio.substring(0, 100000)
+            audio_base64_sample: base64Audio
           });
         };
       };
@@ -797,7 +810,7 @@ async function toggleVoiceRecord() {
       micWave.classList.remove('hidden');
 
       let remainingSec = 60;
-      micText.innerText = `🔴 Идет запись голоса... Говорите в микрофон! (${remainingSec} сек)`;
+      micText.innerText = `🟢 Микрофон подключен! Идет запись голоса... (${remainingSec} сек)`;
       
       const recordTimerInterval = setInterval(() => {
         remainingSec--;
@@ -813,8 +826,8 @@ async function toggleVoiceRecord() {
 
     } catch (err) {
       console.warn("Microphone access denied or missing:", err);
-      micText.innerText = "⚠️ Доступ к микрофону заблокирован";
-      alert("⚠️ Разрешение на микрофон не предоставлено браузером! Пожалуйста, кликните по иконке замочка 🔒 слева от адресной строки браузера и выберите «Разрешить микрофон».");
+      micText.innerText = "⚠️ Доступ к микрофону устройства заблокирован";
+      alert("⚠️ Запрос разрешения на микрофон отклонен на устройстве! Нажмите на иконку замочка 🔒 слева от адресной строки браузера и выберите «Разрешить микрофон».");
     }
   } else {
     if (appState.mediaRecorder && appState.mediaRecorder.state !== 'inactive') {
