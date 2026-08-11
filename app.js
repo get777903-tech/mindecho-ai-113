@@ -942,24 +942,27 @@ function updateMeditationStatusBadge(status, text) {
     badge.style.background = 'rgba(245, 158, 11, 0.15)';
     badge.style.borderColor = '#F59E0B';
     badge.style.color = '#F59E0B';
+    badge.style.cursor = 'default';
+    badge.style.boxShadow = 'none';
+    badge.onclick = null;
     if (icon) icon.innerText = '⏳';
-    if (txt) txt.innerText = text || 'Идёт генерация в ElevenLabs AI (подождите)...';
-  } else if (status === 'success') {
-    badge.style.background = 'rgba(34, 197, 94, 0.15)';
-    badge.style.borderColor = '#22C55E';
-    badge.style.color = '#22C55E';
-    if (icon) icon.innerText = '✅';
-    if (txt) txt.innerText = text || 'Сказка-Медитация готова';
-  } else if (status === 'ready_sample') {
-    badge.style.background = 'rgba(6, 182, 212, 0.15)';
-    badge.style.borderColor = '#06B6D4';
-    badge.style.color = '#06B6D4';
-    if (icon) icon.innerText = '🎵';
-    if (txt) txt.innerText = text || 'Сказка-Медитация готова (режим воспроизведения)';
+    if (txt) txt.innerText = text || 'Идёт генерация сказки-медитации...';
+  } else if (status === 'success' || status === 'ready_sample') {
+    badge.style.background = 'linear-gradient(135deg, #FF6B00 0%, #FF8800 100%)';
+    badge.style.borderColor = '#FF6B00';
+    badge.style.color = '#FFFFFF';
+    badge.style.cursor = 'pointer';
+    badge.style.boxShadow = '0 6px 20px rgba(255, 107, 0, 0.5)';
+    badge.onclick = () => { togglePlayAudio(); };
+    if (icon) icon.innerText = '▶️';
+    if (txt) txt.innerText = text || 'Слушать сказку-медитацию сгенерированную заданным голосом';
   } else {
     badge.style.background = 'rgba(255, 255, 255, 0.05)';
     badge.style.borderColor = 'rgba(255, 255, 255, 0.15)';
     badge.style.color = 'var(--text-muted)';
+    badge.style.cursor = 'default';
+    badge.style.boxShadow = 'none';
+    badge.onclick = null;
     if (icon) icon.innerText = '⚪';
     if (txt) txt.innerText = text || 'Сказка-Медитация не создана';
   }
@@ -1123,9 +1126,9 @@ async function generatePersonalMeditation() {
       document.getElementById('play-btn').innerText = "▶";
     };
 
-    // Update Status Badge & Main Button Text to SUCCESS (Green Ready State)
+    // Update Status Badge to Play Button & Main Button Text to SUCCESS
     appState.isMeditationReady = true;
-    updateMeditationStatusBadge('success', 'Сказка-Медитация готова');
+    updateMeditationStatusBadge('success', 'Слушать сказку-медитацию сгенерированную заданным голосом');
     if (btnGen) {
       btnGen.disabled = false;
       btnGen.innerText = "✅ Сказка-медитация готова! Нажмите ▶️ для воспроизведения";
