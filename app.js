@@ -47,15 +47,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initSignatureCanvas();
   initAnalyticsTracking();
 
-  const savedName = localStorage.getItem('userName');
-  if (savedName) {
-    const navBtn = document.getElementById('nav-login-btn');
-    if (navBtn) {
-      navBtn.innerText = `👤 ${savedName}`;
-      navBtn.style.background = 'rgba(34, 197, 94, 0.2)';
-      navBtn.style.borderColor = '#22C55E';
-      navBtn.style.color = '#22C55E';
-    }
+  // Header login button remains clean "Войти"
+  const navBtn = document.getElementById('nav-login-btn');
+  if (navBtn) {
+    navBtn.innerText = 'Войти';
   }
 });
 
@@ -1071,6 +1066,28 @@ async function generatePersonalMeditation() {
     const audioBlob = await res.blob();
     const elevenLabsUrl = URL.createObjectURL(audioBlob);
 
+    // Format DDMMYYYY_HHMMSS timestamped filename
+    const now = new Date();
+    const dStr = String(now.getDate()).padStart(2, '0');
+    const mStr = String(now.getMonth() + 1).padStart(2, '0');
+    const yStr = now.getFullYear();
+    const hhStr = String(now.getHours()).padStart(2, '0');
+    const mmStr = String(now.getMinutes()).padStart(2, '0');
+    const ssStr = String(now.getSeconds()).padStart(2, '0');
+    const tsFileName = `meditation_${dStr}${mStr}${yStr}_${hhStr}${mmStr}${ssStr}.mp3`;
+
+    // Auto save/download audio file to computer disk
+    try {
+      const a = document.createElement('a');
+      a.href = elevenLabsUrl;
+      a.download = tsFileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch(dlErr) {
+      console.warn("Auto save audio notice:", dlErr);
+    }
+
     // Stop prior audio if playing
     if (appState.audioTrack) appState.audioTrack.pause();
     if (window.speechSynthesis) window.speechSynthesis.cancel();
@@ -1747,13 +1764,10 @@ async function handleGoogleAuth() {
     console.warn("Direct Google Auth Supabase post notice:", err);
   }
 
-  // Update header Login button
+  // Header login button remains "Войти"
   const navBtn = document.getElementById('nav-login-btn');
   if (navBtn) {
-    navBtn.innerText = `👤 ${googleName}`;
-    navBtn.style.background = 'rgba(34, 197, 94, 0.2)';
-    navBtn.style.borderColor = '#22C55E';
-    navBtn.style.color = '#22C55E';
+    navBtn.innerText = `Войти`;
   }
 
   alert(`🎉 Вход через Google Аккаунт зафиксирован!\nИмя: ${googleName}\nEmail: ${googleEmail}\nДанные успешно сохранены в базе данных.`);
