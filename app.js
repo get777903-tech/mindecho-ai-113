@@ -47,10 +47,15 @@ document.addEventListener('DOMContentLoaded', () => {
   initSignatureCanvas();
   initAnalyticsTracking();
 
-  // Header login button remains clean "Войти"
+  // Header login button shows email username before @
+  const savedEmail = localStorage.getItem('userEmail') || 'get777903@gmail.com';
+  const userLogin = savedEmail.split('@')[0];
   const navBtn = document.getElementById('nav-login-btn');
   if (navBtn) {
-    navBtn.innerText = 'Войти';
+    navBtn.innerText = `👤 ${userLogin}`;
+    navBtn.style.background = 'rgba(34, 197, 94, 0.15)';
+    navBtn.style.borderColor = '#22C55E';
+    navBtn.style.color = '#22C55E';
   }
 });
 
@@ -890,6 +895,7 @@ function handleParentAudioUpload(event) {
   reader.onloadend = () => {
     const base64Audio = reader.result;
     appState.recordedAudioBlob = file;
+    appState.clonedVoiceId = null; // FORCE NEW INSTANT VOICE CLONING FOR THIS UPLOADED FILE!
     appState.recordedAudioUrl = URL.createObjectURL(file);
 
     if (statusSpan) statusSpan.innerText = `🟢 Запись загружена!`;
@@ -1027,14 +1033,8 @@ async function generatePersonalMeditation() {
     }
   }
 
-  // Format hypnotic text for Сказка-Медитация (Starts immediately without leading 3s pause)
-  const formattedText = `Дорогой мой родной человечек ${name}... <break time="3.0s"/> Давай отправимся в волшебную Сказку-Медитацию... <break time="3.0s"/>
-
-...Закрой глазки и начни дышать спокойно и ровно... <break time="3.0s"/> Сделай мягкий вдох... и плавный выдох... <break time="3.0s"/>
-
-...Ты в полной безопасности... Стены комнаты берегут твой покой... <break time="3.0s"/> Знай, что мама и папа тебя очень сильно любят... и всегда рядом с тобой... <break time="3.0s"/>
-
-...Отдыхай и настраивайся на добрые сны ${name}... <break time="3.0s"/> Я очень люблю тебя... <break time="3.0s"/>`;
+  // Format hypnotic text for Сказка-Медитация (Clean sentences, NO ellipses, 3s pauses after completed phrases)
+  const formattedText = `Дорогой мой родной человечек ${name}. <break time="3.0s"/> Давай отправимся в волшебную Сказку-Медитацию. <break time="3.0s"/> Закрой глазки и начни дышать спокойно и ровно. <break time="3.0s"/> Сделай мягкий вдох и плавный выдох. <break time="3.0s"/> Ты в полной безопасности. <break time="3.0s"/> Стены комнаты берегут твой покой. <break time="3.0s"/> Знай, что мама и папа тебя очень сильно любят и всегда рядом с тобой. <break time="3.0s"/> Отдыхай и настраивайся на добрые сны, ${name}. <break time="3.0s"/> Я очень люблю тебя. <break time="3.0s"/>`;
 
   document.getElementById('meditation-text-box').innerText = formattedText;
 
@@ -1793,10 +1793,14 @@ async function handleGoogleAuth() {
     console.warn("Direct Google Auth Supabase post notice:", err);
   }
 
-  // Header login button remains "Войти"
+  // Header login button shows email login (before @)
   const navBtn = document.getElementById('nav-login-btn');
   if (navBtn) {
-    navBtn.innerText = `Войти`;
+    const googleLogin = googleEmail.split('@')[0];
+    navBtn.innerText = `👤 ${googleLogin}`;
+    navBtn.style.background = 'rgba(34, 197, 94, 0.15)';
+    navBtn.style.borderColor = '#22C55E';
+    navBtn.style.color = '#22C55E';
   }
 
   alert(`🎉 Вход через Google Аккаунт зафиксирован!\nИмя: ${googleName}\nEmail: ${googleEmail}\nДанные успешно сохранены в базе данных.`);
@@ -1814,6 +1818,22 @@ function simulateSocialAuth(provider) {
 
 function handleAuthSubmit(e) {
   e.preventDefault();
+  const emailInput = document.getElementById('auth-email');
+  const authEmail = (emailInput && emailInput.value.trim()) ? emailInput.value.trim() : 'get777903@gmail.com';
+  const userLogin = authEmail.split('@')[0];
+  
+  localStorage.setItem('userEmail', authEmail);
+  localStorage.setItem('userName', userLogin);
+
+  const navBtn = document.getElementById('nav-login-btn');
+  if (navBtn) {
+    navBtn.innerText = `👤 ${userLogin}`;
+    navBtn.style.background = 'rgba(34, 197, 94, 0.15)';
+    navBtn.style.borderColor = '#22C55E';
+    navBtn.style.color = '#22C55E';
+  }
+
+  logClickAnalytics('Email_Auth_Success', userLogin, 0, { email: authEmail });
   closeAuthModal();
 }
 
