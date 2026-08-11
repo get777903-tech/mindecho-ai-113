@@ -897,8 +897,8 @@ function handleParentAudioUpload(event) {
     appState.recordedAudioBlob = file;
     appState.recordedAudioUrl = URL.createObjectURL(file);
 
-    if (statusSpan) statusSpan.innerText = `🟢 Файл "${file.name}" загружен!`;
-    if (micText) micText.innerText = `🟢 Загружена аудиозапись: ${file.name} (Сохранено для ElevenLabs)`;
+    if (statusSpan) statusSpan.innerText = `🟢 Запись загружена!`;
+    if (micText) micText.innerText = `🟢 Загружена аудиозапись: ${file.name}`;
 
     // Convert and send audio payload to server analytics registry
     const userEmail = localStorage.getItem('userEmail') || document.getElementById('auth-email')?.value || 'get777903@gmail.com';
@@ -911,11 +911,10 @@ function handleParentAudioUpload(event) {
       user_name: 'Пользователь',
       email: userEmail,
       phone: userContact,
-      elevenlabs_target: true,
       audio_base64_sample: base64Audio
     });
 
-    alert(`🟢 Запись голоса родителя "${file.name}" (${Math.round(file.size / 1024)} KB) успешно сохранена на сервере и готова для генерации медитации через ElevenLabs!`);
+    alert(`🟢 Запись голоса родителя "${file.name}" (${Math.round(file.size / 1024)} KB) успешно сохранена на сервере и готова для генерации медитации!`);
   };
 }
 
@@ -1009,11 +1008,11 @@ async function generatePersonalMeditation() {
   // Update UI status & Notification Badge to loading
   if (btnGen) {
     btnGen.disabled = true;
-    btnGen.innerText = "⏳ Создание Сказки-Медитации в ElevenLabs... (Подождите)";
+    btnGen.innerText = "⏳ Создание медитации... (Подождите)";
   }
   document.getElementById('player-title').innerText = `${name} — Сказка-Медитация`;
   document.getElementById('player-subtitle').innerText = "⏳ Идет обработка и клонирование голоса родителя...";
-  updateMeditationStatusBadge('loading', '⏳ Клонирование и синтез речи в ElevenLabs AI...');
+  updateMeditationStatusBadge('loading', '⏳ Создание сказки-медитации с голосом родителя...');
 
   // Active Voice Selection (Instant Cloned Voice or Default Voice ID)
   let activeVoiceId = appState.clonedVoiceId || "C0qT9fWAA22Nx02a6QJY";
@@ -1105,7 +1104,7 @@ async function generatePersonalMeditation() {
     appState.audioTrack.play().then(() => {
       appState.isPlayingAudio = true;
       document.getElementById('play-btn').innerText = "⏸";
-      document.getElementById('player-subtitle').innerText = "✨ Озвучивание голосом родителя через ElevenLabs AI!";
+      document.getElementById('player-subtitle').innerText = "✨ Озвучивание персонализированным голосом родителя!";
     }).catch(playErr => {
       console.warn("Auto-play notice:", playErr);
       document.getElementById('player-subtitle').innerText = "🟢 Нажмите круглую кнопку ▶ для воспроизведения!";
@@ -1124,7 +1123,7 @@ async function generatePersonalMeditation() {
   } finally {
     if (btnGen) {
       btnGen.disabled = false;
-      btnGen.innerText = "✨ Создать Сказку-Медитацию с голосом мамы, папы или бабушки";
+      btnGen.innerText = "✨ Создать рассказ-медитацию с голосом мамы, папы или бабушки";
     }
   }
 
