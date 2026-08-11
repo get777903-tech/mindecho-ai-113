@@ -695,8 +695,16 @@ async function toggleVoiceRecord() {
   }
 
   if (!appState.isRecording) {
+    // 1. Immediately request device microphone permission on click (Windows / Android / iOS)
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      alert("⚠️ Ваш браузер не поддерживает запись с микрофона. Пожалуйста, откройте сайт в Google Chrome, Safari или Yandex браузере.");
+      return;
+    }
+
     try {
-      // Explicit audio constraints to ensure noise suppression & active audio input
+      micText.innerText = "⏳ Подключение к микрофону... Подтвердите запрос на устройстве";
+      
+      // Direct call triggers native Windows / Smartphone OS permission popup
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: true,
