@@ -8,7 +8,7 @@ const supabaseUrl = 'https://yslrofsjeujsftlabuqn.supabase.co/rest/v1/analytics_
 const supabaseKey = 'sb_publishable_tnc4wA3Cr-FtaDyjVz9Q6Q_fklMPSDr';
 
 // Audio Track File Name
-const MEDITATION_AUDIO_SRC = "audio/meditation_11082026_191912.mp3";
+const MEDITATION_AUDIO_SRC = "audio/meditation1.mp3";
 
 // Unique session ID for this visit
 const SESSION_ID = 'sess_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
@@ -937,6 +937,41 @@ const llmSystemPromptConfig = {
 };
 window.llmSystemPromptConfig = llmSystemPromptConfig;
 
+// Dedicated Player Handler for Generated Parent Voice Meditation
+function playGeneratedMeditation() {
+  const lastAudioUrl = localStorage.getItem('last_meditation_audio_url') || 'audio/meditation_12082026_000840.mp3';
+  if (appState.audioTrack) {
+    appState.audioTrack.pause();
+  }
+  appState.audioTrack = new Audio(lastAudioUrl);
+  appState.audioTrack.ontimeupdate = () => {
+    if (!appState.audioTrack) return;
+    const cur = appState.audioTrack.currentTime;
+    const dur = appState.audioTrack.duration || 1;
+    const pct = Math.min(100, (cur / dur) * 100);
+    const fill = document.getElementById('player-progress');
+    if (fill) fill.style.width = `${pct}%`;
+    const timeSpan = document.getElementById('player-time');
+    if (timeSpan) {
+      const m = Math.floor(cur / 60);
+      const s = Math.floor(cur % 60);
+      timeSpan.innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+    }
+  };
+  appState.audioTrack.onended = () => {
+    appState.isPlayingAudio = false;
+    document.getElementById('play-btn').innerText = "▶";
+  };
+  appState.audioTrack.play().then(() => {
+    appState.isPlayingAudio = true;
+    document.getElementById('play-btn').innerText = "⏸";
+    updateMeditationStatusBadge('success', 'Слушать сказку-медитацию, сгенерированную заданным голосом');
+  }).catch(err => {
+    console.warn("Play generated meditation notice:", err);
+  });
+}
+window.playGeneratedMeditation = playGeneratedMeditation;
+
 // Status Badge Notification Updater
 function updateMeditationStatusBadge(status, text) {
   const badge = document.getElementById('meditation-status-badge');
@@ -959,18 +994,18 @@ function updateMeditationStatusBadge(status, text) {
     badge.style.color = '#FFFFFF';
     badge.style.cursor = 'pointer';
     badge.style.boxShadow = '0 6px 20px rgba(255, 107, 0, 0.5)';
-    badge.onclick = () => { togglePlayAudio(); };
+    badge.onclick = (e) => { if (e) e.preventDefault(); playGeneratedMeditation(); };
     if (icon) icon.innerText = '▶️';
     if (txt) txt.innerText = text || 'Слушать сказку-медитацию, сгенерированную заданным голосом';
   } else {
-    badge.style.background = 'rgba(255, 255, 255, 0.05)';
-    badge.style.borderColor = 'rgba(255, 255, 255, 0.15)';
-    badge.style.color = 'var(--text-muted)';
-    badge.style.cursor = 'default';
-    badge.style.boxShadow = 'none';
-    badge.onclick = null;
-    if (icon) icon.innerText = '⚪';
-    if (txt) txt.innerText = text || 'Сказка-Медитация не создана';
+    badge.style.background = 'linear-gradient(135deg, #FF6B00 0%, #FF8800 100%)';
+    badge.style.borderColor = '#FF6B00';
+    badge.style.color = '#FFFFFF';
+    badge.style.cursor = 'pointer';
+    badge.style.boxShadow = '0 6px 20px rgba(255, 107, 0, 0.5)';
+    badge.onclick = (e) => { if (e) e.preventDefault(); playGeneratedMeditation(); };
+    if (icon) icon.innerText = '▶️';
+    if (txt) txt.innerText = text || 'Слушать сказку-медитацию, сгенерированную заданным голосом';
   }
 }
 
@@ -1056,8 +1091,8 @@ async function generatePersonalMeditation() {
   }
 
   // Format hypnotic text for Сказка-Медитация
-  // (Separated onto distinct lines with \n\n to guarantee UNIFORM slow pacing from first word)
-  const formattedText = `Дорогой мой родной человечек ${name}. <break time="3.5s"/>\n\nДавай отправимся в волшебную Сказку-Медитацию. <break time="3.5s"/>\n\nЗакрой глазки и начни дышать спокойно и ровно. <break time="3.5s"/>\n\nСделай мягкий вдох и плавный выдох. <break time="3.5s"/>\n\nТы в полной безопасности. <break time="3.5s"/>\n\nСтены комнаты берегут твой покой. <break time="3.5s"/>\n\nЗнай, что мама и папа тебя очень сильно любят и всегда рядом с тобой. <break time="3.5s"/>\n\nОтдыхай и настраивайся на добрые сны, ${name}. <break time="3.5s"/>\n\nЯ очень люблю тебя. <break time="3.5s"/>`;
+  // (Uses commas, ellipses, and em-dashes — to force ElevenLabs to slow down word articulation from phrase 1)
+  const formattedText = `Дорогой мой... родной человечек, ${name}... — <break time="3.5s"/>\n\nДавай отправимся... в волшебную, тихую Сказку-Медитацию... — <break time="3.5s"/>\n\nЗакрой глазки... и начни дышать спокойно... и ровно... — <break time="3.5s"/>\n\nСделай мягкий, глубокий вдох... и плавный, медленный выдох... — <break time="3.5s"/>\n\nТы в полной... абсолютной безопасности... — <break time="3.5s"/>\n\nСтены уютной комнаты... бережно охраняют твой покой... — <break time="3.5s"/>\n\nЗнай, что мама и папа... тебя очень сильно любят... и всегда рядом с тобой... — <break time="3.5s"/>\n\nОтдыхай... настраивайся на добрые, сказочные сны, ${name}... — <break time="3.5s"/>\n\nЯ очень... очень люблю тебя... — <break time="3.5s"/>`;
 
   document.getElementById('meditation-text-box').innerText = formattedText;
 
