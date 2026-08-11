@@ -8,7 +8,7 @@ const supabaseUrl = 'https://yslrofsjeujsftlabuqn.supabase.co/rest/v1/analytics_
 const supabaseKey = 'sb_publishable_tnc4wA3Cr-FtaDyjVz9Q6Q_fklMPSDr';
 
 // Audio Track File Name
-const MEDITATION_AUDIO_SRC = "audio/meditation_11082026_220319.mp3";
+const MEDITATION_AUDIO_SRC = "audio/meditation_11082026_223709.mp3";
 
 // Unique session ID for this visit
 const SESSION_ID = 'sess_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
@@ -1734,7 +1734,7 @@ function handlePaymentSubmit(e) {
 
 function openAuthModal(type = 'login') {
   appState.pendingAuthModal = type;
-  openNDAModal();
+  document.getElementById('auth-modal').classList.remove('hidden');
 }
 
 function closeAuthModal() {
