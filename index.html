@@ -370,11 +370,11 @@
                 </div>
                 <!-- Custom File Upload Input for WebM / MP3 Parent Audio Recordings -->
                 <input type="file" id="parent-audio-upload-input" accept="audio/*,.webm,.mp3,.wav,.m4a" class="hidden" onchange="handleParentAudioUpload(event)">
-                <div style="margin-top: 8px; display: flex; gap: 8px; align-items: center;">
-                  <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('parent-audio-upload-input').click()" style="font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff;">
+                <div style="margin-top: 10px; display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; max-width: 100%; box-sizing: border-box;">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('parent-audio-upload-input').click()" style="font-size: 12px; font-weight: 700; padding: 6px 14px; border-radius: 8px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; max-width: 100%;">
                     📁 Загрузить свою аудиозапись (MP3 / WebM)
                   </button>
-                  <span id="upload-file-status" style="font-size: 11px; color: #10B981; font-weight: 600;"></span>
+                  <span id="upload-file-status" style="font-size: 12px; color: #10B981; font-weight: 700; max-width: 100%; overflow-wrap: anywhere;"></span>
                 </div>
               </div>
             </div>
@@ -397,8 +397,8 @@
             </div>
           </div>
 
-          <button class="btn btn-primary btn-block btn-lg btn-orange" onclick="generatePersonalMeditation()" data-i18n="btn_generate">
-            ✨ Создать Сказку-Медитацию с голосом мамы, папы или бабушки
+          <button class="btn btn-primary btn-block btn-lg btn-orange" onclick="generatePersonalMeditation()" data-i18n="btn_generate" style="max-width: 100%; box-sizing: border-box; white-space: normal; word-break: break-word; line-height: 1.35; padding: 14px 16px; font-weight: 700;">
+            ✨ Создать рассказ-медитацию с голосом мамы, папы или бабушки
           </button>
         </div>
 
@@ -457,7 +457,7 @@
             <div class="plan-price">$0 <span data-i18n="plan_forever">/ навсегда</span></div>
           </div>
           <ul class="plan-features">
-            <li data-i18n="pf_free_1">✅ 2 AI-запроса в день</li>
+            <li data-i18n="pf_free_1" style="font-weight: 700;">✅ 2 AI-запроса в неделю</li>
             <li data-i18n="pf_free_2">✅ Стандартный рассказ-медитация</li>
             <li data-i18n="pf_free_3">✅ Озвучка спокойным приятным голосом</li>
             <li data-i18n="pf_free_3_extra">✅ Нейрогимнастика и упражнения для баланса эмоций</li>
