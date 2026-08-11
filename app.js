@@ -8,7 +8,7 @@ const supabaseUrl = 'https://yslrofsjeujsftlabuqn.supabase.co/rest/v1/analytics_
 const supabaseKey = 'sb_publishable_tnc4wA3Cr-FtaDyjVz9Q6Q_fklMPSDr';
 
 // Audio Track File Name
-const MEDITATION_AUDIO_SRC = "audio/meditation_11082026_223709.mp3";
+const MEDITATION_AUDIO_SRC = "audio/meditation_11082026_191912.mp3";
 
 // Unique session ID for this visit
 const SESSION_ID = 'sess_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
@@ -1027,8 +1027,8 @@ async function generatePersonalMeditation() {
     }
   }
 
-  // Format hypnotic text for Сказка-Медитация (50% Shortened Version for Fast Testing)
-  const formattedText = `— <break time="3.0s"/> Дорогой мой родной человечек ${name}... <break time="3.0s"/> Давай отправимся в волшебную Сказку-Медитацию... <break time="3.0s"/>
+  // Format hypnotic text for Сказка-Медитация (Starts immediately without leading 3s pause)
+  const formattedText = `Дорогой мой родной человечек ${name}... <break time="3.0s"/> Давай отправимся в волшебную Сказку-Медитацию... <break time="3.0s"/>
 
 ...Закрой глазки и начни дышать спокойно и ровно... <break time="3.0s"/> Сделай мягкий вдох... и плавный выдох... <break time="3.0s"/>
 
