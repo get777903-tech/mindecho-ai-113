@@ -949,7 +949,7 @@ function updateMeditationStatusBadge(status, text) {
     badge.style.borderColor = '#22C55E';
     badge.style.color = '#22C55E';
     if (icon) icon.innerText = '✅';
-    if (txt) txt.innerText = text || 'Сказка-Медитация готова!';
+    if (txt) txt.innerText = text || 'Сказка-Медитация готова';
   } else if (status === 'ready_sample') {
     badge.style.background = 'rgba(6, 182, 212, 0.15)';
     badge.style.borderColor = '#06B6D4';
@@ -1125,7 +1125,7 @@ async function generatePersonalMeditation() {
 
     // Update Status Badge & Main Button Text to SUCCESS (Green Ready State)
     appState.isMeditationReady = true;
-    updateMeditationStatusBadge('success', '✅ Сказка-Медитация готова! (Воспроизведение...)');
+    updateMeditationStatusBadge('success', 'Сказка-Медитация готова');
     if (btnGen) {
       btnGen.disabled = false;
       btnGen.innerText = "✅ Сказка-медитация готова! Нажмите ▶️ для воспроизведения";
