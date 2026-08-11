@@ -413,11 +413,11 @@
               </div>
             </div>
 
-            <!-- Status Notification Badge (Ready / Loading Indicator) -->
-            <div id="meditation-status-badge" style="margin-top: 12px; margin-bottom: 16px; padding: 10px 14px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--text-muted); transition: all 0.3s ease;">
+            <!-- Status Notification Badge / Interactive Play Button -->
+            <button type="button" id="meditation-status-badge" onclick="togglePlayAudio()" style="width: 100%; margin-top: 12px; margin-bottom: 16px; padding: 12px 16px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--text-muted); transition: all 0.3s ease; cursor: pointer;">
               <span id="meditation-status-icon">⚪</span>
               <span id="meditation-status-text">Сказка-Медитация не создана</span>
-            </div>
+            </button>
 
             <div class="player-controls">
               <button id="play-btn" class="btn-play" onclick="togglePlayAudio()">▶</button>
