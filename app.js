@@ -183,7 +183,7 @@ const translations = {
     plan_title_free: "Free (Базовый)",
     plan_free_sub: "Ощутить ценность сервиса",
     plan_forever: "/ навсегда",
-    pf_free_1: "✅ 2 AI-запроса в день",
+    pf_free_1: "✅ 2 AI-запроса в неделю",
     pf_free_2: "✅ Стандартный рассказ-медитация",
     pf_free_3: "✅ Озвучка спокойным приятным голосом",
     pf_free_3_extra: "✅ Нейрогимнастика и упражнения для баланса эмоций",
@@ -1005,10 +1005,13 @@ async function generatePersonalMeditation() {
 
   logClickAnalytics('Generate_Click', name, 0, { section: 'generator' });
 
-  // Update UI status & Notification Badge to loading
+  // Update UI status & Notification Badge to loading with RED button
   if (btnGen) {
     btnGen.disabled = true;
-    btnGen.innerText = "⏳ Создание медитации... (Подождите)";
+    btnGen.innerText = "Создание рассказа-медитации с голосом родителя или бабушки. Подождите.";
+    btnGen.style.background = "linear-gradient(135deg, #EF4444 0%, #DC2626 100%)";
+    btnGen.style.borderColor = "#EF4444";
+    btnGen.style.boxShadow = "0 8px 25px -5px rgba(239, 68, 68, 0.6)";
   }
   document.getElementById('player-title').innerText = `${name} — Сказка-Медитация`;
   document.getElementById('player-subtitle').innerText = "⏳ Идет обработка и клонирование голоса родителя...";
@@ -1124,6 +1127,9 @@ async function generatePersonalMeditation() {
     if (btnGen) {
       btnGen.disabled = false;
       btnGen.innerText = "✨ Создать рассказ-медитацию с голосом мамы, папы или бабушки";
+      btnGen.style.background = "";
+      btnGen.style.borderColor = "";
+      btnGen.style.boxShadow = "";
     }
   }
 
