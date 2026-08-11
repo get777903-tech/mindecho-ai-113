@@ -1066,7 +1066,7 @@ async function generatePersonalMeditation() {
     const audioBlob = await res.blob();
     const elevenLabsUrl = URL.createObjectURL(audioBlob);
 
-    // Format DDMMYYYY_HHMMSS timestamped filename
+    // Format DDMMYYYY_HHMMSS timestamped filename & local disk path
     const now = new Date();
     const dStr = String(now.getDate()).padStart(2, '0');
     const mStr = String(now.getMonth() + 1).padStart(2, '0');
@@ -1075,6 +1075,12 @@ async function generatePersonalMeditation() {
     const mmStr = String(now.getMinutes()).padStart(2, '0');
     const ssStr = String(now.getSeconds()).padStart(2, '0');
     const tsFileName = `meditation_${dStr}${mStr}${yStr}_${hhStr}${mmStr}${ssStr}.mp3`;
+    const localDiskPath = `C:\\Users\\User\\.gemini\\antigravity\\scratch\\mindecho-ai-113\\audio\\${tsFileName}`;
+
+    // Store in localStorage & database tracking registry
+    localStorage.setItem('last_meditation_file_name', tsFileName);
+    localStorage.setItem('last_meditation_local_path', localDiskPath);
+    localStorage.setItem('last_meditation_audio_url', elevenLabsUrl);
 
     // Auto save/download audio file to computer disk
     try {
@@ -1117,18 +1123,32 @@ async function generatePersonalMeditation() {
       document.getElementById('play-btn').innerText = "▶";
     };
 
-    // Update Status Badge to SUCCESS
+    // Update Status Badge & Main Button Text to SUCCESS (Green Ready State)
+    appState.isMeditationReady = true;
     updateMeditationStatusBadge('success', '✅ Сказка-Медитация готова! (Воспроизведение...)');
+    if (btnGen) {
+      btnGen.disabled = false;
+      btnGen.innerText = "✅ Сказка-медитация готова! Нажмите ▶️ для воспроизведения";
+      btnGen.style.background = "linear-gradient(135deg, #10B981 0%, #059669 100%)";
+      btnGen.style.borderColor = "#10B981";
+      btnGen.style.boxShadow = "0 8px 25px -5px rgba(16, 185, 129, 0.6)";
+    }
 
     // Auto-start playback on round play button
     appState.audioTrack.play().then(() => {
       appState.isPlayingAudio = true;
       document.getElementById('play-btn').innerText = "⏸";
-      document.getElementById('player-subtitle').innerText = "✨ Озвучивание персонализированным голосом родителя!";
+      document.getElementById('player-subtitle').innerText = `✨ Воспроизводится: ${tsFileName}`;
     }).catch(playErr => {
       console.warn("Auto-play notice:", playErr);
       document.getElementById('player-subtitle').innerText = "🟢 Нажмите круглую кнопку ▶ для воспроизведения!";
       updateMeditationStatusBadge('success', '✅ Сказка-Медитация готова! (Нажмите ▶️ ниже)');
+    });
+
+    logClickAnalytics('Meditation_Ready_Device_Saved', name, 0, {
+      file_name: tsFileName,
+      local_disk_path: localDiskPath,
+      audio_url: elevenLabsUrl
     });
 
   } catch (err) {
@@ -1141,7 +1161,7 @@ async function generatePersonalMeditation() {
       playMP3AudioTrack(true);
     }
   } finally {
-    if (btnGen) {
+    if (btnGen && !appState.isMeditationReady) {
       btnGen.disabled = false;
       btnGen.innerText = "✨ Создать рассказ-медитацию с голосом мамы, папы или бабушки";
       btnGen.style.background = "";
@@ -1230,8 +1250,14 @@ function togglePlayAudio() {
     appState.isPlayingAudio = false;
     document.getElementById('play-btn').innerText = "▶";
   } else {
-    if (appState.audioTrack && appState.audioTrack.currentTime > 0) {
-      playMP3AudioTrack(false);
+    if (appState.audioTrack) {
+      appState.audioTrack.play().then(() => {
+        appState.isPlayingAudio = true;
+        document.getElementById('play-btn').innerText = "⏸";
+      }).catch(err => {
+        console.warn("Audio track play error:", err);
+        generatePersonalMeditation();
+      });
     } else {
       generatePersonalMeditation();
     }
