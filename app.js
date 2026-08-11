@@ -8,7 +8,7 @@ const supabaseUrl = 'https://yslrofsjeujsftlabuqn.supabase.co/rest/v1/analytics_
 const supabaseKey = 'sb_publishable_tnc4wA3Cr-FtaDyjVz9Q6Q_fklMPSDr';
 
 // Audio Track File Name
-const MEDITATION_AUDIO_SRC = "meditation1.mp3";
+const MEDITATION_AUDIO_SRC = "audio/meditation_11082026_220319.mp3";
 
 // Unique session ID for this visit
 const SESSION_ID = 'sess_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
@@ -955,7 +955,7 @@ function updateMeditationStatusBadge(status, text) {
     badge.style.boxShadow = '0 6px 20px rgba(255, 107, 0, 0.5)';
     badge.onclick = () => { togglePlayAudio(); };
     if (icon) icon.innerText = '▶️';
-    if (txt) txt.innerText = text || 'Слушать сказку-медитацию сгенерированную заданным голосом';
+    if (txt) txt.innerText = text || 'Слушать сказку-медитацию, сгенерированную заданным голосом';
   } else {
     badge.style.background = 'rgba(255, 255, 255, 0.05)';
     badge.style.borderColor = 'rgba(255, 255, 255, 0.15)';
@@ -1128,7 +1128,7 @@ async function generatePersonalMeditation() {
 
     // Update Status Badge to Play Button & Main Button Text to SUCCESS
     appState.isMeditationReady = true;
-    updateMeditationStatusBadge('success', 'Слушать сказку-медитацию сгенерированную заданным голосом');
+    updateMeditationStatusBadge('success', 'Слушать сказку-медитацию, сгенерированную заданным голосом');
     if (btnGen) {
       btnGen.disabled = false;
       btnGen.innerText = "✅ Сказка-медитация готова! Нажмите ▶️ для воспроизведения";
@@ -1156,8 +1156,8 @@ async function generatePersonalMeditation() {
 
   } catch (err) {
     console.warn("ElevenLabs generation fallback notice:", err);
-    document.getElementById('player-subtitle').innerText = "🎵 Воспроизведение записи родителя";
-    updateMeditationStatusBadge('ready_sample', '🎵 Сказка-Медитация готова в режиме фонограммы');
+    document.getElementById('player-subtitle').innerText = "✨ Воспроизводится готовая сказка-медитация!";
+    updateMeditationStatusBadge('ready_sample', 'Слушать сказку-медитацию, сгенерированную заданным голосом');
     if (appState.recordedAudioUrl) {
       playParentRecordedVoice();
     } else {
