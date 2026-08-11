@@ -368,6 +368,15 @@
                 <div id="mic-level-box" class="mic-level-box hidden" style="margin-top: 8px; width: 100%; max-width: 280px; background: rgba(0,0,0,0.5); border-radius: 8px; height: 10px; border: 1px solid rgba(255,255,255,0.25); overflow: hidden; display: flex; align-items: center; padding: 1px;">
                   <div id="mic-level-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #10B981 0%, #F59E0B 70%, #EF4444 100%); border-radius: 6px; transition: width 0.08s ease-out;"></div>
                 </div>
+
+                <!-- Custom File Upload Input for WebM / MP3 Parent Audio Recordings -->
+                <input type="file" id="parent-audio-upload-input" accept="audio/*,.webm,.mp3,.wav,.m4a" class="hidden" onchange="handleParentAudioUpload(event)">
+                <div style="margin-top: 8px; display: flex; gap: 8px; align-items: center;">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('parent-audio-upload-input').click()" style="font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff;">
+                    📁 Загрузить свою аудиозапись (MP3 / WebM)
+                  </button>
+                  <span id="upload-file-status" style="font-size: 11px; color: #10B981; font-weight: 600;"></span>
+                </div>
               </div>
             </div>
 
