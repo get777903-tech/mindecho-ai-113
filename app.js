@@ -915,39 +915,120 @@ const llmSystemPromptConfig = {
 };
 window.llmSystemPromptConfig = llmSystemPromptConfig;
 
-function generatePersonalMeditation() {
-  const name = document.getElementById('child-name').value || "София";
-  const gender = document.getElementById('child-gender').value;
-  const audioSource = document.getElementById('audio-mode-source').value;
+async function generatePersonalMeditation() {
+  const nameInput = document.getElementById('child-name');
+  const name = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : "Аня";
+  const btnGen = document.querySelector('.btn-orange');
 
-  logClickAnalytics('Generate_Click', '-', 0, { section: 'generator' });
+  logClickAnalytics('Generate_Click', name, 0, { section: 'generator' });
 
-  const typeSelect = document.getElementById('meditation-type');
-  const meditationType = typeSelect ? typeSelect.value : 'bedtime';
-
-  // Guardrail Safety check
-  const safetyCheck = llmSystemPromptConfig.guardrailSafetyFilter(name);
-  if (!safetyCheck.safe) {
-    console.log(safetyCheck.message);
+  // Update UI status to loading
+  if (btnGen) {
+    btnGen.disabled = true;
+    btnGen.innerText = "⏳ Создание медитации через ElevenLabs AI... (Подождите)";
   }
-
-  const customText = `Я хочу взять тебя ${name} с собой в небольшое путешествие в волшебное место, где мысли становятся реальностью...`;
-  document.getElementById('meditation-text-box').innerText = customText;
   document.getElementById('player-title').innerText = `${name} — Сказка для расслабления`;
+  document.getElementById('player-subtitle').innerText = "⏳ Идет генерация голоса родителя в ElevenLabs...";
 
-  appState.isPlayingAudio = false;
+  // Format hypnotic text with 70% pace, prosodic slows and SSML 3s breaks
+  const formattedText = `— <break time="3.0s"/> Я... хочу... взять... тебя... ${name}... <break time="3.0s"/> ... с... собой... в... небольшое... путешествие... — ... <break time="3.0s"/> в... волшебное... место... где... мысли... становятся... реальностью... — ... <break time="3.0s"/>
 
-  if (appState.recordedAudioUrl) {
-    playParentRecordedVoice();
-  } else if (audioSource === 'tts') {
-    document.getElementById('player-subtitle').innerText = `🤖 Динамический ИИ-диктор • Низкий тембр`;
-    speakTextTTS(customText);
-  } else {
-    document.getElementById('player-subtitle').innerText = `🎵 Студийная MP3 фонограмма • Без музыки`;
-    playMP3AudioTrack(true);
+...Так... что... слушай... меня... внимательно... — ... <break time="3.0s"/> и... давай... отправимся... в... это... весёлое... и... доброе... путешествие... — ... <break time="3.0s"/>
+
+... — ... Закрой... глазки... и... начни... дышать... спокойно... и... ровно... — ... <break time="3.0s"/> Успокойся... и... расслабься... — ... <break time="3.0s"/> Обрати... внимание... на... свой... носик... — ... <break time="3.0s"/> и... сосредоточься... на... ощущении... прохладного... свежего... воздуха... у... ноздрей... — ... <break time="3.0s"/>
+
+... — ... Почувствуй... пространство... вокруг... своей... головы... — ... <break time="3.0s"/> словно... невидимое... мягкое... облако... — ... <break time="3.0s"/> А... теперь... ощути... пространство... комнаты... где... ты... находишься... — ... <break time="3.0s"/>
+
+... — ... Открой... свой... разум... тому... как... здесь... много... свободного... чистого... воздуха... — ... <break time="3.0s"/> Стены... только... берегут... твой... покой... — ... <break time="3.0s"/> а... воздуха... всегда... бесконечно... много... дыши... легко... и... свободно... — ... <break time="3.0s"/>`;
+
+  document.getElementById('meditation-text-box').innerText = formattedText;
+
+  // Direct ElevenLabs API Synthesis Call
+  const apiKey = "sk_b8c575f3959e2a5860e1b7a93b6ee45e869d19f6c6a6063d";
+  const voiceId = "C0qT9fWAA22Nx02a6QJY"; // Parent recorded voice ID
+  const ttsUrl = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`;
+
+  try {
+    const res = await fetch(ttsUrl, {
+      method: "POST",
+      headers: {
+        "xi-api-key": apiKey,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        text: formattedText,
+        model_id: "eleven_multilingual_v2",
+        voice_settings: {
+          stability: 0.85,
+          similarity_boost: 0.85,
+          speed: 0.70,
+          style: 0.0
+        }
+      })
+    });
+
+    if (!res.ok) {
+      throw new Error(`ElevenLabs API error status: ${res.status}`);
+    }
+
+    const audioBlob = await res.blob();
+    const elevenLabsUrl = URL.createObjectURL(audioBlob);
+
+    // Stop prior audio if playing
+    if (appState.audioTrack) appState.audioTrack.pause();
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+
+    // Attach ElevenLabs Audio to appState and HTML5 Audio Player
+    appState.elevenLabsAudioUrl = elevenLabsUrl;
+    appState.audioTrack = new Audio(elevenLabsUrl);
+
+    // Bind timeupdate for progress bar
+    appState.audioTrack.ontimeupdate = () => {
+      if (!appState.audioTrack) return;
+      const cur = appState.audioTrack.currentTime;
+      const dur = appState.audioTrack.duration || 1;
+      const pct = Math.min(100, (cur / dur) * 100);
+      const fill = document.getElementById('player-progress');
+      if (fill) fill.style.width = `${pct}%`;
+      const timeSpan = document.getElementById('player-time');
+      if (timeSpan) {
+        const m = Math.floor(cur / 60);
+        const s = Math.floor(cur % 60);
+        timeSpan.innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+      }
+    };
+
+    appState.audioTrack.onended = () => {
+      appState.isPlayingAudio = false;
+      document.getElementById('play-btn').innerText = "▶";
+    };
+
+    // Auto-start playback on round play button
+    appState.audioTrack.play().then(() => {
+      appState.isPlayingAudio = true;
+      document.getElementById('play-btn').innerText = "⏸";
+      document.getElementById('player-subtitle').innerText = "✨ Озвучивание голосом родителя через ElevenLabs AI!";
+    }).catch(playErr => {
+      console.warn("Auto-play notice:", playErr);
+      document.getElementById('player-subtitle').innerText = "🟢 Нажмите круглую кнопку ▶ для воспроизведения ElevenLabs!";
+    });
+
+  } catch (err) {
+    console.warn("ElevenLabs generation fallback notice:", err);
+    document.getElementById('player-subtitle').innerText = "🎵 Воспроизведение записи родителя";
+    if (appState.recordedAudioUrl) {
+      playParentRecordedVoice();
+    } else {
+      playMP3AudioTrack(true);
+    }
+  } finally {
+    if (btnGen) {
+      btnGen.disabled = false;
+      btnGen.innerText = "✨ Создать рассказ-медитацию с голосом мамы, папы или бабушки";
+    }
   }
 
-  logClickAnalytics('Meditation_Generated', name, 0, { audio_source: audioSource });
+  logClickAnalytics('Meditation_ElevenLabs_Generated', name, 0);
 }
 
 function playParentRecordedVoice() {
