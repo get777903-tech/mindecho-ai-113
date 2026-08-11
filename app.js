@@ -705,17 +705,26 @@ async function toggleVoiceRecord() {
       micText.innerText = "⏳ Подключение к микрофону... Подтвердите запрос на устройстве";
       
       // Direct call triggers native Windows / Smartphone OS permission popup
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true
-        }
-      });
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+          }
+        });
+      } catch (constraintErr) {
+        console.warn("Fallback to basic audio getUserMedia constraint:", constraintErr);
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      }
 
       // Initialize Web Audio API Analyser for real-time volume VU Meter
       try {
         micAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (micAudioContext.state === 'suspended') {
+          await micAudioContext.resume();
+        }
         const source = micAudioContext.createMediaStreamSource(stream);
         micAnalyser = micAudioContext.createAnalyser();
         micAnalyser.fftSize = 256;
@@ -774,7 +783,7 @@ async function toggleVoiceRecord() {
         appState.recordedAudioBlob = blob;
 
         // Signal check: Verify if audio stream contained real voice sound or was silent
-        if (maxAudioVolumeRecorded < 3 || blob.size < 5000) {
+        if (blob.size < 5000 && maxAudioVolumeRecorded < 2) {
           micText.innerText = "⚠️ Внимание: Голос не обнаружен (Записана тишина)";
           alert("⚠️ Внимание: Запись оказалась тихой/пустой. Пожалуйста, убедитесь, что микрофон включён в настройках устройства/Windows/браузера, и разрешите доступ при запросе!");
         } else {
