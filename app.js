@@ -1118,10 +1118,25 @@ async function generatePersonalMeditation() {
     activeVoiceId = "C0qT9fWAA22Nx02a6QJY";
   }
 
-  // Format hypnotic text for Сказка-Медитация
-  // (Uses commas, ellipses, and em-dashes — to force ElevenLabs to slow down word articulation from phrase 1)
-  const formattedText = `Дорогой мой... родной человечек, ${name}... — <break time="3.5s"/>\n\nДавай отправимся... в волшебную, тихую Сказку-Медитацию... — <break time="3.5s"/>\n\nЗакрой глазки... и начни дышать спокойно... и ровно... — <break time="3.5s"/>\n\nСделай мягкий, глубокий вдох... и плавный, медленный выдох... — <break time="3.5s"/>\n\nТы в полной... абсолютной безопасности... — <break time="3.5s"/>\n\nСтены уютной комнаты... бережно охраняют твой покой... — <break time="3.5s"/>\n\nЗнай, что мама и папа... тебя очень сильно любят... и всегда рядом с тобой... — <break time="3.5s"/>\n\nОтдыхай... настраивайся на добрые, сказочные сны, ${name}... — <break time="3.5s"/>\n\nЯ очень... очень люблю тебя... — <break time="3.5s"/>`;
+  // Get selected duration in minutes (1, 3, 5, 10)
+  const durationSelect = document.getElementById('meditation-duration');
+  const durationMinutes = (durationSelect && durationSelect.value) ? durationSelect.value : "3";
 
+  // Dynamic text script builder based on duration (1, 3, 5, 10 mins)
+  function buildScriptText(childName, minutes) {
+    if (minutes === "1") {
+      return `Дорогой мой... родной человечек, ${childName}... — <break time="3.5s"/>\n\nДавай отправимся... в волшебную, тихую Сказку-Медитацию... — <break time="3.5s"/>\n\nЗакрой глазки... и начни дышать спокойно... и ровно... — <break time="3.5s"/>\n\nЗнай, что мама и папа... тебя очень сильно любят... и всегда рядом с тобой... — <break time="3.5s"/>\n\nОтдыхай... настраивайся на добрые, сказочные сны, ${childName}... — <break time="3.5s"/>`;
+    } else if (minutes === "5") {
+      return `Дорогой мой... родной человечек, ${childName}... — <break time="3.5s"/>\n\nДавай отправимся... в волшебную, тихую Сказку-Медитацию... — <break time="3.5s"/>\n\nЗакрой глазки... и начни дышать спокойно... и ровно... — <break time="3.5s"/>\n\nСделай мягкий, глубокий вдох... и плавный, медленный выдох... — <break time="3.5s"/>\n\nЧувствуй, как теплое сказочное одеяло... укутывает твои плечи... — <break time="3.5s"/>\n\nТы в полной... абсолютной безопасности... — <break time="3.5s"/>\n\nСтены уютной комнаты... бережно охраняют твой покой... — <break time="3.5s"/>\n\nЗа окном сияют тихие, добрые звездочки... — <break time="3.5s"/>\n\nКаждая звездочка желает тебе... самых мягких и волшебных снов... — <break time="3.5s"/>\n\nЗнай, что мама и папа... тебя очень сильно любят... и всегда рядом с тобой... — <break time="3.5s"/>\n\nВсе страхи улетают далеко-далеко... оставляя только покой... — <break time="3.5s"/>\n\nОтдыхай... настраивайся на добрые, сказочные сны, ${childName}... — <break time="3.5s"/>\n\nЯ очень... очень люблю тебя... — <break time="3.5s"/>`;
+    } else if (minutes === "10") {
+      return `Дорогой мой... родной человечек, ${childName}... — <break time="3.5s"/>\n\nДавай отправимся... в волшебную, тихую Сказку-Медитацию... — <break time="3.5s"/>\n\nЗакрой глазки... и начни дышать спокойно... и ровно... — <break time="3.5s"/>\n\nСделай мягкий, глубокий вдох... и плавный, медленный выдох... — <break time="3.5s"/>\n\nПредставь себе сказочный тихий лес... где деревья шепчут колыбельную... — <break time="3.5s"/>\n\nМягкий изумрудный мох дарит тебе полное расслабление... — <break time="3.5s"/>\n\nТвое тело становится легким, как пушистое облако... — <break time="3.5s"/>\n\nТы в полной... абсолютной безопасности... — <break time="3.5s"/>\n\nСтены уютной комнаты... бережно охраняют твой покой... — <break time="3.5s"/>\n\nЛасковый ночной ветерок приносит только радость и умиротворение... — <break time="3.5s"/>\n\nВсе дневные заботы растворяются в теплом сиянии... — <break time="3.5s"/>\n\nЗнай, что мама и папа... тебя очень сильно любят... и всегда рядом с тобой... — <break time="3.5s"/>\n\nТвоя кровать — это твой волшебный замковый корабль снов... — <break time="3.5s"/>\n\nТы засыпаешь сладко и крепко... в любви и тепле... — <break time="3.5s"/>\n\nОтдыхай... настраивайся на добрые, сказочные сны, ${childName}... — <break time="3.5s"/>\n\nЯ очень... очень люблю тебя... — <break time="3.5s"/>`;
+    } else {
+      // 3 minutes standard
+      return `Дорогой мой... родной человечек, ${childName}... — <break time="3.5s"/>\n\nДавай отправимся... в волшебную, тихую Сказку-Медитацию... — <break time="3.5s"/>\n\nЗакрой глазки... и начни дышать спокойно... и ровно... — <break time="3.5s"/>\n\nСделай мягкий, глубокий вдох... и плавный, медленный выдох... — <break time="3.5s"/>\n\nТы в полной... абсолютной безопасности... — <break time="3.5s"/>\n\nСтены уютной комнаты... бережно охраняют твой покой... — <break time="3.5s"/>\n\nЗнай, что мама и папа... тебя очень сильно любят... и всегда рядом с тобой... — <break time="3.5s"/>\n\nОтдыхай... настраивайся на добрые, сказочные сны, ${childName}... — <break time="3.5s"/>\n\nЯ очень... очень люблю тебя... — <break time="3.5s"/>`;
+    }
+  }
+
+  const formattedText = buildScriptText(name, durationMinutes);
   document.getElementById('meditation-text-box').innerText = formattedText;
 
   // Direct ElevenLabs API Synthesis Call
@@ -1212,15 +1227,16 @@ async function generatePersonalMeditation() {
       document.getElementById('play-btn').innerText = "▶";
     };
 
-    // Update Status Badge to Play Button & Main Button Text to SUCCESS
+    // Update Status Badge and Top Fixed Button to "Слушать сказку-медитацию, сгенерированную заданным голосом"
     appState.isMeditationReady = true;
     updateMeditationStatusBadge('success', 'Слушать сказку-медитацию, сгенерированную заданным голосом');
     if (btnGen) {
       btnGen.disabled = false;
-      btnGen.innerText = "✅ Сказка-медитация готова! Нажмите ▶️ для воспроизведения";
-      btnGen.style.background = "linear-gradient(135deg, #10B981 0%, #059669 100%)";
-      btnGen.style.borderColor = "#10B981";
-      btnGen.style.boxShadow = "0 8px 25px -5px rgba(16, 185, 129, 0.6)";
+      btnGen.innerText = "«▶️ Слушать сказку-медитацию, сгенерированную заданным голосом»";
+      btnGen.style.background = "linear-gradient(135deg, #FF6B00 0%, #FF8800 100%)";
+      btnGen.style.borderColor = "#FF6B00";
+      btnGen.style.boxShadow = "0 8px 25px -5px rgba(255, 107, 0, 0.6)";
+      btnGen.onclick = (e) => { if (e) e.preventDefault(); playGeneratedMeditation(); };
     }
 
     // Auto-start playback on round play button
