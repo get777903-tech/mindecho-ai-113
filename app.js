@@ -1187,7 +1187,7 @@ async function generatePersonalMeditation() {
     ];
 
     const outro = [
-      `Отдыхай... <break time="1.5s"/> настраивайся на добрые, <break time="1.5s"/> сказочные сны, ${childName}... — <break time="3.5s"/>`,
+      `Отдыхай... <break time="1.5s"/> настраивайся на добрые, <break time="1.5s"/> сказочные сны... — <break time="3.5s"/>`,
       `Я очень... <break time="1.5s"/> очень люблю тебя... — <break time="3.5s"/>`
     ];
 
@@ -1376,12 +1376,34 @@ function playParentRecordedVoice() {
   }
 }
 
+function initAudioPlayer() {
+  if (!appState.audioTrack) {
+    appState.audioTrack = new Audio('audio/meditation1.mp3');
+    appState.audioTrack.ontimeupdate = () => {
+      if (!appState.audioTrack) return;
+      const cur = appState.audioTrack.currentTime;
+      const dur = appState.audioTrack.duration || 1;
+      const pct = Math.min(100, (cur / dur) * 100);
+      const fill = document.getElementById('player-progress');
+      if (fill) fill.style.width = `${pct}%`;
+      const timeSpan = document.getElementById('player-time');
+      if (timeSpan) {
+        const m = Math.floor(cur / 60);
+        const s = Math.floor(cur % 60);
+        timeSpan.innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+      }
+    };
+    appState.audioTrack.onended = () => {
+      appState.isPlayingAudio = false;
+      document.getElementById('play-btn').innerText = "▶";
+    };
+  }
+}
+
 function playMP3AudioTrack(forceStart = false) {
   if (window.speechSynthesis) window.speechSynthesis.cancel();
 
-  if (!appState.audioTrack) {
-    initAudioPlayer();
-  }
+  initAudioPlayer();
 
   if (forceStart) {
     appState.audioTrack.currentTime = 0;
@@ -1417,8 +1439,10 @@ function playQuickTestAudio() {
   if (playerCard) {
     playerCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
+  if (appState.audioTrack) appState.audioTrack.pause();
+  appState.audioTrack = new Audio('audio/meditation1.mp3');
   playMP3AudioTrack(true);
-  logClickAnalytics('QuickTestAudio_Clicked', 'Hero Quick Test Button', 0);
+  logClickAnalytics('QuickTestAudio_Clicked', 'Hero Quick Test Button (meditation1.mp3)', 0);
 }
 
 function togglePlayAudio() {
