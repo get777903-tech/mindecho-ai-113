@@ -167,6 +167,16 @@ const translations = {
     opt_male_deep: "🎙 мужской - низкий спокойный голос",
     opt_female_calm: "🎙 женский спокойный голос",
     opt_generated_parent: "🎙 сгенерированный голос мамы или папы",
+    label_meditation_duration: "⏱ Длительность медитации (минут, 4–30 мин):",
+    opt_dur_4: "⏱ 4 минуты (Мягкое засыпание)",
+    opt_dur_5: "⏱ 5 минут (Стандартная сказка-медитация)",
+    opt_dur_7: "⏱ 7 минут (Глубокий покой)",
+    opt_dur_10: "⏱ 10 минут (Погружение в сон)",
+    opt_dur_15: "⏱ 15 минут (Длительная сказка-медитация)",
+    opt_dur_20: "⏱ 20 минут (Глубокий убаюкивающий сон)",
+    opt_dur_25: "⏱ 25 минут (Полное расслабление и покой)",
+    opt_dur_30: "⏱ 30 минут (Максимально полезная медитация)",
+    btn_listen_generated: "«▶️ Слушать сказку-медитацию, сгенерированную заданным голосом»",
     label_meditation_mode: "Режим рассказа-медитации:",
     opt_mode_bedtime: "🌙 Перед сном (Засыпание)",
     opt_mode_morning: "☀️ Утренняя (Уверенность)",
@@ -332,6 +342,16 @@ const translations = {
     opt_male_deep: "🎙 Male - Deep Calm Voice",
     opt_female_calm: "🎙 Female Calm Voice",
     opt_generated_parent: "🎙 Generated Parent Voice",
+    label_meditation_duration: "⏱ Meditation duration (minutes, 4–30 min):",
+    opt_dur_4: "⏱ 4 minutes (Soft bedtime relaxation)",
+    opt_dur_5: "⏱ 5 minutes (Standard meditation story)",
+    opt_dur_7: "⏱ 7 minutes (Deep peace)",
+    opt_dur_10: "⏱ 10 minutes (Deep sleep journey)",
+    opt_dur_15: "⏱ 15 minutes (Extended meditation story)",
+    opt_dur_20: "⏱ 20 minutes (Deep soothing sleep)",
+    opt_dur_25: "⏱ 25 minutes (Full relaxation and calm)",
+    opt_dur_30: "⏱ 30 minutes (Maximally beneficial meditation)",
+    btn_listen_generated: "«▶️ Listen to meditation story generated in requested voice»",
     label_meditation_mode: "Meditation Mode:",
     opt_mode_bedtime: "🌙 Bedtime (Sleep)",
     opt_mode_morning: "☀️ Morning (Confidence)",
@@ -497,6 +517,16 @@ const translations = {
     opt_male_deep: "🎙 גברי - קול עמוק ורגוע",
     opt_female_calm: "🎙 נשי - קול רגוע",
     opt_generated_parent: "🎙 קול הורה מחולל",
+    label_meditation_duration: "⏱ משך המדיטציה (בדקות, 4–30 דקות):",
+    opt_dur_4: "⏱ 4 דקות (הרגעות רכה לשינה)",
+    opt_dur_5: "⏱ 5 דקות (סיפור מדיטציה סטנדרטי)",
+    opt_dur_7: "⏱ 7 דקות (שלווה עמוקה)",
+    opt_dur_10: "⏱ 10 דקות (שקיעה בשינה עמוקה)",
+    opt_dur_15: "⏱ 15 דקות (סיפור מדיטציה מורחב)",
+    opt_dur_20: "⏱ 20 דקות (שינה מרגיעה ועמוקה)",
+    opt_dur_25: "⏱ 25 דקות (הרפיה ושלווה מוחלטת)",
+    opt_dur_30: "⏱ 30 דקות (מדיטציה מועילה ביותר)",
+    btn_listen_generated: "«▶️ האזן לסיפור המדיטציה שנוצר בקול המבוקש»",
     label_meditation_mode: "מצב מדיטציה:",
     opt_mode_bedtime: "🌙 לפני השינה (הרדמה)",
     opt_mode_morning: "☀️ בוקר (ביטחון עצמי)",
@@ -1125,45 +1155,45 @@ async function generatePersonalMeditation() {
   // Dynamic script generator for target duration (4 to 30 mins) at ultra-slow bedtime tempo
   function buildScriptText(childName, mins) {
     const baseIntro = [
-      `Дорогой мой... родной человечек, ${childName}... — <break time="3.5s"/>`,
-      `Давай отправимся... в волшебную, тихую Сказку-Медитацию... — <break time="3.5s"/>`,
-      `Закрой глазки... и начни дышать спокойно... и ровно... — <break time="3.5s"/>`,
-      `Сделай мягкий, глубокий вдох... и плавный, медленный выдох... — <break time="3.5s"/>`
+      `Дорогой мой... <break time="1.5s"/> родной человечек, ${childName}... — <break time="3.5s"/>`,
+      `Давай отправимся... <break time="1.5s"/> в волшебную, <break time="1.5s"/> тихую Сказку-Медитацию... — <break time="3.5s"/>`,
+      `Закрой глазки... <break time="1.5s"/> и начни дышать спокойно... <break time="1.5s"/> и ровно... — <break time="3.5s"/>`,
+      `Сделай мягкий, <break time="1.5s"/> глубокий вдох... <break time="1.5s"/> и плавный, <break time="1.5s"/> медленный выдох... — <break time="3.5s"/>`
     ];
 
     const bodyParagraphs = [
-      `Чувствуй, как теплое сказочное одеяло... укутывает твои плечи... — <break time="3.5s"/>`,
-      `Ты в полной... абсолютной безопасности... — <break time="3.5s"/>`,
-      `Стены уютной комнаты... бережно охраняют твой покой... — <break time="3.5s"/>`,
-      `За окном сияют тихие, добрые звездочки... — <break time="3.5s"/>`,
-      `Каждая звездочка желает тебе... самых мягких и волшебных снов... — <break time="3.5s"/>`,
-      `Представь себе сказочный тихий лес... где деревья шепчут колыбельную... — <break time="3.5s"/>`,
-      `Мягкий изумрудный мох дарит тебе полное расслабление... — <break time="3.5s"/>`,
-      `Твое тело становится легким, как пушистое облако... — <break time="3.5s"/>`,
-      `Ласковый ночной ветерок приносит только радость и умиротворение... — <break time="3.5s"/>`,
-      `Все дневные заботы растворяются в теплом сиянии... — <break time="3.5s"/>`,
-      `Твоя кровать — это твой волшебный замковый корабль снов... — <break time="3.5s"/>`,
-      `Тихое журчание волшебного ручейка уносит мысли в сказочную страну... — <break time="3.5s"/>`,
-      `Лунная дорожка освещает твой путь к самым добрым мечтам... — <break time="3.5s"/>`,
-      `Пушистые сказочные облака баюкают тебя все сильнее и сильнее... — <break time="3.5s"/>`,
-      `С каждым вдохом ты погружаешься в еще более глубокий и сладкий сон... — <break time="3.5s"/>`,
-      `Волшебные светлячки бережно хранят твои самые счастливые сны... — <break time="3.5s"/>`,
-      `Ты засыпаешь сладко и крепко... в полном тепле и уюте... — <break time="3.5s"/>`
+      `Чувствуй, <break time="1.5s"/> как теплое сказочное одеяло... <break time="1.5s"/> укутывает твои плечи... — <break time="3.5s"/>`,
+      `Ты в полной... <break time="1.5s"/> абсолютной безопасности... — <break time="3.5s"/>`,
+      `Стены уютной комнаты... <break time="1.5s"/> бережно охраняют твой покой... — <break time="3.5s"/>`,
+      `За окном сияют... <break time="1.5s"/> тихие, <break time="1.5s"/> добрые звездочки... — <break time="3.5s"/>`,
+      `Каждая звездочка желает тебе... <break time="1.5s"/> самых мягких <break time="1.5s"/> и волшебных снов... — <break time="3.5s"/>`,
+      `Представь себе сказочный тихий лес... <break time="1.5s"/> где деревья шепчут колыбельную... — <break time="3.5s"/>`,
+      `Мягкий изумрудный мох... <break time="1.5s"/> дарит тебе полное расслабление... — <break time="3.5s"/>`,
+      `Твое тело становится легким, <break time="1.5s"/> как пушистое облако... — <break time="3.5s"/>`,
+      `Ласковый ночной ветерок... <break time="1.5s"/> приносит только радость <break time="1.5s"/> и умиротворение... — <break time="3.5s"/>`,
+      `Все дневные заботы... <break time="1.5s"/> растворяются в теплом сиянии... — <break time="3.5s"/>`,
+      `Твоя кровать... <break time="1.5s"/> это твой волшебный замковый корабль снов... — <break time="3.5s"/>`,
+      `Тихое журчание волшебного ручейка... <break time="1.5s"/> уносит мысли в сказочную страну... — <break time="3.5s"/>`,
+      `Лунная дорожка... <break time="1.5s"/> освещает твой путь к самым добрым мечтам... — <break time="3.5s"/>`,
+      `Пушистые сказочные облака... <break time="1.5s"/> баюкают тебя все сильнее и сильнее... — <break time="3.5s"/>`,
+      `С каждым вдохом... <break time="1.5s"/> ты погружаешься в еще более глубокий <break time="1.5s"/> и сладкий сон... — <break time="3.5s"/>`,
+      `Волшебные светлячки... <break time="1.5s"/> бережно хранят твои самые счастливые сны... — <break time="3.5s"/>`,
+      `Ты засыпаешь сладко <break time="1.5s"/> и крепко... <break time="1.5s"/> в полном тепле и уюте... — <break time="3.5s"/>`
     ];
 
     const mandatoryParentsLove = [
-      `Знай, что мама и папа... тебя очень сильно любят... и всегда рядом с тобой... — <break time="3.5s"/>`,
-      `Все страхи улетают далеко-далеко... оставляя только покой... — <break time="3.5s"/>`
+      `Знай, <break time="1.5s"/> что мама и папа... <break time="1.5s"/> тебя очень сильно любят... <break time="1.5s"/> и всегда рядом с тобой... — <break time="3.5s"/>`,
+      `Все страхи улетают... <break time="1.5s"/> далеко-далеко... <break time="1.5s"/> оставляя только покой... — <break time="3.5s"/>`
     ];
 
     const outro = [
-      `Отдыхай... настраивайся на добрые, сказочные сны, ${childName}... — <break time="3.5s"/>`,
-      `Я очень... очень люблю тебя... — <break time="3.5s"/>`
+      `Отдыхай... <break time="1.5s"/> настраивайся на добрые, <break time="1.5s"/> сказочные сны, ${childName}... — <break time="3.5s"/>`,
+      `Я очень... <break time="1.5s"/> очень люблю тебя... — <break time="3.5s"/>`
     ];
 
     // Determine total sentences count based on requested duration (4–30 mins)
-    // Each slow sentence + 3.5s pause takes ~14 seconds
-    const targetSentencesCount = Math.max(10, Math.min(120, Math.round((mins * 60) / 14)));
+    // Each slow sentence + 1.5s word pauses + 3.5s clause pause takes ~16 seconds
+    const targetSentencesCount = Math.max(10, Math.min(120, Math.round((mins * 60) / 16)));
 
     let scriptSentences = [...baseIntro];
     let poolIndex = 0;
