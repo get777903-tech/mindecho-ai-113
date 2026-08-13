@@ -1141,6 +1141,8 @@ function updateMeditationStatusBadge(status, text) {
   const txt = document.getElementById('meditation-status-text');
   if (!badge) return;
 
+  const defaultReadyText = 'Слушать сказку-медиацию сгенерированую Заданным голосом';
+
   if (status === 'loading') {
     badge.style.background = 'rgba(245, 158, 11, 0.15)';
     badge.style.borderColor = '#F59E0B';
@@ -1149,7 +1151,7 @@ function updateMeditationStatusBadge(status, text) {
     badge.style.boxShadow = 'none';
     badge.onclick = null;
     if (icon) icon.innerText = '⏳';
-    if (txt) txt.innerText = text || 'Идёт генерация сказки-медитации...';
+    if (txt) txt.innerText = text || 'Подождите, создаётся сказка-медиация с голосом родителя или бабушки...';
   } else if (status === 'success' || status === 'ready_sample') {
     badge.style.background = 'linear-gradient(135deg, #FF6B00 0%, #FF8800 100%)';
     badge.style.borderColor = '#FF6B00';
@@ -1158,7 +1160,7 @@ function updateMeditationStatusBadge(status, text) {
     badge.style.boxShadow = '0 6px 20px rgba(255, 107, 0, 0.5)';
     badge.onclick = (e) => { if (e) e.preventDefault(); playGeneratedMeditation(); };
     if (icon) icon.innerText = '▶️';
-    if (txt) txt.innerText = text || 'Слушать сказку-медитацию, сгенерированную заданным голосом';
+    if (txt) txt.innerText = text || defaultReadyText;
   } else {
     badge.style.background = 'linear-gradient(135deg, #FF6B00 0%, #FF8800 100%)';
     badge.style.borderColor = '#FF6B00';
@@ -1167,7 +1169,7 @@ function updateMeditationStatusBadge(status, text) {
     badge.style.boxShadow = '0 6px 20px rgba(255, 107, 0, 0.5)';
     badge.onclick = (e) => { if (e) e.preventDefault(); playGeneratedMeditation(); };
     if (icon) icon.innerText = '▶️';
-    if (txt) txt.innerText = text || 'Слушать сказку-медитацию, сгенерированную заданным голосом';
+    if (txt) txt.innerText = text || defaultReadyText;
   }
 }
 
@@ -1250,12 +1252,24 @@ async function generatePersonalMeditation() {
   logClickAnalytics('Generate_Click', name, 0, { section: 'generator', duration_minutes: durationMinutes });
 
   // Update UI status & Notification Badge to loading with RED button & dynamic wait time
+  const btnGen = document.getElementById('btn-create-meditation') || document.querySelector('.btn-orange');
+  const btnTopQuick = document.getElementById('btn-quick-test');
+  const loadingMsg = "Подождите, создаётся сказка-медиация с голосом родителя или бабушки";
+
+  // Update UI status & Notification Badge to loading with RED button & dynamic wait time
   if (btnGen) {
     btnGen.disabled = true;
-    btnGen.innerText = `Подождите. Создается рассказ-медитация (${durationMinutes} мин.). Ожидание ~${initialWaitText}`;
+    btnGen.innerText = loadingMsg;
     btnGen.style.background = "linear-gradient(135deg, #EF4444 0%, #DC2626 100%)";
     btnGen.style.borderColor = "#EF4444";
     btnGen.style.boxShadow = "0 8px 25px -5px rgba(239, 68, 68, 0.6)";
+  }
+  if (btnTopQuick) {
+    btnTopQuick.disabled = true;
+    btnTopQuick.innerText = loadingMsg;
+    btnTopQuick.style.background = "linear-gradient(135deg, #EF4444 0%, #DC2626 100%)";
+    btnTopQuick.style.borderColor = "#EF4444";
+    btnTopQuick.style.boxShadow = "0 8px 25px -5px rgba(239, 68, 68, 0.6)";
   }
   document.getElementById('player-title').innerText = `${name} — Сказка-Медитация (${durationMinutes} мин)`;
   document.getElementById('player-subtitle').innerText = `⏳ Идет создание сказки-медитации с голосом родителя... (подождите ~${initialWaitText})`;
@@ -1438,16 +1452,26 @@ async function generatePersonalMeditation() {
       document.getElementById('play-btn').innerText = "▶";
     };
 
-    // Update Status Badge and Top Fixed Button to "Слушать сказку-медитацию, сгенерированную заданным голосом"
+    // Update Status Badge, Main Create Button and Top Pinned Button to "Слушать сказку-медиацию сгенерированую Заданным голосом"
     appState.isMeditationReady = true;
-    updateMeditationStatusBadge('success', 'Слушать сказку-медитацию, сгенерированную заданным голосом');
+    const readyBtnText = "Слушать сказку-медиацию сгенерированую Заданным голосом";
+    updateMeditationStatusBadge('success', readyBtnText);
+
     if (btnGen) {
       btnGen.disabled = false;
-      btnGen.innerText = "«▶️ Слушать сказку-медитацию, сгенерированную заданным голосом»";
+      btnGen.innerText = readyBtnText;
       btnGen.style.background = "linear-gradient(135deg, #FF6B00 0%, #FF8800 100%)";
       btnGen.style.borderColor = "#FF6B00";
       btnGen.style.boxShadow = "0 8px 25px -5px rgba(255, 107, 0, 0.6)";
       btnGen.onclick = (e) => { if (e) e.preventDefault(); playGeneratedMeditation(); };
+    }
+    if (btnTopQuick) {
+      btnTopQuick.disabled = false;
+      btnTopQuick.innerText = readyBtnText;
+      btnTopQuick.style.background = "linear-gradient(135deg, #FF6B00 0%, #FF8800 100%)";
+      btnTopQuick.style.borderColor = "#FF6B00";
+      btnTopQuick.style.boxShadow = "0 8px 25px -5px rgba(255, 107, 0, 0.6)";
+      btnTopQuick.onclick = (e) => { if (e) e.preventDefault(); playGeneratedMeditation(); };
     }
 
     // Auto-start playback on round play button
@@ -1457,8 +1481,8 @@ async function generatePersonalMeditation() {
       document.getElementById('player-subtitle').innerText = `✨ Воспроизводится: ${tsFileName}`;
     }).catch(playErr => {
       console.warn("Auto-play notice:", playErr);
-      document.getElementById('player-subtitle').innerText = "🟢 Нажмите круглую кнопку ▶ для воспроизведения!";
-      updateMeditationStatusBadge('success', '✅ Сказка-Медитация готова! (Нажмите ▶️ ниже)');
+      document.getElementById('player-subtitle').innerText = "🟢 Нажмите кнопку выше или ▶️ для воспроизведения!";
+      updateMeditationStatusBadge('success', readyBtnText);
     });
 
     logClickAnalytics('Meditation_Ready_Device_Saved', name, 0, {
@@ -1470,7 +1494,7 @@ async function generatePersonalMeditation() {
   } catch (err) {
     console.warn("ElevenLabs generation fallback notice:", err);
     document.getElementById('player-subtitle').innerText = "✨ Воспроизводится готовая сказка-медитация!";
-    updateMeditationStatusBadge('ready_sample', 'Слушать сказку-медитацию, сгенерированную заданным голосом');
+    updateMeditationStatusBadge('ready_sample', 'Слушать сказку-медиацию сгенерированую Заданным голосом');
     if (appState.recordedAudioUrl) {
       playParentRecordedVoice();
     } else {
@@ -1484,6 +1508,13 @@ async function generatePersonalMeditation() {
       btnGen.style.background = "";
       btnGen.style.borderColor = "";
       btnGen.style.boxShadow = "";
+    }
+    if (btnTopQuick && !appState.isMeditationReady) {
+      btnTopQuick.disabled = false;
+      btnTopQuick.innerText = "▶️ Быстрое тестирование рассказа-медитации (Включить аудио)";
+      btnTopQuick.style.background = "";
+      btnTopQuick.style.borderColor = "";
+      btnTopQuick.style.boxShadow = "";
     }
   }
 
