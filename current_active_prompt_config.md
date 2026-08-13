@@ -2,8 +2,10 @@
 
 ## [SYSTEM CONFIGURATION & VOICE PARAMS]
 
+* **BUTTON_LOADING_TEXT**: `Подождите, создаётся сказка-медиация с голосом родителя или бабушки`
+* **BUTTON_READY_TEXT**: `Слушать сказку-медиацию сгенерированую Заданным голосом`
 * **NAME_SINGLE_MENTION_RULE**: `Имя ребенка упоминается СТРОГО 1 РАЗ в самом начале медитации`
-* **INITIAL_PLAYBACK_TRACK**: `audio/meditation1.mp3 (для круглой кнопки и экспресс-теста до генерации)`
+* **ALWAYS_INITIAL_TRACK**: `meditation1.mp3 (Всегда включается по круглой кнопке ▶️ и по кнопке быстрого тестирования)`
 * **WORD_PAUSE_RULE**: `Паузы 1.5 секунды <break time="1.5s"/> между всеми словами/внутренними фразами предложений`
 * **CLAUSE_PAUSE_RULE**: `Паузы 3.5 секунды <break time="3.5s"/> после каждого предложения перед переносом строки \n\n`
 * **OPTION_30M_TEXT**: `⏱ 30 минут (Максимально полезная медитация)`
@@ -16,18 +18,16 @@
 * **ELEVENLABS_MODEL**: `eleven_multilingual_v2`
 * **PITCH_SHIFT**: `Pitch Shift (-3 Semitones) for deep soothing parent voice tone`
 * **VOICE_SOURCE**: `Родительский голос из аудиозаписи в приложении (Speech-to-Speech / Клонированный голос с микрофона/файла пользователя)`
-* **DEFAULT_DEMO_TRACK**: `audio/meditation1.mp3` (for all standard demo play buttons)
-* **GENERATED_TRACK_BTN**: `«▶️ Слушать сказку-медитацию, сгенерированную заданным голосом»`
 
 ---
 
-## ⚠️ ОБЯЗАТЕЛЬНЫЕ ПРАВИЛА ГЕНЕРАЦИИ (RULES & MANDATES)
+## ⚠️ ОБЯЗАТЕЛЬНЫЕ ПРАВИЛА ЛОГИКИ КНОПОКИ ВОСПРОИЗВЕДЕНИЯ
 
-1. **NAME_SINGLE_MENTION_RULE**:
-   > Mention child's name EXACTLY ONCE in the very first introductory phrase. DO NOT repeat the child's name anywhere else in the body or outro.
+1. **КНОПКА "СОЗДАТЬ РАССКАЗ-МЕДИТАЦИЮ" И ВЕРХНЯЯ ЗАКРЕПЛЕННАЯ КНОПКА ВО ВРЕМЯ ГЕНЕРАЦИИ**:
+   > При нажатии на кнопку создания сказки эта кнопка и верхняя закрепленная кнопка меняются на: **`Подождите, создаётся сказка-медиация с голосом родителя или бабушки`** (с дисаблом и красной индикацией).
 
-2. **TOP_BUTTON_STATE_CHANGE_RULE**:
-   > Upon completing synthesis, restore top fixed main button from red loading state into orange: `«▶️ Слушать сказку-медитацию, сгенерированную заданным голосом»` with `onclick="playGeneratedMeditation()"`.
+2. **ПОСЛЕ ЗАВЕРШЕНИЯ ГЕНЕРАЦИИ СКАЗКИ-МЕДИТАЦИИ**:
+   > Вместо кнопки *"Подождите, создаётся..."* на самом верху и в форме устанавливается кнопка: **`Слушать сказку-медиацию сгенерированую Заданным голосом`** (при клике запускает воспроизведение созданной медитации `playGeneratedMeditation()`).
 
-3. **INITIAL_DEMO_AUDIO_RULE**:
-   > For initial round play button and quick test button clicks, always play `audio/meditation1.mp3`.
+3. **ВОСПРОИЗВЕДЕНИЕ ПО КРУГЛОЙ КНОПКЕ И ПО КНОПКЕ БЫСТРОГО ТЕСТИРОВАНИЯ**:
+   > При нажатии на круглую кнопку ▶️ и на кнопку *"Быстрое тестирование рассказа-медитации (Включить аудио)"* ВСЕГДА включается аудиозапись с именем **`meditation1.mp3`**.
