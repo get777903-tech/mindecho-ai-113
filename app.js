@@ -838,17 +838,6 @@ function toggleFullStoryText() {
       if (btn) btn.innerText = langDict.btn_toggle_story_text_collapse || "Свернуть текст 🔼";
     } else {
       fullStory.classList.add('hidden');
-  document.getElementById('player-title').innerText = `${name} — Сказка-Медитация`;
-  document.getElementById('player-subtitle').innerText = "⏳ Идет генерация голоса родителя в ElevenLabs...";
-
-  // Format hypnotic text for Сказка-Медитация (50% Shortened Version for Fast Testing)
-  const formattedText = `— <break time="3.0s"/> Дорогой мой родной человечек ${name}... <break time="3.0s"/> Давай отправимся в волшебную Сказку-Медитацию... <break time="3.0s"/>
-
-...Закрой глазки и начни дышать спокойно и ровно... <break time="3.0s"/> Сделай мягкий вдох... и плавный выдох... <break time="3.0s"/>
-
-...Ты в полной безопасности... Стены комнаты берегут твой покой... <break time="3.0s"/> А моя любовь всегда рядом с тобой... <break time="3.0s"/>
-
-...Отдыхай и настраивайся на добрые сны ${name}... <break time="3.0s"/> Я очень люблю тебя... <break time="3.0s"/>`;
       if (snippetStory) snippetStory.classList.remove('hidden');
       if (btn) btn.innerText = langDict.btn_toggle_story_text || "Развернуть весь текст 📖";
     }
@@ -1649,10 +1638,11 @@ function playQuickTestAudio() {
 }
 
 function togglePlayAudio() {
-  // Round play button controls meditation1.mp3
+  // Круглая кнопка управляeт ИСКЛЮЧИТЕЛЬНО файлом meditation1.mp3
   if (appState.generatedAudioTrack && appState.isPlayingGenerated) {
     appState.generatedAudioTrack.pause();
     appState.isPlayingGenerated = false;
+    updateMeditationStatusBadge('success', '▶️ Слушать сказку-медиацию сгенерированую Заданным голосом');
   }
 
   initMp3AudioPlayer();
@@ -1665,10 +1655,9 @@ function togglePlayAudio() {
     appState.mp3AudioTrack.play().then(() => {
       appState.isPlayingMp3 = true;
       document.getElementById('play-btn').innerText = "⏸";
-      document.getElementById('player-subtitle').innerText = "🎵 Воспроизведение прошлой записи: meditation1.mp3";
+      document.getElementById('player-subtitle').innerText = "🎵 Воспроизведение записи: meditation1.mp3";
     }).catch(err => {
       console.warn("Round play button error:", err);
-      generatePersonalMeditation();
     });
   }
 }
