@@ -1549,6 +1549,12 @@ function playParentRecordedVoice() {
 function initMp3AudioPlayer() {
   if (!appState.mp3AudioTrack) {
     appState.mp3AudioTrack = new Audio('audio/meditation1.mp3');
+    appState.mp3AudioTrack.onerror = () => {
+      console.warn("audio/meditation1.mp3 load warning, trying root meditation1.mp3...");
+      if (appState.mp3AudioTrack) {
+        appState.mp3AudioTrack.src = 'meditation1.mp3';
+      }
+    };
     appState.mp3AudioTrack.ontimeupdate = () => {
       if (!appState.mp3AudioTrack) return;
       const cur = appState.mp3AudioTrack.currentTime;
