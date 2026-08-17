@@ -43,8 +43,6 @@
       <nav class="nav-links">
         <a href="#missions" data-i18n="nav_mission">Миссия</a>
         <a href="#modes" data-i18n="nav_modes">Эмоциональная помощь</a>
-        <a href="#edu-subjects" data-i18n="nav_edu_subjects">📚 Внешкольное обучение</a>
-        <a href="#edu-pricing" data-i18n="nav_edu_pricing">🎓 Школьные тарифы</a>
         <a href="#generator" data-i18n="nav_generator">Студия</a>
         <a href="#pricing" data-i18n="nav_pricing">Тарифы</a>
         <a href="#" onclick="openNDAModal(); return false;" data-i18n="nav_nda">DISCLAIMER</a>
@@ -298,7 +296,7 @@
     <div class="container">
       <div class="section-header text-center">
         <span class="section-tag" data-i18n="tag_studio">Студия Медитации - разработка на основе методов детской нейропсихологии</span>
-        <h2 class="section-title" data-i18n="title_studio">Персональная Сказка-Медитация</h2>
+        <h2 class="section-title" data-i18n="title_studio">Персональный Рассказ-Медитация</h2>
         <p class="section-subtitle" data-i18n="sub_studio">Запись вашего голоса + Студийная MP3 фонограмма + Динамическая ИИ-озвучка</p>
       </div>
 
@@ -327,7 +325,7 @@
             <div class="form-group">
               <label for="audio-mode-source" data-i18n="label_audio_source">Источник аудио-озвучки:</label>
               <select id="audio-mode-source" class="form-select">
-                <option value="parent" selected data-i18n="opt_source_parent">🎙 голос папы или мамы</option>
+                <option value="parent" data-i18n="opt_source_parent">🎙 голос папы или мамы</option>
                 <option value="mp3" data-i18n="opt_source_mp3">🎵 Студийная MP3 фонограмма</option>
                 <option value="tts" data-i18n="opt_source_tts">🤖 Динамический ИИ-диктор (Низкий тембр)</option>
               </select>
@@ -336,20 +334,15 @@
 
           <div class="form-row">
             <div class="form-group">
-              <label for="meditation-duration" data-i18n="label_meditation_duration">⏱ Длительность медитации (минут, 4–30 мин):</label>
-              <select id="meditation-duration" class="form-select">
-                <option value="4" data-i18n="opt_dur_4">⏱ 4 минуты (Мягкое засыпание)</option>
-                <option value="5" selected data-i18n="opt_dur_5">⏱ 5 минут (Стандартная сказка-медитация)</option>
-                <option value="7" data-i18n="opt_dur_7">⏱ 7 минут (Глубокий покой)</option>
-                <option value="10" data-i18n="opt_dur_10">⏱ 10 минут (Погружение в сон)</option>
-                <option value="15" data-i18n="opt_dur_15">⏱ 15 минут (Длительная сказка-медитация)</option>
-                <option value="20" data-i18n="opt_dur_20">⏱ 20 минут (Глубокий убаюкивающий сон)</option>
-                <option value="25" data-i18n="opt_dur_25">⏱ 25 минут (Полное расслабление и покой)</option>
-                <option value="30" data-i18n="opt_dur_30">⏱ 30 минут (Максимально полезная медитация)</option>
+              <label for="voice-timbre" data-i18n="label_voice_timbre">Тембр и Голос озвучки:</label>
+              <select id="voice-timbre" class="form-select">
+                <option value="male_deep" data-i18n="opt_male_deep">🎙 мужской - низкий спокойный голос</option>
+                <option value="female_calm" data-i18n="opt_female_calm">🎙 женский спокойный голос</option>
+                <option value="generated_parent" data-i18n="opt_generated_parent">🎙 сгенерированный голос мамы или папы</option>
               </select>
             </div>
             <div class="form-group">
-              <label for="meditation-type" data-i18n="label_meditation_mode">Режим Сказки-Медитации:</label>
+              <label for="meditation-type" data-i18n="label_meditation_mode">Режим рассказа-медитации:</label>
               <select id="meditation-type" class="form-select">
                 <option value="bedtime" data-i18n="opt_mode_bedtime">🌙 Перед сном (Засыпание)</option>
                 <option value="morning" data-i18n="opt_mode_morning">☀️ Утренняя (Уверенность)</option>
@@ -359,7 +352,7 @@
             </div>
           </div>
 
-          <!-- Mic Recorder Block -->
+          <!-- Mic Recorder Block (Moved down right before Generate Button) -->
           <div class="form-group" style="margin-top: 10px; margin-bottom: 6px;">
             <label data-i18n="label_mic_rec">🎙 Запись голоса родителя (60 секунд для ElevenLabs):</label>
             <div class="mic-recorder-box">
@@ -374,14 +367,6 @@
                 <!-- Real-Time Mic Volume Level Bar -->
                 <div id="mic-level-box" class="mic-level-box hidden" style="margin-top: 8px; width: 100%; max-width: 280px; background: rgba(0,0,0,0.5); border-radius: 8px; height: 10px; border: 1px solid rgba(255,255,255,0.25); overflow: hidden; display: flex; align-items: center; padding: 1px;">
                   <div id="mic-level-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #10B981 0%, #F59E0B 70%, #EF4444 100%); border-radius: 6px; transition: width 0.08s ease-out;"></div>
-                </div>
-                <!-- Custom File Upload Input for WebM / MP3 Parent Audio Recordings -->
-                <input type="file" id="parent-audio-upload-input" accept="audio/*,.webm,.mp3,.wav,.m4a" class="hidden" onchange="handleParentAudioUpload(event)">
-                <div style="margin-top: 10px; display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; max-width: 100%; box-sizing: border-box;">
-                  <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('parent-audio-upload-input').click()" style="font-size: 12px; font-weight: 700; padding: 6px 14px; border-radius: 8px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; max-width: 100%;">
-                    📁 Загрузить свою аудиозапись (MP3 / WebM)
-                  </button>
-                  <span id="upload-file-status" style="font-size: 12px; color: #10B981; font-weight: 700; max-width: 100%; overflow-wrap: anywhere;"></span>
                 </div>
               </div>
             </div>
@@ -404,7 +389,7 @@
             </div>
           </div>
 
-          <button class="btn btn-primary btn-block btn-lg btn-orange" onclick="generatePersonalMeditation()" data-i18n="btn_generate" style="max-width: 100%; box-sizing: border-box; white-space: normal; word-break: break-word; line-height: 1.35; padding: 14px 16px; font-weight: 700;">
+          <button class="btn btn-primary btn-block btn-lg btn-orange" onclick="generatePersonalMeditation()" data-i18n="btn_generate">
             ✨ Создать рассказ-медитацию с голосом мамы, папы или бабушки
           </button>
         </div>
@@ -415,16 +400,9 @@
             <div class="player-header">
               <div class="disc-spin">✨</div>
               <div>
-                <h4 id="player-title" data-i18n="player_title_default">Сказка-Медитация</h4>
-                <p class="placeholder-text" data-i18n="player_placeholder">Укажите имя и нажмите "Создать"...</p>
-              </div>
+                <h4 id="player-title" data-i18n="player_title_default">Рассказ-Медитация</h4>
+              <p class="placeholder-text" data-i18n="player_placeholder">Укажите имя и нажмите "Сгенерировать"...</p>
             </div>
-
-            <!-- Status Notification Badge / Interactive Play Button -->
-            <button type="button" id="meditation-status-badge" onclick="playGeneratedMeditation()" style="width: 100%; margin-top: 12px; margin-bottom: 16px; padding: 12px 16px; border-radius: 12px; background: linear-gradient(135deg, #FF6B00 0%, #FF8800 100%); border: 1px solid #FF6B00; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 700; color: #FFFFFF; transition: all 0.3s ease; cursor: pointer; box-shadow: 0 6px 20px rgba(255, 107, 0, 0.5);">
-              <span id="meditation-status-icon">▶️</span>
-              <span id="meditation-status-text">Слушать сказку-медитацию, сгенерированную заданным голосом</span>
-            </button>
 
             <div class="player-controls">
               <button id="play-btn" class="btn-play" onclick="togglePlayAudio()">▶</button>
@@ -433,9 +411,6 @@
               </div>
               <span id="player-time">00:00</span>
             </div>
-
-            <!-- Story Box Container -->
-            <div id="meditation-text-box" style="margin-top: 16px; background: rgba(0,0,0,0.4); border-radius: 10px; padding: 12px; font-size: 12.5px; line-height: 1.5; color: #94A3B8; max-height: 120px; overflow-y: auto; text-align: left;"></div>
           </div>
         </div>
       </div>
@@ -464,7 +439,7 @@
             <div class="plan-price">$0 <span data-i18n="plan_forever">/ навсегда</span></div>
           </div>
           <ul class="plan-features">
-            <li data-i18n="pf_free_1" style="font-weight: 700;">✅ 2 AI-запроса в неделю</li>
+            <li data-i18n="pf_free_1">✅ 2 AI-запроса в день</li>
             <li data-i18n="pf_free_2">✅ Стандартный рассказ-медитация</li>
             <li data-i18n="pf_free_3">✅ Озвучка спокойным приятным голосом</li>
             <li data-i18n="pf_free_3_extra">✅ Нейрогимнастика и упражнения для баланса эмоций</li>
@@ -539,6 +514,76 @@
         </div>
       </div>
 
+      <!-- Вторая секция тарифов: Внешкольное и Удалённое Школьное Обучение -->
+      <div style="margin-top: 50px; text-align: center;">
+        <span class="section-tag" style="background: rgba(59,130,246,0.15); color: #3b82f6; border-color: rgba(59,130,246,0.3);">🎓 Специализированные Тарифы Обучения</span>
+        <h3 style="font-size: 28px; font-weight: 800; color: #fff; margin-top: 10px; margin-bottom: 8px;">Внешкольное Обучение и Удалённая ИИ-Школа</h3>
+        <p style="color: var(--text-muted); font-size: 14.5px; margin-bottom: 30px;">Многократное усиление развития достижений ребёнка по предметам без дорогих репетиторов за $50/час</p>
+      </div>
+
+      <div class="pricing-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); max-width: 900px; margin: 0 auto 40px;">
+        
+        <!-- Card 1: Extracurricular Tutoring -->
+        <div class="pricing-card glass-card" style="border: 2px solid #3b82f6; background: rgba(30,41,59,0.7); position: relative;">
+          <div class="popular-badge" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">📚 Предметное ИИ-Репетиторство</div>
+          <div class="plan-header" style="margin-top: 15px;">
+            <h3 style="color: #fff; font-size: 22px;">Внешкольное Обучение</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Выбор предмета для точечной ликвидации пробелов и многократного усиления развития достижений</p>
+            
+            <div style="margin-bottom: 14px; text-align: left;">
+              <label for="extracurricular-subject-select" style="font-size: 12px; font-weight: 700; color: #60a5fa; display: block; margin-bottom: 4px;">Выберите предмет для обучения:</label>
+              <select id="extracurricular-subject-select" class="form-select" style="width: 100%; padding: 10px; border-radius: 10px; background: rgba(15,23,42,0.9); border: 1px solid rgba(59,130,246,0.5); color: #fff; font-weight: 600;">
+                <option value="english">🇬🇧 Английский и другие языки</option>
+                <option value="math">📐 Математика</option>
+                <option value="physics">🔬 Физика</option>
+                <option value="coding">💻 Программирование</option>
+                <option value="it_projects">🚀 IT и интернет-проекты (Стартапы)</option>
+              </select>
+            </div>
+
+            <div class="card-billing-toggle">
+              <button class="card-cycle-btn btn-monthly active" onclick="setEduBillingCycle(this, 'Tutoring', 'monthly')">За месяц</button>
+              <button class="card-cycle-btn btn-annual" onclick="setEduBillingCycle(this, 'Tutoring', 'annual')">За год <span class="discount-badge">-$290 Скидка</span></button>
+            </div>
+            <div class="plan-price price-tutoring-monthly" style="font-size: 36px; font-weight: 800; color: #fff; margin-top: 10px;">$90 <span style="font-size: 14px; color: var(--text-muted);">/ месяц за предмет</span></div>
+            <div class="annual-subtext price-tutoring-annual hidden" style="font-size: 20px; font-weight: 800; color: #60a5fa; margin-top: 6px;">$790 / год <span style="font-size: 12px; color: var(--text-muted);">($65.8/мес)</span></div>
+          </div>
+          <ul class="plan-features" style="text-align: left; font-size: 13.5px; line-height: 1.6; margin-top: 15px;">
+            <li>✅ 15-минутная экспресс-ликвидация пробелов</li>
+            <li>✅ Многократное усиление развития уникальных талантов</li>
+            <li>✅ Беседы с ИИ-ассистентом репетитором</li>
+            <li>✅ Озвучка родным спокойным голосом родителя</li>
+            <li>✅ 3 часа учебы в день со 100% успеваемостью</li>
+          </ul>
+          <button class="btn btn-primary btn-block" onclick="submitEduSubjectOrder('Tutoring')" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); border: none; padding: 14px; font-weight: 700; font-size: 15px; margin-top: 15px;">💎 Выбрать предмет и оплатить ($90 / $790)</button>
+        </div>
+
+        <!-- Card 2: Remote School System -->
+        <div class="pricing-card glass-card" style="border: 2px solid #10b981; background: rgba(30,41,59,0.7); position: relative;">
+          <div class="popular-badge" style="background: linear-gradient(135deg, #10b981, #059669);">🚀 Полноценная ИИ-Школа</div>
+          <div class="plan-header" style="margin-top: 15px;">
+            <h3 style="color: #fff; font-size: 22px;">Удалённое Школьное Обучение</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">Полная автономная экосистема семейного обучения по всей школьной программе</p>
+            
+            <div class="card-billing-toggle">
+              <button class="card-cycle-btn btn-monthly active" onclick="setEduBillingCycle(this, 'School', 'monthly')">За месяц</button>
+              <button class="card-cycle-btn btn-annual" onclick="setEduBillingCycle(this, 'School', 'annual')">За год <span class="discount-badge">-$820 Скидка</span></button>
+            </div>
+            <div class="plan-price price-school-monthly" style="font-size: 36px; font-weight: 800; color: #fff; margin-top: 10px;">$340 <span style="font-size: 14px; color: var(--text-muted);">/ месяц</span></div>
+            <div class="annual-subtext price-school-annual hidden" style="font-size: 20px; font-weight: 800; color: #34d399; margin-top: 6px;">$4,900 / год <span style="font-size: 12px; color: var(--text-muted);">($408.3/мес)</span></div>
+          </div>
+          <ul class="plan-features" style="text-align: left; font-size: 13.5px; line-height: 1.6; margin-top: 15px;">
+            <li>✅ Все школьные предметы (Языки, Математика, Физика, IT)</li>
+            <li>✅ Учёба за 3 часа в день со 100% успеваемостью</li>
+            <li>✅ ИИ-коуч состояний и защиты от выгорания</li>
+            <li>✅ Развитие мышления Создателя (Creator Mindset)</li>
+            <li>✅ Прозрачный дашборд для родителей в 1 клик</li>
+          </ul>
+          <button class="btn btn-primary btn-block" onclick="submitEduSubjectOrder('School')" style="background: linear-gradient(135deg, #10b981, #047857); border: none; padding: 14px; font-weight: 700; font-size: 15px; margin-top: 15px;">🚀 Активировать Школьное Обучение ($340 / $4,900)</button>
+        </div>
+
+      </div>
+
       <!-- Add-on Token Pack -->
       <div class="topup-box glass-card">
         <div class="topup-info">
@@ -547,179 +592,6 @@
           <p data-i18n="topup_desc">Закончился лимит подписки? Докупите 50 минут без смены тарифного плана.</p>
         </div>
         <button class="btn btn-secondary btn-sm" onclick="selectPlan('Topup_50min', 4.99)" data-i18n="btn_topup">Докупить за $4.99</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- New Educational Marketing & Subjects Section -->
-  <section id="edu-subjects" class="section" style="background: rgba(15, 23, 42, 0.6); border-top: 1px solid rgba(255,255,255,0.06); padding: 60px 0;">
-    <div class="container">
-      <div class="section-header text-center">
-        <span class="section-tag" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;" data-i18n="tag_edu_marketing">🚀 Внешкольное обучение &amp; Многократное усиление достижений</span>
-        <h2 class="section-title" data-i18n="title_edu_marketing">ИИ-Репетиторство и Предметы Успеха</h2>
-        <p class="section-subtitle" style="max-width: 800px; margin: 0 auto;" data-i18n="sub_edu_marketing">
-          Персонализированная траектория развития ребёнка по предметам с Сократовским ИИ-наставником и ускоренным пониманием без слез и репетиторов.
-        </p>
-      </div>
-
-      <!-- Subject Cards Grid -->
-      <div class="edu-subjects-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 40px;">
-        <!-- Card 1: English & Foreign Languages -->
-        <div class="glass-card subject-card" style="padding: 24px; border-radius: 16px; border: 1px solid rgba(59,130,246,0.3); background: rgba(30,58,138,0.15); transition: 0.3s; text-align: left;">
-          <div style="font-size: 36px; margin-bottom: 12px;">🇬🇧 🗣️</div>
-          <h3 style="font-size: 19px; color: #60a5fa; margin-bottom: 8px;" data-i18n="subj_lang_title">Английский и языки</h3>
-          <p style="font-size: 13.5px; color: #cbd5e1; line-height: 1.5; margin-bottom: 14px;" data-i18n="subj_lang_desc">
-            Живой разговорный диалог с ИИ-носителями языка. Развитие беглой речи, словарного запаса и естественной фонетики без зубрежки правил.
-          </p>
-          <span style="font-size: 12px; font-weight: 700; color: #38bdf8; background: rgba(56,189,248,0.15); padding: 4px 10px; border-radius: 12px;" data-i18n="subj_lang_badge">⚡ Ускорение x3</span>
-        </div>
-
-        <!-- Card 2: Mathematics -->
-        <div class="glass-card subject-card" style="padding: 24px; border-radius: 16px; border: 1px solid rgba(168,85,247,0.3); background: rgba(88,28,135,0.15); transition: 0.3s; text-align: left;">
-          <div style="font-size: 36px; margin-bottom: 12px;">📐 🧠</div>
-          <h3 style="font-size: 19px; color: #c084fc; margin-bottom: 8px;" data-i18n="subj_math_title">Математика и Логика</h3>
-          <p style="font-size: 13.5px; color: #cbd5e1; line-height: 1.5; margin-bottom: 14px;" data-i18n="subj_math_desc">
-            Сократовский метод наводящих вопросов. Разбор сложных алгебраических и геометрийских концепций за 15 минут в день.
-          </p>
-          <span style="font-size: 12px; font-weight: 700; color: #c084fc; background: rgba(192,132,252,0.15); padding: 4px 10px; border-radius: 12px;" data-i18n="subj_math_badge">🧩 100% Понимание</span>
-        </div>
-
-        <!-- Card 3: Physics -->
-        <div class="glass-card subject-card" style="padding: 24px; border-radius: 16px; border: 1px solid rgba(245,158,11,0.3); background: rgba(120,53,15,0.15); transition: 0.3s; text-align: left;">
-          <div style="font-size: 36px; margin-bottom: 12px;">⚡ 🔬</div>
-          <h3 style="font-size: 19px; color: #fbbf24; margin-bottom: 8px;" data-i18n="subj_phys_title">Физика и Науки</h3>
-          <p style="font-size: 13.5px; color: #cbd5e1; line-height: 1.5; margin-bottom: 14px;" data-i18n="subj_phys_desc">
-            Интерактивное моделирование физических явлений и природного мира через живые примеры, жизненные задачи и наглядные эксперименты.
-          </p>
-          <span style="font-size: 12px; font-weight: 700; color: #fbbf24; background: rgba(251,191,36,0.15); padding: 4px 10px; border-radius: 12px;" data-i18n="subj_phys_badge">🔬 Практический смысл</span>
-        </div>
-
-        <!-- Card 4: Programming -->
-        <div class="glass-card subject-card" style="padding: 24px; border-radius: 16px; border: 1px solid rgba(16,185,129,0.3); background: rgba(6,78,59,0.15); transition: 0.3s; text-align: left;">
-          <div style="font-size: 36px; margin-bottom: 12px;">💻 🤖</div>
-          <h3 style="font-size: 19px; color: #34d399; margin-bottom: 8px;" data-i18n="subj_prog_title">Программирование</h3>
-          <p style="font-size: 13.5px; color: #cbd5e1; line-height: 1.5; margin-bottom: 14px;" data-i18n="subj_prog_desc">
-            Основы алгоритмов, Python, JavaScript, веб-разработка и создание собственного кода с пошаговыми подсказками ИИ-коуча.
-          </p>
-          <span style="font-size: 12px; font-weight: 700; color: #34d399; background: rgba(52,211,153,0.15); padding: 4px 10px; border-radius: 12px;" data-i18n="subj_prog_badge">🚀 Создание программ</span>
-        </div>
-
-        <!-- Card 5: IT & Internet Projects -->
-        <div class="glass-card subject-card" style="padding: 24px; border-radius: 16px; border: 1px solid rgba(236,72,153,0.3); background: rgba(131,24,67,0.15); transition: 0.3s; text-align: left;">
-          <div style="font-size: 36px; margin-bottom: 12px;">🌐 🚀</div>
-          <h3 style="font-size: 19px; color: #f472b6; margin-bottom: 8px;" data-i18n="subj_it_title">IT &amp; Интернет-проекты</h3>
-          <p style="font-size: 13.5px; color: #cbd5e1; line-height: 1.5; margin-bottom: 14px;" data-i18n="subj_it_desc">
-            Развитие мышления Создателя (Creator Mindset), управление ИИ-нейросетями, стартап-проектное мышление и запуски цифровых продуктов.
-          </p>
-          <span style="font-size: 12px; font-weight: 700; color: #f472b6; background: rgba(244,114,182,0.15); padding: 4px 10px; border-radius: 12px;" data-i18n="subj_it_badge">💡 Creator Mindset</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- New Educational Pricing & Payment Section -->
-  <section id="edu-pricing" class="section" style="padding: 60px 0; background: rgba(15, 23, 42, 0.85); border-top: 1px solid rgba(255,255,255,0.06);">
-    <div class="container">
-      <div class="section-header text-center">
-        <span class="section-tag" style="background: rgba(249,115,22,0.2); color: #f97316;" data-i18n="tag_edu_plans">Тарифы Образовательного Комплекса</span>
-        <h2 class="section-title" data-i18n="title_edu_plans">Выберите Формат Обучения</h2>
-        <p class="section-subtitle" data-i18n="sub_edu_plans">Внешкольное репетиторство по выбранному предмету или полноценная удаленная школьная система</p>
-        
-        <!-- Main Educational Billing Toggle (Monthly / Annual) -->
-        <div class="edu-main-toggle-container" style="display: inline-flex; background: rgba(255,255,255,0.06); padding: 6px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.12); margin-top: 24px;">
-          <button class="edu-cycle-btn active" id="edu-toggle-monthly" onclick="switchEduBillingCycle('monthly')" style="padding: 10px 24px; border-radius: 10px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.3s; background: var(--color-orange); color: #fff;" data-i18n="btn_edu_cycle_monthly">
-            Ежемесячно
-          </button>
-          <button class="edu-cycle-btn" id="edu-toggle-annual" onclick="switchEduBillingCycle('annual')" style="padding: 10px 24px; border-radius: 10px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.3s; background: transparent; color: var(--text-muted);" data-i18n="btn_edu_cycle_annual">
-            Оплата за год <span style="background: #22c55e; color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 6px;">Выгода до $820</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Educational Plans Grid -->
-      <div class="pricing-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 960px; margin: 40px auto 0;">
-        
-        <!-- Plan 1: Extracurricular Tutoring ($90/mo or $790/yr) -->
-        <div class="pricing-card glass-card" style="border: 2px solid rgba(59,130,246,0.5); position: relative; background: rgba(30, 58, 138, 0.2);">
-          <div class="popular-badge" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);" data-i18n="badge_tutoring">🎓 Внешкольное Репетиторство</div>
-          <div class="plan-header">
-            <h3 data-i18n="plan_title_tutoring">Внешкольное Обучение</h3>
-            <p data-i18n="plan_tutoring_sub">Репетиторство и глубинное освоение предмета</p>
-            
-            <!-- Subject Selector Dropdown -->
-            <div style="margin: 16px 0 10px; text-align: left;">
-              <label style="font-size: 12px; color: #94a3b8; font-weight: 600; display: block; margin-bottom: 4px;" data-i18n="lbl_select_subject">Выберите основной предмет:</label>
-              <select id="tutoring-subject-select" style="width: 100%; padding: 10px 12px; background: rgba(15,23,42,0.9); border: 1px solid rgba(59,130,246,0.4); border-radius: 10px; color: #fff; font-size: 13.5px; font-weight: 600; cursor: pointer;">
-                <option value="Английский и иностранные языки">🇬🇧 Английский и иностранные языки</option>
-                <option value="Математика и Логика">📐 Математика и Логика</option>
-                <option value="Физика и Естественные науки">⚡ Физика и Естественные науки</option>
-                <option value="Программирование (Python, JS)">💻 Программирование (Python, JS)</option>
-                <option value="IT &amp; Интернет-проекты">🚀 IT &amp; Интернет-проекты</option>
-              </select>
-            </div>
-
-            <!-- Pricing Box -->
-            <div class="plan-price edu-price-tutoring-monthly" style="font-size: 38px; font-weight: 800; color: #60a5fa;">
-              $90 <span style="font-size: 16px; font-weight: 500; color: #94a3b8;" data-i18n="plan_per_month">/ месяц</span>
-            </div>
-            <div class="plan-price edu-price-tutoring-annual hidden" style="font-size: 38px; font-weight: 800; color: #60a5fa;">
-              $790 <span style="font-size: 16px; font-weight: 500; color: #94a3b8;" data-i18n="plan_per_year">/ год</span>
-            </div>
-            <div class="annual-subtext edu-subtext-tutoring-annual hidden" style="color: #22c55e; font-weight: 700; font-size: 13px; margin-top: 4px;">
-              Экономия $290 в год! ($65.80 / мес)
-            </div>
-          </div>
-
-          <ul class="plan-features" style="text-align: left; margin: 20px 0;">
-            <li data-i18n="pf_tut_1">✅ ИИ-Репетитор 24/7 по выбранному предмету</li>
-            <li data-i18n="pf_tut_2">✅ Пошаговая ликвидация прошлых пробелов за 15 минут</li>
-            <li data-i18n="pf_tut_3">✅ Озвучка заданий и формул родным голосом родителя</li>
-            <li data-i18n="pf_tut_4">✅ Развитие критического мышления и Soft Skills</li>
-            <li data-i18n="pf_tut_5">✅ Еженедельный отчёт успеваемости для родителей</li>
-          </ul>
-
-          <button class="btn btn-primary btn-block" id="btn-pay-tutoring" onclick="handleEduCheckout('Внешкольное обучение')" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); border: none; padding: 14px; font-size: 15px; font-weight: 700;">
-            Подключить Репетиторство
-          </button>
-        </div>
-
-        <!-- Plan 2: Full Remote School System ($340/mo or $4900/yr) -->
-        <div class="pricing-card glass-card featured-card" style="border: 2px solid rgba(16,185,129,0.6); position: relative; background: rgba(6, 78, 59, 0.25);">
-          <div class="popular-badge" style="background: linear-gradient(135deg, #10b981, #059669);" data-i18n="badge_school">🚀 Полный Школьный Комплекс</div>
-          <div class="plan-header">
-            <h3 data-i18n="plan_title_school">Удалённая Школьная Система</h3>
-            <p data-i18n="plan_school_sub">Полноценная автономная экосистема обучения</p>
-            
-            <div style="margin: 16px 0 10px; text-align: left;">
-              <span style="font-size: 12.5px; color: #a7f3d0; font-weight: 700; display: block;" data-i18n="lbl_all_subjects_included">✨ Все предметы + IT-Инкубатор включены:</span>
-              <div style="font-size: 12px; color: #cbd5e1; margin-top: 4px; line-height: 1.4;">Языки, Математика, Физика, Программирование, IT-проекты</div>
-            </div>
-
-            <!-- Pricing Box -->
-            <div class="plan-price edu-price-school-monthly" style="font-size: 38px; font-weight: 800; color: #34d399;">
-              $340 <span style="font-size: 16px; font-weight: 500; color: #94a3b8;" data-i18n="plan_per_month">/ месяц</span>
-            </div>
-            <div class="plan-price edu-price-school-annual hidden" style="font-size: 38px; font-weight: 800; color: #34d399;">
-              $4,900 <span style="font-size: 16px; font-weight: 500; color: #94a3b8;" data-i18n="plan_per_year">/ год</span>
-            </div>
-            <div class="annual-subtext edu-subtext-school-annual hidden" style="color: #34d399; font-weight: 700; font-size: 13px; margin-top: 4px;">
-              Экономия $820 в год! ($408.33 / мес)
-            </div>
-          </div>
-
-          <ul class="plan-features" style="text-align: left; margin: 20px 0;">
-            <li data-i18n="pf_sch_1">✅ Полная школьная программа «Учёба за 3 часа в день»</li>
-            <li data-i18n="pf_sch_2">✅ Доступ ко ВСЕМ предметам (Языки, Математика, Физика, Кодинг)</li>
-            <li data-i18n="pf_sch_3">✅ ИИ-Коуч состояний, эмоций и фокуса внимания</li>
-            <li data-i18n="pf_sch_4">✅ Формирование мышления Создателя (Creator Mindset)</li>
-            <li data-i18n="pf_sch_5">✅ Семейный доступ до 5 детей + Личный Супервизор</li>
-          </ul>
-
-          <button class="btn btn-primary btn-block btn-orange" id="btn-pay-school" onclick="handleEduCheckout('Удалённая система образования')" style="background: linear-gradient(135deg, #10b981, #047857); border: none; padding: 14px; font-size: 15px; font-weight: 700;">
-            Подключить Школьную Систему
-          </button>
-        </div>
-
       </div>
     </div>
   </section>
@@ -790,16 +662,16 @@
         </div>
 
         <div class="form-group">
-          <label for="auth-password">Ваш Пароль:</label>
-          <input type="password" id="auth-password" placeholder="••••••••" class="form-input">
-        </div>
-
-        <div class="form-group">
           <label for="auth-phone" data-i18n="label_auth_phone">WhatsApp/Telegram:</label>
           <input type="tel" id="auth-phone" placeholder="WhatsApp / Telegram (+7...)" class="form-input">
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block btn-orange" data-i18n="btn_auth_submit">Войти по Email и Паролю</button>
+        <div class="checkbox-group">
+          <input type="checkbox" id="terms-agree" required>
+          <label for="terms-agree" data-i18n="label_terms_agree">Я согласен с Условиями использования и политикой конфиденциальности.</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-orange" data-i18n="btn_auth_submit">Войти / Зарегистрироваться</button>
       </form>
     </div>
   </div>
@@ -1000,7 +872,7 @@
 
   <!-- Modal 1: Tutoring & Extracurricular Education -->
   <div id="edu-tutoring-modal" class="modal-backdrop hidden">
-    <div class="modal-card glass-card" style="max-width: 800px; max-height: 85vh; overflow-y: auto;">
+    <div class="modal-card glass-card" style="max-width: 750px; max-height: 85vh; overflow-y: auto;">
       <button class="modal-close" onclick="closeEduTutoringModal()">✕</button>
       
       <!-- TOP BUTTON -->
@@ -1010,31 +882,20 @@
         </button>
       </div>
 
-      <h3 style="font-size: 24px; margin-bottom: 8px; color: #fff;">📚 Комплексная Программа Внешкольного ИИ-Обучения</h3>
+      <h3 style="font-size: 24px; margin-bottom: 8px; color: #fff;">📚 ИИ репетиторство и Внешкольное образование</h3>
       <p class="modal-subtitle" style="font-size: 14px; margin-bottom: 20px; color: var(--text-muted);">
-        Персонализированное ИИ-репетиторство, многократное усиление талантов и освоение ключевых предметов будущего без слез и дорогих репетиторов за $50/час!
+        Школьная программа по главным предметам без слез, зубрежки и дорогих репетиторов за $50/час!
       </p>
 
-      <!-- Key Features Box -->
       <div style="text-align: left; background: rgba(255,255,255,0.04); border: 1px solid var(--bg-card-border); border-radius: 16px; padding: 20px; margin-bottom: 20px;">
-        <h4 style="font-size: 18px; color: #3b82f6; margin-bottom: 12px;">🌟 Ключевые предметные направления внешкольного обучения:</h4>
+        <h4 style="font-size: 18px; color: #3b82f6; margin-bottom: 12px;">🌟 Ключевые возможности модуля:</h4>
         <ul style="line-height: 1.7; font-size: 14px; color: #e2e8f0; padding-left: 20px;">
-          <li style="margin-bottom: 10px;"><strong>🇬🇧 🗣️ Английский и иностранные языки:</strong> Живой разговорный диалог с ИИ-носителями языка. Развитие беглой речи, расширение словарного запаса и естественная фонетика без скучного заучивания правил.</li>
-          <li style="margin-bottom: 10px;"><strong>📐 🧠 Математика и Логика:</strong> Сократовский метод наводящих вопросов. Пошаговый разбор сложных алгебраических и геометрических задач за 15 минут в день.</li>
-          <li style="margin-bottom: 10px;"><strong>⚡ 🔬 Физика и Естественные науки:</strong> Интерактивное моделирование физических явлений и природного мира через живые примеры, практические задачи и наглядные эксперименты.</li>
-          <li style="margin-bottom: 10px;"><strong>💻 🤖 Программирование и алгоритмы:</strong> Изучение основ кодинга, Python, JavaScript, веб-разработки и создание собственных программ с пошаговыми подсказками ИИ-коуча.</li>
-          <li style="margin-bottom: 10px;"><strong>🌐 🚀 IT &amp; Интернет-проекты:</strong> Развитие мышления Создателя (Creator Mindset), управление ИИ-нейросетями, стартап-проектное мышление и успешный запуск цифровых продуктов.</li>
-        </ul>
-      </div>
-
-      <!-- Talent Multiplication Strategy Box -->
-      <div style="text-align: left; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); border-radius: 16px; padding: 20px; margin-bottom: 20px;">
-        <h4 style="font-size: 18px; color: #60a5fa; margin-bottom: 12px;">🚀 Многократное усиление развития навыков и талантов:</h4>
-        <ul style="line-height: 1.7; font-size: 14px; color: #e2e8f0; padding-left: 20px;">
-          <li style="margin-bottom: 10px;"><strong>🔍 Ликвидация пробелов за 15 минут:</strong> ИИ точно определяет слабые темы прошлых классов и подтягивает их без стресса.</li>
-          <li style="margin-bottom: 10px;"><strong>⭐ Выявление и поддержка сильных сторон:</strong> Алгоритм выявляет уникальные способности ребёнка, предлагает индивидуальные усложнённые кейсы и выводит навыки на экспертный уровень.</li>
-          <li style="margin-bottom: 10px;"><strong>🎙️ Озвучка родным голосом родителя:</strong> Пояснения сложных правил и формул успокаивающим голосом мамы или папы снижают учебную тревожность и повышают усвоение до 3-х раз.</li>
-          <li style="margin-bottom: 10px;"><strong>💡 Развитие Soft Skills &amp; EQ:</strong> Обучение критическому мышлению, ораторскому мастерству и эмоциональной саморегуляции прямо в процессе занятий.</li>
+          <li style="margin-bottom: 10px;"><strong>🔍 Ликвидация «пробелов» за 15 минут:</strong> Точно определяет слабую тему прошлых классов и подтягивает её без бессмысленной зубрежки.</li>
+          <li style="margin-bottom: 10px;"><strong>🚀 Выявление и поддержка сильных сторон и талантов:</strong> Находит уникальные сильные стороны в развитии ребёнка, предлагает их максимально усилить и выводит их на более высокий уровень.</li>
+          <li style="margin-bottom: 10px;"><strong>🧠 Сократовский ИИ-Репетитор:</strong> Не дает готовые ответы, а задает наводящие вопросы и ведет ребенка к самостоятельному пониманию.</li>
+          <li style="margin-bottom: 10px;"><strong>⏱️ Учёба за 3 часа в день (3-Hour Mastery):</strong> За счет адаптивного ИИ ребенок усваивает всю школьную программу (математика, языки, естественные науки) за 3 часа в день со 100% пониманием предмета.</li>
+          <li style="margin-bottom: 10px;"><strong>🎙️ Озвучка родным голосом родителя:</strong> Пояснения сложных формул успокаивающим голосом мамы или папы снижают учебную тревожность.</li>
+          <li style="margin-bottom: 10px;"><strong>💡 Развитие Soft Skills & EQ:</strong> Параллельное обучение критическому мышлению, ораторскому искусству и эмоциональной саморегуляции.</li>
         </ul>
       </div>
 
