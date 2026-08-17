@@ -151,70 +151,6 @@ tr:hover td{background:rgba(255,255,255,0.03)}
 </div>
 </div>
 
-<!-- Investor KPIs & 5 Key Conversion Parameters Section -->
-<div class="panel" style="margin-bottom:28px; background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98)); border: 1px solid rgba(6, 182, 212, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-  <div class="panel-title" style="font-size: 16px; color: var(--cyan); border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 20px;">
-    <span>🚀</span> 5 Главных Параметров и Конверсий для Инвесторов (Investor KPIs & Conversion Rates)
-  </div>
-
-  <div id="investor-kpis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px;">
-    <!-- Metric 1: Audio Generation & Playback Conversion -->
-    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 18px;">
-      <div style="font-size: 11.5px; color: var(--muted); font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">1. Активация в Продукт (Аудио & ИИ)</div>
-      <div style="font-size: 28px; font-weight: 800; color: var(--orange);" id="inv-m1-pct">0%</div>
-      <div style="font-size: 12px; color: var(--text); margin-top: 4px;" id="inv-m1-cnt">0 сессий</div>
-      <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 10px; overflow: hidden;">
-        <div id="inv-m1-bar" style="height: 100%; width: 0%; background: var(--orange); transition: width 1s;"></div>
-      </div>
-      <div style="font-size: 11px; color: var(--muted); margin-top: 8px;">Конверсия в запуск и воспроизведение аудиотрека</div>
-    </div>
-
-    <!-- Metric 2: Lead Generation / WhatsApp & Email Capture -->
-    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 18px;">
-      <div style="font-size: 11.5px; color: var(--muted); font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">2. Захват Контактов & Лидогенерация</div>
-      <div style="font-size: 28px; font-weight: 800; color: var(--cyan);" id="inv-m2-pct">0%</div>
-      <div style="font-size: 12px; color: var(--text); margin-top: 4px;" id="inv-m2-cnt">0 лидов</div>
-      <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 10px; overflow: hidden;">
-        <div id="inv-m2-bar" style="height: 100%; width: 0%; background: var(--cyan); transition: width 1s;"></div>
-      </div>
-      <div style="font-size: 11px; color: var(--muted); margin-top: 8px;">Конверсия визитов в Email / WhatsApp контакты</div>
-    </div>
-
-    <!-- Metric 3: NDA & Legal Agreement Conversion -->
-    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 18px;">
-      <div style="font-size: 11.5px; color: var(--muted); font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">3. Подписание NDA и Соглашения</div>
-      <div style="font-size: 28px; font-weight: 800; color: var(--yellow);" id="inv-m3-pct">0%</div>
-      <div style="font-size: 12px; color: var(--text); margin-top: 4px;" id="inv-m3-cnt">0 подписей NDA</div>
-      <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 10px; overflow: hidden;">
-        <div id="inv-m3-bar" style="height: 100%; width: 0%; background: var(--yellow); transition: width 1s;"></div>
-      </div>
-      <div style="font-size: 11px; color: var(--muted); margin-top: 8px;">Конверсия пользователей в оформление согласия</div>
-    </div>
-
-    <!-- Metric 4: Paywall Intent & Paid Upgrade -->
-    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 18px;">
-      <div style="font-size: 11.5px; color: var(--muted); font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">4. Пейволл и Нажатия Платных Тарифов</div>
-      <div style="font-size: 28px; font-weight: 800; color: var(--green);" id="inv-m4-pct">0%</div>
-      <div style="font-size: 12px; color: var(--text); margin-top: 4px;" id="inv-m4-cnt">0 кликов по подпискам</div>
-      <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 10px; overflow: hidden;">
-        <div id="inv-m4-bar" style="height: 100%; width: 0%; background: var(--green); transition: width 1s;"></div>
-      </div>
-      <div style="font-size: 11px; color: var(--muted); margin-top: 8px;">Готовность платить (Попытка покупки подписки)</div>
-    </div>
-
-    <!-- Metric 5: CustDev Survey Completion -->
-    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 18px;">
-      <div style="font-size: 11.5px; color: var(--muted); font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">5. Завершение CustDev Опросов</div>
-      <div style="font-size: 28px; font-weight: 800; color: var(--purple);" id="inv-m5-pct">0%</div>
-      <div style="font-size: 12px; color: var(--text); margin-top: 4px;" id="inv-m5-cnt">0 ответов на опрос</div>
-      <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 10px; overflow: hidden;">
-        <div id="inv-m5-bar" style="height: 100%; width: 0%; background: var(--purple); transition: width 1s;"></div>
-      </div>
-      <div style="font-size: 11px; color: var(--muted); margin-top: 8px;">Вовлечение аудитории в исследования и отзывы</div>
-    </div>
-  </div>
-</div>
-
 <div class="panel" style="margin-bottom:28px">
 <div class="panel-title"><span>👤</span>Список посетителей — Email / WhatsApp/TG / Имя</div>
 <div class="table-toolbar">
@@ -258,7 +194,7 @@ tr:hover td{background:rgba(255,255,255,0.03)}
 <div class="toast" id="toast"></div>
 <script>
 // Supabase Configuration
-const supabaseUrl = 'https://yslrofsjeujsftlabuqn.supabase.co/rest/v1/analytics_events?select=*&order=id.desc&limit=100000';
+const supabaseUrl = 'https://yslrofsjeujsftlabuqn.supabase.co/rest/v1/analytics_events?select=*&order=id.desc&limit=500';
 const supabaseKey = 'sb_publishable_tnc4wA3Cr-FtaDyjVz9Q6Q_fklMPSDr';
 
 const PASS = 'Mind1234';
@@ -291,8 +227,7 @@ async function loadData(){
     const response = await fetch(supabaseUrl, {
       headers: {
         'apikey': supabaseKey,
-        'Authorization': 'Bearer ' + supabaseKey,
-        'Prefer': 'count=exact'
+        'Authorization': 'Bearer ' + supabaseKey
       }
     });
     
@@ -393,47 +328,6 @@ function renderAll(){
   renderReviewsTable();
   renderTable();
   renderAllBtns(ec);
-  renderInvestorKPIs(s, f, pv);
-}
-
-function renderInvestorKPIs(s, f, pv) {
-  const pageViews = pv || 1;
-  const uniqueLeads = (s.unique_emails || 0) + (s.unique_phones || 0);
-  const audioGens = (f.meditations || 0) + (f.plays || 0);
-  const ndaSigns = f.nda_signed || 0;
-  const paidPlanClicks = f.plan_clicks || 0;
-  const ec = s.event_counts || {};
-  const custdevs = (ec['CustDev_Submitted'] || 0) + (ec['CustDev'] || 0);
-
-  // M1: Audio Gen %
-  const m1Pct = Math.min(100, Math.round((audioGens / pageViews) * 100));
-  const el1 = document.getElementById('inv-m1-pct'); if(el1) el1.innerText = m1Pct + '%';
-  const el1c = document.getElementById('inv-m1-cnt'); if(el1c) el1c.innerText = `${audioGens} генераций/воспроизведений`;
-  const el1b = document.getElementById('inv-m1-bar'); if(el1b) el1b.style.width = m1Pct + '%';
-
-  // M2: Lead Capture %
-  const m2Pct = Math.min(100, Math.round((uniqueLeads / pageViews) * 100));
-  const el2 = document.getElementById('inv-m2-pct'); if(el2) el2.innerText = m2Pct + '%';
-  const el2c = document.getElementById('inv-m2-cnt'); if(el2c) el2c.innerText = `${uniqueLeads} уникальных лидов (Email/Phone)`;
-  const el2b = document.getElementById('inv-m2-bar'); if(el2b) el2b.style.width = m2Pct + '%';
-
-  // M3: NDA Signs %
-  const m3Pct = Math.min(100, Math.round((ndaSigns / pageViews) * 100));
-  const el3 = document.getElementById('inv-m3-pct'); if(el3) el3.innerText = m3Pct + '%';
-  const el3c = document.getElementById('inv-m3-cnt'); if(el3c) el3c.innerText = `${ndaSigns} подписей NDA`;
-  const el3b = document.getElementById('inv-m3-bar'); if(el3b) el3b.style.width = m3Pct + '%';
-
-  // M4: Paywall Intent %
-  const m4Pct = Math.min(100, Math.round((paidPlanClicks / pageViews) * 100));
-  const el4 = document.getElementById('inv-m4-pct'); if(el4) el4.innerText = m4Pct + '%';
-  const el4c = document.getElementById('inv-m4-cnt'); if(el4c) el4c.innerText = `${paidPlanClicks} кликов по тарифам`;
-  const el4b = document.getElementById('inv-m4-bar'); if(el4b) el4b.style.width = m4Pct + '%';
-
-  // M5: CustDev Survey %
-  const m5Pct = Math.min(100, Math.round((custdevs / pageViews) * 100));
-  const el5 = document.getElementById('inv-m5-pct'); if(el5) el5.innerText = m5Pct + '%';
-  const el5c = document.getElementById('inv-m5-cnt'); if(el5c) el5c.innerText = `${custdevs} заполненных анкет`;
-  const el5b = document.getElementById('inv-m5-bar'); if(el5b) el5b.style.width = m5Pct + '%';
 }
 
 function renderFunnel(f,pv){
