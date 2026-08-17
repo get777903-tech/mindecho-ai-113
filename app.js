@@ -7,8 +7,10 @@
 const supabaseUrl = 'https://yslrofsjeujsftlabuqn.supabase.co/rest/v1/analytics_events';
 const supabaseKey = 'sb_publishable_tnc4wA3Cr-FtaDyjVz9Q6Q_fklMPSDr';
 
-// Audio Track File Name
-const MEDITATION_AUDIO_SRC = "audio/meditation1.mp3";
+// Audio Track File Names & External Repositories
+const MEDITATION_AUDIO_SRC = "meditation1.mp3";
+const MORNING_AUDIO_STANDARD_URL = "https://raw.githubusercontent.com/get777903-tech/mindecho-ai-115/main/audio/meditation%20good%20morning1.mp3";
+
 
 // Unique session ID for this visit
 const SESSION_ID = 'sess_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
@@ -46,17 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initAudioPlayer();
   initSignatureCanvas();
   initAnalyticsTracking();
-
-  // Header login button shows email username before @
-  const savedEmail = localStorage.getItem('userEmail') || 'get777903@gmail.com';
-  const userLogin = savedEmail.split('@')[0];
-  const navBtn = document.getElementById('nav-login-btn');
-  if (navBtn) {
-    navBtn.innerText = `👤 ${userLogin}`;
-    navBtn.style.background = 'rgba(34, 197, 94, 0.15)';
-    navBtn.style.borderColor = '#22C55E';
-    navBtn.style.color = '#22C55E';
-  }
 });
 
 // Initialize Audio Element
@@ -86,8 +77,6 @@ const translations = {
   ru: {
     nav_mission: "Миссия",
     nav_modes: "Эмоциональная помощь",
-    nav_edu_subjects: "📚 Внешкольное обучение",
-    nav_edu_pricing: "🎓 Школьные тарифы",
     nav_generator: "Студия",
     nav_pricing: "Тарифы",
     nav_nda: "DISCLAIMER",
@@ -169,16 +158,6 @@ const translations = {
     opt_male_deep: "🎙 мужской - низкий спокойный голос",
     opt_female_calm: "🎙 женский спокойный голос",
     opt_generated_parent: "🎙 сгенерированный голос мамы или папы",
-    label_meditation_duration: "⏱ Длительность медитации (минут, 4–30 мин):",
-    opt_dur_4: "⏱ 4 минуты (Мягкое засыпание)",
-    opt_dur_5: "⏱ 5 минут (Стандартная сказка-медитация)",
-    opt_dur_7: "⏱ 7 минут (Глубокий покой)",
-    opt_dur_10: "⏱ 10 минут (Погружение в сон)",
-    opt_dur_15: "⏱ 15 минут (Длительная сказка-медитация)",
-    opt_dur_20: "⏱ 20 минут (Глубокий убаюкивающий сон)",
-    opt_dur_25: "⏱ 25 минут (Полное расслабление и покой)",
-    opt_dur_30: "⏱ 30 минут (Максимально полезная медитация)",
-    btn_listen_generated: "«▶️ Слушать сказку-медитацию, сгенерированную заданным голосом»",
     label_meditation_mode: "Режим рассказа-медитации:",
     opt_mode_bedtime: "🌙 Перед сном (Засыпание)",
     opt_mode_morning: "☀️ Утренняя (Уверенность)",
@@ -195,7 +174,7 @@ const translations = {
     plan_title_free: "Free (Базовый)",
     plan_free_sub: "Ощутить ценность сервиса",
     plan_forever: "/ навсегда",
-    pf_free_1: "✅ 2 AI-запроса в неделю",
+    pf_free_1: "✅ 2 AI-запроса в день",
     pf_free_2: "✅ Стандартный рассказ-медитация",
     pf_free_3: "✅ Озвучка спокойным приятным голосом",
     pf_free_3_extra: "✅ Нейрогимнастика и упражнения для баланса эмоций",
@@ -258,55 +237,11 @@ const translations = {
     legal_terms: "Условия использования",
     copyright_text: "© 2026 MindEcho AI Inc. Все права защищены.",
     link_admin_login: "🔐 Вход в административную часть \"admin\"",
-    label_voice_consent: "Даю согласие на обработку записи голоса для клонирования ИИ",
-    tag_edu_marketing: "🚀 Внешкольное обучение & Многократное усиление достижений",
-    title_edu_marketing: "ИИ-Репетиторство и Предметы Успеха",
-    sub_edu_marketing: "Персонализированная траектория развития ребёнка по предметам с Сократовским ИИ-наставником и ускоренным пониманием без слез и репетиторов.",
-    subj_lang_title: "Английский и языки",
-    subj_lang_desc: "Живой разговорный диалог с ИИ-носителями языка. Развитие беглой речи, словарного запаса и естественной фонетики без зубрежки правил.",
-    subj_lang_badge: "⚡ Ускорение x3",
-    subj_math_title: "Математика и Логика",
-    subj_math_desc: "Сократовский метод наводящих вопросов. Разбор сложных алгебраических и геометрийских концепций за 15 минут в день.",
-    subj_math_badge: "🧩 100% Понимание",
-    subj_phys_title: "Физика и Науки",
-    subj_phys_desc: "Интерактивное моделирование физических явлений и природного мира через живые примеры, жизненные задачи и наглядные эксперименты.",
-    subj_phys_badge: "🔬 Практический смысл",
-    subj_prog_title: "Программирование",
-    subj_prog_desc: "Основы алгоритмов, Python, JavaScript, веб-разработка и создание собственного кода с пошаговыми подсказками ИИ-коуча.",
-    subj_prog_badge: "🚀 Создание программ",
-    subj_it_title: "IT & Интернет-проекты",
-    subj_it_desc: "Развитие мышления Создателя (Creator Mindset), управление ИИ-нейросетями, стартап-проектное мышление и запуски цифровых продуктов.",
-    subj_it_badge: "💡 Creator Mindset",
-    tag_edu_plans: "Тарифы Образовательного Комплекса",
-    title_edu_plans: "Выберите Формат Обучения",
-    sub_edu_plans: "Внешкольное репетиторство по выбранному предмету или полноценная удаленная школьная система",
-    btn_edu_cycle_monthly: "Ежемесячно",
-    btn_edu_cycle_annual: "Оплата за год (Выгода до $820)",
-    badge_tutoring: "🎓 Внешкольное Репетиторство",
-    plan_title_tutoring: "Внешкольное Обучение",
-    plan_tutoring_sub: "Репетиторство и глубинное освоение предмета",
-    lbl_select_subject: "Выберите основной предмет:",
-    plan_per_year: "/ год",
-    pf_tut_1: "✅ ИИ-Репетитор 24/7 по выбранному предмету",
-    pf_tut_2: "✅ Пошаговая ликвидация прошлых пробелов за 15 минут",
-    pf_tut_3: "✅ Озвучка заданий и формул родным голосом родителя",
-    pf_tut_4: "✅ Развитие критического мышления и Soft Skills",
-    pf_tut_5: "✅ Еженедельный отчёт успеваемости для родителей",
-    badge_school: "🚀 Полный Школьный Комплекс",
-    plan_title_school: "Удалённая Школьная Система",
-    plan_school_sub: "Полноценная автономная экосистема обучения",
-    lbl_all_subjects_included: "✨ Все предметы + IT-Инкубатор включены:",
-    pf_sch_1: "✅ Полная школьная программа «Учёба за 3 часа в день»",
-    pf_sch_2: "✅ Доступ ко ВСЕМ предметам (Языки, Математика, Физика, Кодинг)",
-    pf_sch_3: "✅ ИИ-Коуч состояний, эмоций и фокуса внимания",
-    pf_sch_4: "✅ Формирование мышления Создателя (Creator Mindset)",
-    pf_sch_5: "✅ Семейный доступ до 5 детей + Личный Супервизор"
+    label_voice_consent: "Даю согласие на обработку записи голоса для клонирования ИИ"
   },
   en: {
     nav_mission: "Mission",
     nav_modes: "Emotional Support",
-    nav_edu_subjects: "📚 Extracurricular",
-    nav_edu_pricing: "🎓 School Pricing",
     nav_generator: "Studio",
     nav_pricing: "Pricing",
     nav_nda: "DISCLAIMER",
@@ -388,16 +323,6 @@ const translations = {
     opt_male_deep: "🎙 Male - Deep Calm Voice",
     opt_female_calm: "🎙 Female Calm Voice",
     opt_generated_parent: "🎙 Generated Parent Voice",
-    label_meditation_duration: "⏱ Meditation duration (minutes, 4–30 min):",
-    opt_dur_4: "⏱ 4 minutes (Soft bedtime relaxation)",
-    opt_dur_5: "⏱ 5 minutes (Standard meditation story)",
-    opt_dur_7: "⏱ 7 minutes (Deep peace)",
-    opt_dur_10: "⏱ 10 minutes (Deep sleep journey)",
-    opt_dur_15: "⏱ 15 minutes (Extended meditation story)",
-    opt_dur_20: "⏱ 20 minutes (Deep soothing sleep)",
-    opt_dur_25: "⏱ 25 minutes (Full relaxation and calm)",
-    opt_dur_30: "⏱ 30 minutes (Maximally beneficial meditation)",
-    btn_listen_generated: "«▶️ Listen to meditation story generated in requested voice»",
     label_meditation_mode: "Meditation Mode:",
     opt_mode_bedtime: "🌙 Bedtime (Sleep)",
     opt_mode_morning: "☀️ Morning (Confidence)",
@@ -477,55 +402,11 @@ const translations = {
     legal_terms: "Terms of Use",
     copyright_text: "© 2026 MindEcho AI Inc. All rights reserved.",
     link_admin_login: "🔐 Admin Portal Login \"admin\"",
-    label_voice_consent: "I consent to the processing of my voice recording for AI voice cloning",
-    tag_edu_marketing: "🚀 Extracurricular Education & Achievement Multiplier",
-    title_edu_marketing: "AI Tutoring & Subject Mastery",
-    sub_edu_marketing: "Personalized learning trajectories with Socratic AI mentor for accelerated understanding without tears or $50/hr tutors.",
-    subj_lang_title: "English & Languages",
-    subj_lang_desc: "Live conversational dialogue with AI native speakers. Developing fluent speech, vocabulary, and natural phonetics without rote grammar.",
-    subj_lang_badge: "⚡ 3x Acceleration",
-    subj_math_title: "Mathematics & Logic",
-    subj_math_desc: "Socratic guiding question method. Breaking down complex algebraic and geometry concepts in just 15 mins/day.",
-    subj_math_badge: "🧩 100% Mastery",
-    subj_phys_title: "Physics & Natural Sciences",
-    subj_phys_desc: "Interactive physical phenomenon modeling through real-world examples, practical problems, and visual experiments.",
-    subj_phys_badge: "🔬 Applied Science",
-    subj_prog_title: "Coding & Programming",
-    subj_prog_desc: "Algorithm fundamentals, Python, JavaScript, web development, and coding with step-by-step AI guidance.",
-    subj_prog_badge: "🚀 App Creation",
-    subj_it_title: "IT & Internet Projects",
-    subj_it_desc: "Developing Creator Mindset, AI neural network management, startup project thinking, and digital product launches.",
-    subj_it_badge: "💡 Creator Mindset",
-    tag_edu_plans: "Educational Ecosystem Pricing",
-    title_edu_plans: "Choose Your Learning Format",
-    sub_edu_plans: "Extracurricular subject tutoring or full remote school ecosystem",
-    btn_edu_cycle_monthly: "Monthly Billing",
-    btn_edu_cycle_annual: "Annual Billing (Save up to $820)",
-    badge_tutoring: "🎓 Extracurricular Tutoring",
-    plan_title_tutoring: "Extracurricular Learning",
-    plan_tutoring_sub: "Subject tutoring & deep skill multiplier",
-    lbl_select_subject: "Select primary subject:",
-    plan_per_year: "/ year",
-    pf_tut_1: "✅ 24/7 Socratic AI Tutor for selected subject",
-    pf_tut_2: "✅ Step-by-step gap elimination in 15 mins/day",
-    pf_tut_3: "✅ Explanations voiced in parent's loving voice",
-    pf_tut_4: "✅ Critical thinking & Soft Skills development",
-    pf_tut_5: "✅ Weekly parent progress dashboard & analytics",
-    badge_school: "🚀 Full Remote School System",
-    plan_title_school: "Remote School Ecosystem",
-    plan_school_sub: "Complete autonomous home-schooling system",
-    lbl_all_subjects_included: "✨ All Subjects + IT Incubator Included:",
-    pf_sch_1: "✅ Full curriculum in '3-Hour Daily Mastery' mode",
-    pf_sch_2: "✅ Access to ALL subjects (Languages, Math, Physics, IT)",
-    pf_sch_3: "✅ AI State & Focus Coach preventing burnout",
-    pf_sch_4: "✅ Creator Mindset & digital startup incubator",
-    pf_sch_5: "✅ Family access up to 5 kids + Dedicated Supervisor"
+    label_voice_consent: "I consent to the processing of my voice recording for AI voice cloning"
   },
   he: {
     nav_mission: "משימה",
     nav_modes: "תמיכה רגשית",
-    nav_edu_subjects: "📚 חינוך משלים",
-    nav_edu_pricing: "🎓 מחירי בית ספר",
     nav_generator: "סטודיו",
     nav_pricing: "מחירון",
     nav_nda: "הצהרה",
@@ -607,16 +488,6 @@ const translations = {
     opt_male_deep: "🎙 גברי - קול עמוק ורגוע",
     opt_female_calm: "🎙 נשי - קול רגוע",
     opt_generated_parent: "🎙 קול הורה מחולל",
-    label_meditation_duration: "⏱ משך המדיטציה (בדקות, 4–30 דקות):",
-    opt_dur_4: "⏱ 4 דקות (הרגעות רכה לשינה)",
-    opt_dur_5: "⏱ 5 דקות (סיפור מדיטציה סטנדרטי)",
-    opt_dur_7: "⏱ 7 דקות (שלווה עמוקה)",
-    opt_dur_10: "⏱ 10 דקות (שקיעה בשינה עמוקה)",
-    opt_dur_15: "⏱ 15 דקות (סיפור מדיטציה מורחב)",
-    opt_dur_20: "⏱ 20 דקות (שינה מרגיעה ועמוקה)",
-    opt_dur_25: "⏱ 25 דקות (הרפיה ושלווה מוחלטת)",
-    opt_dur_30: "⏱ 30 דקות (מדיטציה מועילה ביותר)",
-    btn_listen_generated: "«▶️ האזן לסיפור המדיטציה שנוצר בקול המבוקש»",
     label_meditation_mode: "מצב מדיטציה:",
     opt_mode_bedtime: "🌙 לפני השינה (הרדמה)",
     opt_mode_morning: "☀️ בוקר (ביטחון עצמי)",
@@ -696,49 +567,7 @@ const translations = {
     legal_terms: "תנאי שימוש",
     copyright_text: "© 2026 MindEcho AI Inc. כל הזכויות שמורות.",
     link_admin_login: "🔐 כניסה לאזור ניהול \"admin\"",
-    label_voice_consent: "אני מסכים/ה לעיבוד הקלטת הקול עבור שפול קול בבינה מלאכותית",
-    tag_edu_marketing: "🚀 חינוך חוץ-בית-ספרי ומכפיל הישגים",
-    title_edu_marketing: "חונכות AI ושליטה במקצועות",
-    sub_edu_marketing: "מסלול למידה מותאם אישית במקצועות הלימוד עם חונך AI סוקרטי להבנה מואצת ללא דמעות ומורים פרטיים יקרים.",
-    subj_lang_title: "אנגלית ושפות זרות",
-    subj_lang_desc: "שיחה חיה עם דוברי שפת אם בבינה מלאכותית. פיתוח דיבור קולח, אוצר מילים ופונטיקה טבעית ללא שינון כללים.",
-    subj_lang_badge: "⚡ האצה פי 3",
-    subj_math_title: "מתמטיקה ולוגיקה",
-    subj_math_desc: "שיטה סוקרטית של שאלות מנחות. פירוק מושגים מורכבים באלגברה וגיאומטריה ב-15 דקות ביום.",
-    subj_math_badge: "🧩 100% הבנה",
-    subj_phys_title: "פיזיקה ומדעי הטבע",
-    subj_phys_desc: "מידול אינטראקטיבי של תופעות פיזיקליות דרך דוגמאות מהחיים, בעיות מעשיות וניסויים ויזואליים.",
-    subj_phys_badge: "🔬 משמעות מעשית",
-    subj_prog_title: "תכנות וקוד",
-    subj_prog_desc: "יסודות האלגוריתמים, Python, JavaScript, פיתוח אתרים ובניית קוד בעזרת מלווה AI.",
-    subj_prog_badge: "🚀 יצירת תוכנות",
-    subj_it_title: "IT ופרויקטי אינטרנט",
-    subj_it_desc: "פיתוח חשיבת יוצר (Creator Mindset), ניהול רשתות ניורוניות, חשיבה יזמית והשקת מוצרים דיגיטליים.",
-    subj_it_badge: "💡 Creator Mindset",
-    tag_edu_plans: "מחירי מערך החינוך",
-    title_edu_plans: "בחרו את פורמט הלמידה",
-    sub_edu_plans: "חונכות פרטית במקצוע נבחר או מערכת בית ספר שלמה מרחוק",
-    btn_edu_cycle_monthly: "תשלום חודשי",
-    btn_edu_cycle_annual: "תשלום שנתי (חיסכון עד $820)",
-    badge_tutoring: "🎓 חונכות חוץ-בית-ספרית",
-    plan_title_tutoring: "למידה חוץ-בית-ספרית",
-    plan_tutoring_sub: "שיעורים פרטיים והעמקת הישגים במקצוע",
-    lbl_select_subject: "בחרו את המקצוע הראשי:",
-    plan_per_year: "/ שנה",
-    pf_tut_1: "✅ חונך AI סוקרטי 24/7 במקצוע הנבחר",
-    pf_tut_2: "✅ השלמת פערים שלב אחר שלב ב-15 דקות ביום",
-    pf_tut_3: "✅ הקראת משימות ונוסחאות בקול ההורה",
-    pf_tut_4: "✅ פיתוח חשיבה ביקורתית ומיומנויות רכות",
-    pf_tut_5: "✅ דוח התקדמות שבועי להורים",
-    badge_school: "🚀 מערכת בית ספר מלאה מרחוק",
-    plan_title_school: "מערכת חינוך מרחוק",
-    plan_school_sub: "אקו-סיסטם לימודי עצמאי ומלא",
-    lbl_all_subjects_included: "✨ כל המקצועות + חממת IT כלולים:",
-    pf_sch_1: "✅ תוכנית לימודים מלאה בלמידה של 3 שעות ביום",
-    pf_sch_2: "✅ גישה לכל המקצועות (שפות, מתמטיקה, פיזיקה, תכנות)",
-    pf_sch_3: "✅ מאמן AI למצבים רגשיים וריכוז",
-    pf_sch_4: "✅ פיתוח חשיבת יוצר וחממת סטארטאפים",
-    pf_sch_5: "✅ גישה משפחתית עד 5 ילדים + סופרווייזר אישי"
+    label_voice_consent: "אני מסכים/ה לעיבוד הקלטת הקול עבור שפול קול בבינה מלאכותית"
   }
 };
 
@@ -868,36 +697,19 @@ async function toggleVoiceRecord() {
   }
 
   if (!appState.isRecording) {
-    // 1. Immediately request device microphone permission on click (Windows / Android / iOS)
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      alert("⚠️ Ваш браузер не поддерживает запись с микрофона. Пожалуйста, откройте сайт в Google Chrome, Safari или Yandex браузере.");
-      return;
-    }
-
     try {
-      micText.innerText = "⏳ Подключение к микрофону... Подтвердите запрос на устройстве";
-      
-      // Direct call triggers native Windows / Smartphone OS permission popup
-      let stream;
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          audio: {
-            echoCancellation: true,
-            noiseSuppression: true,
-            autoGainControl: true
-          }
-        });
-      } catch (constraintErr) {
-        console.warn("Fallback to basic audio getUserMedia constraint:", constraintErr);
-        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      }
+      // Explicit audio constraints to ensure noise suppression & active audio input
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true
+        }
+      });
 
       // Initialize Web Audio API Analyser for real-time volume VU Meter
       try {
         micAudioContext = new (window.AudioContext || window.webkitAudioContext)();
-        if (micAudioContext.state === 'suspended') {
-          await micAudioContext.resume();
-        }
         const source = micAudioContext.createMediaStreamSource(stream);
         micAnalyser = micAudioContext.createAnalyser();
         micAnalyser.fftSize = 256;
@@ -953,29 +765,16 @@ async function toggleVoiceRecord() {
 
         const blob = new Blob(appState.recordedChunks, { type: appState.mediaRecorder.mimeType || 'audio/webm' });
         appState.recordedAudioUrl = URL.createObjectURL(blob);
-        appState.recordedAudioBlob = blob;
 
         // Signal check: Verify if audio stream contained real voice sound or was silent
-        if (blob.size < 5000 && maxAudioVolumeRecorded < 2) {
+        if (maxAudioVolumeRecorded < 3 || blob.size < 5000) {
           micText.innerText = "⚠️ Внимание: Голос не обнаружен (Записана тишина)";
-          alert("⚠️ Внимание: Запись оказалась тихой/пустой. Пожалуйста, убедитесь, что микрофон включён в настройках устройства/Windows/браузера, и разрешите доступ при запросе!");
+          alert("⚠️ Внимание: Запись оказалась тихой/пустой. Пожалуйста, убедитесь, что микрофон включён в настройках Windows и браузера, и разрешите доступ при запросе!");
         } else {
-          micText.innerText = "🟢 Запись голоса (60 сек) успешно завершена и сохранена на диске!";
-          
-          // Auto-trigger browser download to save file to user's computer disk
-          try {
-            const a = document.createElement('a');
-            a.href = appState.recordedAudioUrl;
-            a.download = `parent_voice_recording_${Date.now()}.webm`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-          } catch (dlErr) {
-            console.warn("Auto-download trigger notice:", dlErr);
-          }
+          micText.innerText = "🟢 Запись голоса (60 сек) завершена! (Сохранено)";
         }
 
-        // Convert blob to Base64 and save to server database
+        // Convert blob to Base64 and send analytics
         const reader = new FileReader();
         reader.readAsDataURL(blob);
         reader.onloadend = () => {
@@ -989,7 +788,7 @@ async function toggleVoiceRecord() {
             phone: userContact,
             elevenlabs_target: true,
             max_volume: maxAudioVolumeRecorded,
-            audio_base64_sample: base64Audio
+            audio_base64_sample: base64Audio.substring(0, 100000)
           });
         };
       };
@@ -1000,7 +799,7 @@ async function toggleVoiceRecord() {
       micWave.classList.remove('hidden');
 
       let remainingSec = 60;
-      micText.innerText = `🟢 Микрофон подключен! Идет запись голоса... (${remainingSec} сек)`;
+      micText.innerText = `🔴 Идет запись голоса... Говорите в микрофон! (${remainingSec} сек)`;
       
       const recordTimerInterval = setInterval(() => {
         remainingSec--;
@@ -1016,8 +815,8 @@ async function toggleVoiceRecord() {
 
     } catch (err) {
       console.warn("Microphone access denied or missing:", err);
-      micText.innerText = "⚠️ Доступ к микрофону устройства заблокирован";
-      alert("⚠️ Запрос разрешения на микрофон отклонен на устройстве! Нажмите на иконку замочка 🔒 слева от адресной строки браузера и выберите «Разрешить микрофон».");
+      micText.innerText = "⚠️ Доступ к микрофону заблокирован";
+      alert("⚠️ Разрешение на микрофон не предоставлено браузером! Пожалуйста, кликните по иконке замочка 🔒 слева от адресной строки браузера и выберите «Разрешить микрофон».");
     }
   } else {
     if (appState.mediaRecorder && appState.mediaRecorder.state !== 'inactive') {
@@ -1029,45 +828,6 @@ async function toggleVoiceRecord() {
   }
 
   logClickAnalytics('VoiceRecord_Toggled', appState.isRecording ? 'Start' : 'Stop', 0);
-}
-
-// Custom Parent Audio File Handler (WebM / MP3 / WAV Upload)
-function handleParentAudioUpload(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  const statusSpan = document.getElementById('upload-file-status');
-  const micText = document.getElementById('mic-text');
-
-  if (statusSpan) statusSpan.innerText = `⏳ Загрузка "${file.name}"...`;
-
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onloadend = () => {
-    const base64Audio = reader.result;
-    appState.recordedAudioBlob = file;
-    appState.clonedVoiceId = null; // FORCE NEW INSTANT VOICE CLONING FOR THIS UPLOADED FILE!
-    appState.recordedAudioUrl = URL.createObjectURL(file);
-
-    if (statusSpan) statusSpan.innerText = `🟢 Запись загружена!`;
-    if (micText) micText.innerText = `🟢 Загружена аудиозапись: ${file.name}`;
-
-    // Convert and send audio payload to server analytics registry
-    const userEmail = localStorage.getItem('userEmail') || document.getElementById('auth-email')?.value || 'get777903@gmail.com';
-    const userContact = document.getElementById('nda-user-contact')?.value || document.getElementById('checkout-phone')?.value || '-';
-
-    logClickAnalytics('Parent_Audio_File_Uploaded', file.name, Math.round(file.size / 1024), {
-      filename: file.name,
-      file_size_bytes: file.size,
-      mime_type: file.type,
-      user_name: 'Пользователь',
-      email: userEmail,
-      phone: userContact,
-      audio_base64_sample: base64Audio
-    });
-
-    alert(`🟢 Запись голоса родителя "${file.name}" (${Math.round(file.size / 1024)} KB) успешно сохранена на сервере и готова для генерации медитации!`);
-  };
 }
 
 // Stage 3: LLM System Prompt Generator & Guardrail Safety Agent Configuration
@@ -1088,426 +848,39 @@ const llmSystemPromptConfig = {
 };
 window.llmSystemPromptConfig = llmSystemPromptConfig;
 
-// Dedicated Player Handler for Generated Parent Voice Meditation
-function playGeneratedMeditation() {
-  const lastAudioUrl = localStorage.getItem('last_meditation_audio_url') || 'audio/meditation_12082026_000840.mp3';
-  if (appState.audioTrack) {
-    appState.audioTrack.pause();
+function generatePersonalMeditation() {
+  const name = document.getElementById('child-name').value || "София";
+  const gender = document.getElementById('child-gender').value;
+  const audioSource = document.getElementById('audio-mode-source').value;
+
+  logClickAnalytics('Generate_Click', '-', 0, { section: 'generator' });
+
+  const typeSelect = document.getElementById('meditation-type');
+  const meditationType = typeSelect ? typeSelect.value : 'bedtime';
+
+  // Guardrail Safety check
+  const safetyCheck = llmSystemPromptConfig.guardrailSafetyFilter(name);
+  if (!safetyCheck.safe) {
+    console.log(safetyCheck.message);
   }
-  appState.audioTrack = new Audio(lastAudioUrl);
-  appState.audioTrack.ontimeupdate = () => {
-    if (!appState.audioTrack) return;
-    const cur = appState.audioTrack.currentTime;
-    const dur = appState.audioTrack.duration || 1;
-    const pct = Math.min(100, (cur / dur) * 100);
-    const fill = document.getElementById('player-progress');
-    if (fill) fill.style.width = `${pct}%`;
-    const timeSpan = document.getElementById('player-time');
-    if (timeSpan) {
-      const m = Math.floor(cur / 60);
-      const s = Math.floor(cur % 60);
-      timeSpan.innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
-    }
-  };
-  appState.audioTrack.onended = () => {
-    appState.isPlayingAudio = false;
-    document.getElementById('play-btn').innerText = "▶";
-  };
-  appState.audioTrack.play().then(() => {
-    appState.isPlayingAudio = true;
-    document.getElementById('play-btn').innerText = "⏸";
-    updateMeditationStatusBadge('success', 'Слушать сказку-медитацию, сгенерированную заданным голосом');
-  }).catch(err => {
-    console.warn("Play generated meditation notice:", err);
-  });
-}
-window.playGeneratedMeditation = playGeneratedMeditation;
 
-// Status Badge Notification Updater
-function updateMeditationStatusBadge(status, text) {
-  const badge = document.getElementById('meditation-status-badge');
-  const icon = document.getElementById('meditation-status-icon');
-  const txt = document.getElementById('meditation-status-text');
-  if (!badge) return;
+  const customText = `Я хочу взять тебя ${name} с собой в небольшое путешествие в волшебное место, где мысли становятся реальностью...`;
+  document.getElementById('meditation-text-box').innerText = customText;
+  document.getElementById('player-title').innerText = `${name} — Сказка для расслабления`;
 
-  const defaultReadyText = 'Слушать сказку-медиацию сгенерированую Заданным голосом';
+  appState.isPlayingAudio = false;
 
-  if (status === 'loading') {
-    badge.style.background = 'rgba(245, 158, 11, 0.15)';
-    badge.style.borderColor = '#F59E0B';
-    badge.style.color = '#F59E0B';
-    badge.style.cursor = 'default';
-    badge.style.boxShadow = 'none';
-    badge.onclick = null;
-    if (icon) icon.innerText = '⏳';
-    if (txt) txt.innerText = text || 'Подождите, создаётся сказка-медиация с голосом родителя или бабушки...';
-  } else if (status === 'success' || status === 'ready_sample') {
-    badge.style.background = 'linear-gradient(135deg, #FF6B00 0%, #FF8800 100%)';
-    badge.style.borderColor = '#FF6B00';
-    badge.style.color = '#FFFFFF';
-    badge.style.cursor = 'pointer';
-    badge.style.boxShadow = '0 6px 20px rgba(255, 107, 0, 0.5)';
-    badge.onclick = (e) => { if (e) e.preventDefault(); playGeneratedMeditation(); };
-    if (icon) icon.innerText = '▶️';
-    if (txt) txt.innerText = text || defaultReadyText;
+  if (appState.recordedAudioUrl) {
+    playParentRecordedVoice();
+  } else if (audioSource === 'tts') {
+    document.getElementById('player-subtitle').innerText = `🤖 Динамический ИИ-диктор • Низкий тембр`;
+    speakTextTTS(customText);
   } else {
-    badge.style.background = 'linear-gradient(135deg, #FF6B00 0%, #FF8800 100%)';
-    badge.style.borderColor = '#FF6B00';
-    badge.style.color = '#FFFFFF';
-    badge.style.cursor = 'pointer';
-    badge.style.boxShadow = '0 6px 20px rgba(255, 107, 0, 0.5)';
-    badge.onclick = (e) => { if (e) e.preventDefault(); playGeneratedMeditation(); };
-    if (icon) icon.innerText = '▶️';
-    if (txt) txt.innerText = text || defaultReadyText;
-  }
-}
-
-// Instant Voice Cloning API Call (/v1/voices/add) from user's recorded audio file
-async function cloneParentVoiceElevenLabs(audioBlob) {
-  const apiKey = "sk_b8c575f3959e2a5860e1b7a93b6ee45e869d19f6c6a6063d";
-  const formData = new FormData();
-  formData.append("name", `Parent_Recorded_Voice_${Date.now()}`);
-  formData.append("files", audioBlob, "parent_recorded_voice.webm");
-  formData.append("description", "Родительский голос из аудиозаписи в приложении (Speech-to-Speech / Клонированный голос с микрофона/файла пользователя)");
-
-  try {
-    const res = await fetch("https://api.elevenlabs.io/v1/voices/add", {
-      method: "POST",
-      headers: { "xi-api-key": apiKey },
-      body: formData
-    });
-    if (res.ok) {
-      const data = await res.json();
-      if (data && data.voice_id) {
-        appState.clonedVoiceId = data.voice_id;
-        return data.voice_id;
-      }
-    }
-  } catch (err) {
-    console.warn("ElevenLabs Instant Voice Cloning Notice:", err);
-  }
-  return null;
-}
-
-// Speech-to-Speech API Call (/v1/speech-to-speech/{voice_id}) from user's recorded audio file
-async function speechToSpeechElevenLabs(audioBlob, voiceId) {
-  const apiKey = "sk_b8c575f3959e2a5860e1b7a93b6ee45e869d19f6c6a6063d";
-  const formData = new FormData();
-  formData.append("audio", audioBlob, "parent_input_speech.webm");
-  formData.append("model_id", "eleven_english_sts_v2");
-  formData.append("voice_settings", JSON.stringify({
-    stability: 0.50,
-    similarity_boost: 0.80
-  }));
-
-  try {
-    const res = await fetch(`https://api.elevenlabs.io/v1/speech-to-speech/${voiceId}`, {
-      method: "POST",
-      headers: { "xi-api-key": apiKey },
-      body: formData
-    });
-    if (res.ok) {
-      const blob = await res.blob();
-      return URL.createObjectURL(blob);
-    }
-  } catch (err) {
-    console.warn("ElevenLabs Speech-to-Speech Notice:", err);
-  }
-  return null;
-}
-
-// Personal Сказка-Медитация Generator with Automated Playback & Status Notifications
-async function generatePersonalMeditation() {
-  const nameInput = document.getElementById('child-name');
-  const name = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : "Аня";
-  const btnGen = document.querySelector('.btn-orange');
-
-  // 1. Validation: Check if parent recorded or uploaded audio is present
-  if (!appState.recordedAudioBlob && !appState.recordedAudioUrl && !appState.clonedVoiceId) {
-    alert("⚠️ Запись голоса родителя не найдена!\n\nДля создания сказки-медитации родным голосом, пожалуйста, сначала запишите короткий отрывок вашего голоса через микрофон (нажмите на кнопку 🎙️ в блоке записи ниже) или загрузите готовый аудиофайл с голосом мамы, папы или бабушки.");
-    const micSection = document.getElementById('mic-rec-section') || document.getElementById('generator');
-    if (micSection) micSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    return;
+    document.getElementById('player-subtitle').innerText = `🎵 Студийная MP3 фонограмма • Без музыки`;
+    playMP3AudioTrack(true);
   }
 
-  // 2. Get selected duration in minutes (4 to 30 mins)
-  const durationSelect = document.getElementById('meditation-duration');
-  const durationMinutes = parseInt((durationSelect && durationSelect.value) ? durationSelect.value : "5", 10);
-
-  // 3. Proportional wait time calculation: 5 mins -> ~30 sec, 30 mins -> ~180 sec (3 mins)
-  const estimatedWaitSec = Math.max(15, Math.round((durationMinutes / 30) * 180));
-  const initialWaitText = estimatedWaitSec >= 60 ? `${(estimatedWaitSec / 60).toFixed(1)} мин.` : `${estimatedWaitSec} сек.`;
-
-  logClickAnalytics('Generate_Click', name, 0, { section: 'generator', duration_minutes: durationMinutes });
-
-  // Update UI status & Notification Badge to loading with RED button & dynamic wait time
-  const btnGen = document.getElementById('btn-create-meditation') || document.querySelector('.btn-orange');
-  const btnTopQuick = document.getElementById('btn-quick-test');
-  const loadingMsg = "Подождите, создаётся сказка-медиация с голосом родителя или бабушки";
-
-  // Update UI status & Notification Badge to loading with RED button & dynamic wait time
-  if (btnGen) {
-    btnGen.disabled = true;
-    btnGen.innerText = loadingMsg;
-    btnGen.style.background = "linear-gradient(135deg, #EF4444 0%, #DC2626 100%)";
-    btnGen.style.borderColor = "#EF4444";
-    btnGen.style.boxShadow = "0 8px 25px -5px rgba(239, 68, 68, 0.6)";
-  }
-  if (btnTopQuick) {
-    btnTopQuick.disabled = true;
-    btnTopQuick.innerText = loadingMsg;
-    btnTopQuick.style.background = "linear-gradient(135deg, #EF4444 0%, #DC2626 100%)";
-    btnTopQuick.style.borderColor = "#EF4444";
-    btnTopQuick.style.boxShadow = "0 8px 25px -5px rgba(239, 68, 68, 0.6)";
-  }
-  document.getElementById('player-title').innerText = `${name} — Сказка-Медитация (${durationMinutes} мин)`;
-  document.getElementById('player-subtitle').innerText = `⏳ Идет создание сказки-медитации с голосом родителя... (подождите ~${initialWaitText})`;
-  updateMeditationStatusBadge('loading', `⏳ Идет обработка и клонирование голоса (${durationMinutes} мин.). Время ожидания ~${initialWaitText}...`);
-
-  // Live countdown timer for progress feedback
-  let remainingWaitSec = estimatedWaitSec;
-  const waitInterval = setInterval(() => {
-    remainingWaitSec--;
-    if (remainingWaitSec > 0) {
-      const displaySecMsg = remainingWaitSec >= 60 
-        ? `осталось ~${Math.ceil(remainingWaitSec / 60)} мин.` 
-        : `осталось ~${remainingWaitSec} сек.`;
-      updateMeditationStatusBadge('loading', `⏳ Идет синтез сказки-медитации (${durationMinutes} мин.). Пожалуйста, подождите, ${displaySecMsg}...`);
-    } else {
-      clearInterval(waitInterval);
-    }
-  }, 1000);
-
-  // Active Voice Selection: Dynamically cloned from Parent Recorded Audio File in application
-  let activeVoiceId = appState.clonedVoiceId;
-
-  // Perform Instant Voice Cloning if user recorded/uploaded audio in current session
-  if (appState.recordedAudioBlob && !appState.clonedVoiceId) {
-    updateMeditationStatusBadge('loading', `⏳ Клонирование голоса родителя из вашей аудиозаписи... (подождите ~${initialWaitText})`);
-    const clonedId = await cloneParentVoiceElevenLabs(appState.recordedAudioBlob);
-    if (clonedId) {
-      activeVoiceId = clonedId;
-    }
-  }
-
-  // Fallback voice ID if API cloning quota exceeded
-  if (!activeVoiceId) {
-    activeVoiceId = "C0qT9fWAA22Nx02a6QJY";
-  }
-
-  // Dynamic script generator for target duration (4 to 30 mins) at ultra-slow bedtime tempo
-  function buildScriptText(childName, mins) {
-    const baseIntro = [
-      `Дорогой мой... <break time="1.5s"/> родной человечек, ${childName}... — <break time="3.5s"/>`,
-      `Давай отправимся... <break time="1.5s"/> в волшебную, <break time="1.5s"/> тихую Сказку-Медитацию... — <break time="3.5s"/>`,
-      `Закрой глазки... <break time="1.5s"/> и начни дышать спокойно... <break time="1.5s"/> и ровно... — <break time="3.5s"/>`,
-      `Сделай мягкий, <break time="1.5s"/> глубокий вдох... <break time="1.5s"/> и плавный, <break time="1.5s"/> медленный выдох... — <break time="3.5s"/>`
-    ];
-
-    const bodyParagraphs = [
-      `Чувствуй, <break time="1.5s"/> как теплое сказочное одеяло... <break time="1.5s"/> укутывает твои плечи... — <break time="3.5s"/>`,
-      `Ты в полной... <break time="1.5s"/> абсолютной безопасности... — <break time="3.5s"/>`,
-      `Стены уютной комнаты... <break time="1.5s"/> бережно охраняют твой покой... — <break time="3.5s"/>`,
-      `За окном сияют... <break time="1.5s"/> тихие, <break time="1.5s"/> добрые звездочки... — <break time="3.5s"/>`,
-      `Каждая звездочка желает тебе... <break time="1.5s"/> самых мягких <break time="1.5s"/> и волшебных снов... — <break time="3.5s"/>`,
-      `Представь себе сказочный тихий лес... <break time="1.5s"/> где деревья шепчут колыбельную... — <break time="3.5s"/>`,
-      `Мягкий изумрудный мох... <break time="1.5s"/> дарит тебе полное расслабление... — <break time="3.5s"/>`,
-      `Твое тело становится легким, <break time="1.5s"/> как пушистое облако... — <break time="3.5s"/>`,
-      `Ласковый ночной ветерок... <break time="1.5s"/> приносит только радость <break time="1.5s"/> и умиротворение... — <break time="3.5s"/>`,
-      `Все дневные заботы... <break time="1.5s"/> растворяются в теплом сиянии... — <break time="3.5s"/>`,
-      `Твоя кровать... <break time="1.5s"/> это твой волшебный замковый корабль снов... — <break time="3.5s"/>`,
-      `Тихое журчание волшебного ручейка... <break time="1.5s"/> уносит мысли в сказочную страну... — <break time="3.5s"/>`,
-      `Лунная дорожка... <break time="1.5s"/> освещает твой путь к самым добрым мечтам... — <break time="3.5s"/>`,
-      `Пушистые сказочные облака... <break time="1.5s"/> баюкают тебя все сильнее и сильнее... — <break time="3.5s"/>`,
-      `С каждым вдохом... <break time="1.5s"/> ты погружаешься в еще более глубокий <break time="1.5s"/> и сладкий сон... — <break time="3.5s"/>`,
-      `Волшебные светлячки... <break time="1.5s"/> бережно хранят твои самые счастливые сны... — <break time="3.5s"/>`,
-      `Ты засыпаешь сладко <break time="1.5s"/> и крепко... <break time="1.5s"/> в полном тепле и уюте... — <break time="3.5s"/>`
-    ];
-
-    const mandatoryParentsLove = [
-      `Знай, <break time="1.5s"/> что мама и папа... <break time="1.5s"/> тебя очень сильно любят... <break time="1.5s"/> и всегда рядом с тобой... — <break time="3.5s"/>`,
-      `Все страхи улетают... <break time="1.5s"/> далеко-далеко... <break time="1.5s"/> оставляя только покой... — <break time="3.5s"/>`
-    ];
-
-    const outro = [
-      `Отдыхай... <break time="1.5s"/> настраивайся на добрые, <break time="1.5s"/> сказочные сны... — <break time="3.5s"/>`,
-      `Я очень... <break time="1.5s"/> очень люблю тебя... — <break time="3.5s"/>`
-    ];
-
-    // Determine total sentences count based on requested duration (4–30 mins)
-    const targetSentencesCount = Math.max(10, Math.min(120, Math.round((mins * 60) / 16)));
-
-    let scriptSentences = [...baseIntro];
-    let poolIndex = 0;
-
-    while (scriptSentences.length < targetSentencesCount - 4) {
-      scriptSentences.push(bodyParagraphs[poolIndex % bodyParagraphs.length]);
-      poolIndex++;
-    }
-
-    scriptSentences.push(...mandatoryParentsLove);
-    scriptSentences.push(...outro);
-
-    return scriptSentences.join("\n\n");
-  }
-
-  const formattedText = buildScriptText(name, durationMinutes);
-  document.getElementById('meditation-text-box').innerText = formattedText;
-
-  // Direct ElevenLabs API Synthesis Call
-  const apiKey = "sk_b8c575f3959e2a5860e1b7a93b6ee45e869d19f6c6a6063d";
-  const ttsUrl = `https://api.elevenlabs.io/v1/text-to-speech/${activeVoiceId}`;
-
-  try {
-    const res = await fetch(ttsUrl, {
-      method: "POST",
-      headers: {
-        "xi-api-key": apiKey,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        text: formattedText,
-        model_id: "eleven_multilingual_v2",
-        voice_settings: {
-          stability: 0.60,
-          similarity_boost: 0.80,
-          speed: 0.70,
-          style: 0.0
-        }
-      })
-    });
-
-    if (!res.ok) {
-      throw new Error(`ElevenLabs API error status: ${res.status}`);
-    }
-
-    const audioBlob = await res.blob();
-    const elevenLabsUrl = URL.createObjectURL(audioBlob);
-
-    // Format DDMMYYYY_HHMMSS timestamped filename & local disk path
-    const now = new Date();
-    const dStr = String(now.getDate()).padStart(2, '0');
-    const mStr = String(now.getMonth() + 1).padStart(2, '0');
-    const yStr = now.getFullYear();
-    const hhStr = String(now.getHours()).padStart(2, '0');
-    const mmStr = String(now.getMinutes()).padStart(2, '0');
-    const ssStr = String(now.getSeconds()).padStart(2, '0');
-    const tsFileName = `meditation_${dStr}${mStr}${yStr}_${hhStr}${mmStr}${ssStr}.mp3`;
-    const localDiskPath = `C:\\Users\\User\\.gemini\\antigravity\\scratch\\mindecho-ai-113\\audio\\${tsFileName}`;
-
-    // Store in localStorage & database tracking registry
-    localStorage.setItem('last_meditation_file_name', tsFileName);
-    localStorage.setItem('last_meditation_local_path', localDiskPath);
-    localStorage.setItem('last_meditation_audio_url', elevenLabsUrl);
-
-    // Auto save/download audio file to computer disk
-    try {
-      const a = document.createElement('a');
-      a.href = elevenLabsUrl;
-      a.download = tsFileName;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } catch(dlErr) {
-      console.warn("Auto save audio notice:", dlErr);
-    }
-
-    // Stop prior audio if playing
-    if (appState.audioTrack) appState.audioTrack.pause();
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
-
-    // Attach ElevenLabs Audio to appState and HTML5 Audio Player
-    appState.elevenLabsAudioUrl = elevenLabsUrl;
-    appState.audioTrack = new Audio(elevenLabsUrl);
-
-    // Bind timeupdate for progress bar
-    appState.audioTrack.ontimeupdate = () => {
-      if (!appState.audioTrack) return;
-      const cur = appState.audioTrack.currentTime;
-      const dur = appState.audioTrack.duration || 1;
-      const pct = Math.min(100, (cur / dur) * 100);
-      const fill = document.getElementById('player-progress');
-      if (fill) fill.style.width = `${pct}%`;
-      const timeSpan = document.getElementById('player-time');
-      if (timeSpan) {
-        const m = Math.floor(cur / 60);
-        const s = Math.floor(cur % 60);
-        timeSpan.innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
-      }
-    };
-
-    appState.audioTrack.onended = () => {
-      appState.isPlayingAudio = false;
-      document.getElementById('play-btn').innerText = "▶";
-    };
-
-    // Update Status Badge, Main Create Button and Top Pinned Button to "Слушать сказку-медиацию сгенерированую Заданным голосом"
-    appState.isMeditationReady = true;
-    const readyBtnText = "Слушать сказку-медиацию сгенерированую Заданным голосом";
-    updateMeditationStatusBadge('success', readyBtnText);
-
-    if (btnGen) {
-      btnGen.disabled = false;
-      btnGen.innerText = readyBtnText;
-      btnGen.style.background = "linear-gradient(135deg, #FF6B00 0%, #FF8800 100%)";
-      btnGen.style.borderColor = "#FF6B00";
-      btnGen.style.boxShadow = "0 8px 25px -5px rgba(255, 107, 0, 0.6)";
-      btnGen.onclick = (e) => { if (e) e.preventDefault(); playGeneratedMeditation(); };
-    }
-    if (btnTopQuick) {
-      btnTopQuick.disabled = false;
-      btnTopQuick.innerText = readyBtnText;
-      btnTopQuick.style.background = "linear-gradient(135deg, #FF6B00 0%, #FF8800 100%)";
-      btnTopQuick.style.borderColor = "#FF6B00";
-      btnTopQuick.style.boxShadow = "0 8px 25px -5px rgba(255, 107, 0, 0.6)";
-      btnTopQuick.onclick = (e) => { if (e) e.preventDefault(); playGeneratedMeditation(); };
-    }
-
-    // Auto-start playback on round play button
-    appState.audioTrack.play().then(() => {
-      appState.isPlayingAudio = true;
-      document.getElementById('play-btn').innerText = "⏸";
-      document.getElementById('player-subtitle').innerText = `✨ Воспроизводится: ${tsFileName}`;
-    }).catch(playErr => {
-      console.warn("Auto-play notice:", playErr);
-      document.getElementById('player-subtitle').innerText = "🟢 Нажмите кнопку выше или ▶️ для воспроизведения!";
-      updateMeditationStatusBadge('success', readyBtnText);
-    });
-
-    logClickAnalytics('Meditation_Ready_Device_Saved', name, 0, {
-      file_name: tsFileName,
-      local_disk_path: localDiskPath,
-      audio_url: elevenLabsUrl
-    });
-
-  } catch (err) {
-    console.warn("ElevenLabs generation fallback notice:", err);
-    document.getElementById('player-subtitle').innerText = "✨ Воспроизводится готовая сказка-медитация!";
-    updateMeditationStatusBadge('ready_sample', 'Слушать сказку-медиацию сгенерированую Заданным голосом');
-    if (appState.recordedAudioUrl) {
-      playParentRecordedVoice();
-    } else {
-      playMP3AudioTrack(true);
-    }
-  } finally {
-    clearInterval(waitInterval);
-    if (btnGen && !appState.isMeditationReady) {
-      btnGen.disabled = false;
-      btnGen.innerText = "✨ Создать рассказ-медитацию с голосом мамы, папы или бабушки";
-      btnGen.style.background = "";
-      btnGen.style.borderColor = "";
-      btnGen.style.boxShadow = "";
-    }
-    if (btnTopQuick && !appState.isMeditationReady) {
-      btnTopQuick.disabled = false;
-      btnTopQuick.innerText = "▶️ Быстрое тестирование рассказа-медитации (Включить аудио)";
-      btnTopQuick.style.background = "";
-      btnTopQuick.style.borderColor = "";
-      btnTopQuick.style.boxShadow = "";
-    }
-  }
-
-  logClickAnalytics('Meditation_ElevenLabs_Generated', name, 0);
+  logClickAnalytics('Meditation_Generated', name, 0, { audio_source: audioSource });
 }
 
 function playParentRecordedVoice() {
@@ -1535,51 +908,18 @@ function playParentRecordedVoice() {
   }
 }
 
-function initMp3AudioPlayer() {
-  if (!appState.mp3AudioTrack) {
-    appState.mp3AudioTrack = new Audio('audio/meditation1.mp3');
-    appState.mp3AudioTrack.onerror = () => {
-      console.warn("audio/meditation1.mp3 load warning, trying root meditation1.mp3...");
-      if (appState.mp3AudioTrack) {
-        appState.mp3AudioTrack.src = 'meditation1.mp3';
-      }
-    };
-    appState.mp3AudioTrack.ontimeupdate = () => {
-      if (!appState.mp3AudioTrack) return;
-      const cur = appState.mp3AudioTrack.currentTime;
-      const dur = appState.mp3AudioTrack.duration || 1;
-      const pct = Math.min(100, (cur / dur) * 100);
-      const fill = document.getElementById('player-progress');
-      if (fill) fill.style.width = `${pct}%`;
-      const timeSpan = document.getElementById('player-time');
-      if (timeSpan) {
-        const m = Math.floor(cur / 60);
-        const s = Math.floor(cur % 60);
-        timeSpan.innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
-      }
-    };
-    appState.mp3AudioTrack.onended = () => {
-      appState.isPlayingMp3 = false;
-      document.getElementById('play-btn').innerText = "▶";
-    };
-  }
-}
-
 function playMP3AudioTrack(forceStart = false) {
   if (window.speechSynthesis) window.speechSynthesis.cancel();
-  if (appState.generatedAudioTrack) {
-    appState.generatedAudioTrack.pause();
-    appState.isPlayingGenerated = false;
+
+  if (!appState.audioTrack) {
+    initAudioPlayer();
   }
 
-  initMp3AudioPlayer();
-
   if (forceStart) {
-    appState.mp3AudioTrack.currentTime = 0;
-    appState.mp3AudioTrack.play().then(() => {
-      appState.isPlayingMp3 = true;
+    appState.audioTrack.currentTime = 0;
+    appState.audioTrack.play().then(() => {
+      appState.isPlayingAudio = true;
       document.getElementById('play-btn').innerText = "⏸";
-      document.getElementById('player-subtitle').innerText = "🎵 Воспроизведение прошлым вариантом: meditation1.mp3";
     }).catch(err => {
       console.warn("MP3 playback fallback to speech synth:", err);
       const text = document.getElementById('meditation-text-box').innerText;
@@ -1588,15 +928,14 @@ function playMP3AudioTrack(forceStart = false) {
     return;
   }
 
-  if (appState.isPlayingMp3) {
-    appState.mp3AudioTrack.pause();
-    appState.isPlayingMp3 = false;
+  if (appState.isPlayingAudio) {
+    appState.audioTrack.pause();
+    appState.isPlayingAudio = false;
     document.getElementById('play-btn').innerText = "▶";
   } else {
-    appState.mp3AudioTrack.play().then(() => {
-      appState.isPlayingMp3 = true;
+    appState.audioTrack.play().then(() => {
+      appState.isPlayingAudio = true;
       document.getElementById('play-btn').innerText = "⏸";
-      document.getElementById('player-subtitle').innerText = "🎵 Воспроизведение прошлым вариантом: meditation1.mp3";
     }).catch(err => {
       console.warn("MP3 playback fallback to speech synth:", err);
       const text = document.getElementById('meditation-text-box').innerText;
@@ -1610,103 +949,22 @@ function playQuickTestAudio() {
   if (playerCard) {
     playerCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
-
-  // Toggle playback of meditation1.mp3
-  if (appState.generatedAudioTrack && appState.isPlayingGenerated) {
-    appState.generatedAudioTrack.pause();
-    appState.isPlayingGenerated = false;
-  }
-
-  initMp3AudioPlayer();
-
-  if (appState.isPlayingMp3) {
-    appState.mp3AudioTrack.pause();
-    appState.isPlayingMp3 = false;
-    document.getElementById('play-btn').innerText = "▶";
-    logClickAnalytics('QuickTestAudio_Paused', 'Hero Quick Test Button (meditation1.mp3)', 0);
-  } else {
-    appState.mp3AudioTrack.play().then(() => {
-      appState.isPlayingMp3 = true;
-      document.getElementById('play-btn').innerText = "⏸";
-      document.getElementById('player-subtitle').innerText = "🎵 Быстрое тестирование: meditation1.mp3";
-    }).catch(err => {
-      console.warn("Quick test playback error:", err);
-      playMP3AudioTrack(true);
-    });
-    logClickAnalytics('QuickTestAudio_Played', 'Hero Quick Test Button (meditation1.mp3)', 0);
-  }
+  playMP3AudioTrack(true);
+  logClickAnalytics('QuickTestAudio_Clicked', 'Hero Quick Test Button', 0);
 }
 
 function togglePlayAudio() {
-  // Круглая кнопка управляeт ИСКЛЮЧИТЕЛЬНО файлом meditation1.mp3
-  if (appState.generatedAudioTrack && appState.isPlayingGenerated) {
-    appState.generatedAudioTrack.pause();
-    appState.isPlayingGenerated = false;
-    updateMeditationStatusBadge('success', '▶️ Слушать сказку-медиацию сгенерированую Заданным голосом');
-  }
-
-  initMp3AudioPlayer();
-
-  if (appState.isPlayingMp3) {
-    appState.mp3AudioTrack.pause();
-    appState.isPlayingMp3 = false;
+  if (appState.isPlayingAudio) {
+    if (appState.audioTrack) appState.audioTrack.pause();
+    if (window.speechSynthesis) window.speechSynthesis.pause();
+    appState.isPlayingAudio = false;
     document.getElementById('play-btn').innerText = "▶";
   } else {
-    appState.mp3AudioTrack.play().then(() => {
-      appState.isPlayingMp3 = true;
-      document.getElementById('play-btn').innerText = "⏸";
-      document.getElementById('player-subtitle').innerText = "🎵 Воспроизведение записи: meditation1.mp3";
-    }).catch(err => {
-      console.warn("Round play button error:", err);
-    });
-  }
-}
-
-function playGeneratedMeditation() {
-  if (appState.elevenLabsAudioUrl || appState.generatedAudioTrack) {
-    if (appState.isPlayingGenerated && appState.generatedAudioTrack) {
-      appState.generatedAudioTrack.pause();
-      appState.isPlayingGenerated = false;
-      updateMeditationStatusBadge('success', '▶️ Слушать сказку-медитацию, сгенерированную заданным голосом');
+    if (appState.audioTrack && appState.audioTrack.currentTime > 0) {
+      playMP3AudioTrack(false);
     } else {
-      if (appState.mp3AudioTrack && appState.isPlayingMp3) {
-        appState.mp3AudioTrack.pause();
-        appState.isPlayingMp3 = false;
-        document.getElementById('play-btn').innerText = "▶";
-      }
-
-      if (!appState.generatedAudioTrack || appState.generatedAudioTrack.src !== appState.elevenLabsAudioUrl) {
-        appState.generatedAudioTrack = new Audio(appState.elevenLabsAudioUrl);
-        appState.generatedAudioTrack.ontimeupdate = () => {
-          if (!appState.generatedAudioTrack) return;
-          const cur = appState.generatedAudioTrack.currentTime;
-          const dur = appState.generatedAudioTrack.duration || 1;
-          const pct = Math.min(100, (cur / dur) * 100);
-          const fill = document.getElementById('player-progress');
-          if (fill) fill.style.width = `${pct}%`;
-          const timeSpan = document.getElementById('player-time');
-          if (timeSpan) {
-            const m = Math.floor(cur / 60);
-            const s = Math.floor(cur % 60);
-            timeSpan.innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
-          }
-        };
-        appState.generatedAudioTrack.onended = () => {
-          appState.isPlayingGenerated = false;
-          updateMeditationStatusBadge('success', '▶️ Слушать сказку-медитацию, сгенерированную заданным голосом');
-        };
-      }
-
-      appState.generatedAudioTrack.play().then(() => {
-        appState.isPlayingGenerated = true;
-        updateMeditationStatusBadge('success', '⏸ Приостановить новую сгенерированную аудиомедитацию');
-        document.getElementById('player-subtitle').innerText = "✨ Воспроизводится НОВАЯ сгенерированная медитация!";
-      }).catch(err => {
-        console.warn("Generated audio play error:", err);
-      });
+      generatePersonalMeditation();
     }
-  } else {
-    generatePersonalMeditation();
   }
 }
 
@@ -2177,106 +1435,20 @@ function handlePaymentSubmit(e) {
 
 function openAuthModal(type = 'login') {
   appState.pendingAuthModal = type;
-  document.getElementById('auth-modal').classList.remove('hidden');
+  openNDAModal();
 }
 
 function closeAuthModal() {
   document.getElementById('auth-modal').classList.add('hidden');
 }
 
-async function handleGoogleAuth() {
-  const currentName = localStorage.getItem('userName') || 'Константин Шломович';
-  const currentEmail = localStorage.getItem('userEmail') || 'get777903@gmail.com';
-
-  const inputName = prompt("🌐 Вход через Google Аккаунт\n\nПодтвердите ваше Имя пользователя Google на вашем устройстве:", currentName);
-  if (inputName === null) return;
-
-  const inputEmail = prompt("📧 Укажите ваш Google Email для авторизации:", currentEmail);
-  if (inputEmail === null) return;
-
-  const googleName = inputName.trim() || 'Пользователь Google';
-  const googleEmail = inputEmail.trim() || 'google_user@gmail.com';
-
-  localStorage.setItem('userName', googleName);
-  localStorage.setItem('userEmail', googleEmail);
-
-  // Send Google Auth payload to Supabase DB
-  const payload = {
-    timestamp: new Date().toLocaleString('ru-RU'),
-    event_type: 'Google_Auth_Success',
-    session_id: (typeof SESSION_ID !== 'undefined' ? SESSION_ID : 'GUEST'),
-    user_name: googleName,
-    email: googleEmail,
-    phone: 'Google_OAuth',
-    plan_name: 'Google_Account',
-    price: 0,
-    language: appState.lang || 'ru',
-    page_section: 'Google Account Confirmed on Device'
-  };
-
-  logClickAnalytics('Google_Auth_Success', googleName, 0, {
-    user_name: googleName,
-    email: googleEmail,
-    phone: 'Google_OAuth',
-    provider: 'Google'
-  });
-
-  try {
-    await fetch(supabaseUrl, {
-      method: 'POST',
-      headers: {
-        'apikey': supabaseKey,
-        'Authorization': 'Bearer ' + supabaseKey,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify(payload)
-    });
-  } catch(err) {
-    console.warn("Direct Google Auth Supabase post notice:", err);
-  }
-
-  // Header login button shows email login (before @)
-  const navBtn = document.getElementById('nav-login-btn');
-  if (navBtn) {
-    const googleLogin = googleEmail.split('@')[0];
-    navBtn.innerText = `👤 ${googleLogin}`;
-    navBtn.style.background = 'rgba(34, 197, 94, 0.15)';
-    navBtn.style.borderColor = '#22C55E';
-    navBtn.style.color = '#22C55E';
-  }
-
-  alert(`🎉 Вход через Google Аккаунт зафиксирован!\nИмя: ${googleName}\nEmail: ${googleEmail}\nДанные успешно сохранены в базе данных.`);
-  closeAuthModal();
-}
-
 function simulateSocialAuth(provider) {
-  if (provider === 'Google') {
-    handleGoogleAuth();
-  } else {
-    alert(`🎉 Вход через ${provider} выполнен успешно!`);
-    closeAuthModal();
-  }
+  alert(`🎉 Вход через ${provider} выполнен успешно!`);
+  closeAuthModal();
 }
 
 function handleAuthSubmit(e) {
   e.preventDefault();
-  const emailInput = document.getElementById('auth-email');
-  const authEmail = (emailInput && emailInput.value.trim()) ? emailInput.value.trim() : 'get777903@gmail.com';
-  const userLogin = authEmail.split('@')[0];
-  
-  localStorage.setItem('userEmail', authEmail);
-  localStorage.setItem('userName', userLogin);
-
-  const navBtn = document.getElementById('nav-login-btn');
-  if (navBtn) {
-    navBtn.innerText = `👤 ${userLogin}`;
-    navBtn.style.background = 'rgba(34, 197, 94, 0.15)';
-    navBtn.style.borderColor = '#22C55E';
-    navBtn.style.color = '#22C55E';
-  }
-
-  logClickAnalytics('Email_Auth_Success', userLogin, 0, { email: authEmail });
   closeAuthModal();
 }
 
@@ -2333,8 +1505,6 @@ window.selectPlan = selectPlan;
 window.closeCheckoutModal = closeCheckoutModal;
 window.handlePaymentSubmit = handlePaymentSubmit;
 window.playQuickTestAudio = playQuickTestAudio;
-window.togglePlayAudio = togglePlayAudio;
-window.playGeneratedMeditation = playGeneratedMeditation;
 window.selectAudioMode = selectAudioMode;
 window.switchLanguage = switchLanguage;
 window.scrollToSection = scrollToSection;
@@ -2372,11 +1542,7 @@ function trackAndSelectPlan(position, serviceName) {
   logClickAnalytics('Click_Choose_Plan', serviceName + '_' + position, 0, { section: serviceName });
   closeEduTutoringModal();
   closeEduSchoolModal();
-  if (serviceName && (serviceName.includes('Внешкольное') || serviceName.includes('репетиторство') || serviceName.includes('Удалённая') || serviceName.includes('образование'))) {
-    scrollToSection('edu-pricing');
-  } else {
-    scrollToSection('pricing');
-  }
+  scrollToSection('pricing');
 }
 
 window.openEduTutoringModal = openEduTutoringModal;
@@ -2385,50 +1551,74 @@ window.openEduSchoolModal = openEduSchoolModal;
 window.closeEduSchoolModal = closeEduSchoolModal;
 window.trackAndSelectPlan = trackAndSelectPlan;
 
-// Educational Billing Switcher & Checkout Handlers
-let eduBillingCycle = 'monthly';
+// Educational Billing Toggle & Subject Payment Handlers
+appState.eduBillingState = {
+  Tutoring: 'monthly',
+  School: 'monthly'
+};
 
-function switchEduBillingCycle(cycle) {
-  eduBillingCycle = cycle;
-  const btnMonthly = document.getElementById('edu-toggle-monthly');
-  const btnAnnual = document.getElementById('edu-toggle-annual');
-
-  if (cycle === 'monthly') {
-    if (btnMonthly) { btnMonthly.style.background = 'var(--color-orange)'; btnMonthly.style.color = '#fff'; }
-    if (btnAnnual) { btnAnnual.style.background = 'transparent'; btnAnnual.style.color = 'var(--text-muted)'; }
-    
-    document.querySelectorAll('.edu-price-tutoring-monthly, .edu-price-school-monthly').forEach(el => el.classList.remove('hidden'));
-    document.querySelectorAll('.edu-price-tutoring-annual, .edu-price-school-annual, .edu-subtext-tutoring-annual, .edu-subtext-school-annual').forEach(el => el.classList.add('hidden'));
-  } else {
-    if (btnAnnual) { btnAnnual.style.background = 'var(--color-orange)'; btnAnnual.style.color = '#fff'; }
-    if (btnMonthly) { btnMonthly.style.background = 'transparent'; btnMonthly.style.color = 'var(--text-muted)'; }
-
-    document.querySelectorAll('.edu-price-tutoring-annual, .edu-price-school-annual, .edu-subtext-tutoring-annual, .edu-subtext-school-annual').forEach(el => el.classList.remove('hidden'));
-    document.querySelectorAll('.edu-price-tutoring-monthly, .edu-price-school-monthly').forEach(el => el.classList.add('hidden'));
+function setEduBillingCycle(btnEl, planType, cycle) {
+  const parentToggle = btnEl.parentElement;
+  if (parentToggle) {
+    parentToggle.querySelectorAll('.card-cycle-btn').forEach(b => b.classList.remove('active'));
   }
+  btnEl.classList.add('active');
+
+  if (!appState.eduBillingState) appState.eduBillingState = {};
+  appState.eduBillingState[planType] = cycle;
+
+  const card = btnEl.closest('.pricing-card');
+  if (card) {
+    const monthlyPriceEl = card.querySelector(`.price-${planType.toLowerCase()}-monthly`);
+    const annualPriceEl = card.querySelector(`.price-${planType.toLowerCase()}-annual`);
+
+    if (cycle === 'annual') {
+      if (monthlyPriceEl) monthlyPriceEl.classList.add('hidden');
+      if (annualPriceEl) annualPriceEl.classList.remove('hidden');
+    } else {
+      if (monthlyPriceEl) monthlyPriceEl.classList.remove('hidden');
+      if (annualPriceEl) annualPriceEl.classList.add('hidden');
+    }
+  }
+
+  logClickAnalytics('EduBillingCycle_Toggled', planType + '_' + cycle, 0);
 }
 
-function handleEduCheckout(serviceType) {
+function submitEduSubjectOrder(planType) {
+  const cycle = (appState.eduBillingState && appState.eduBillingState[planType]) ? appState.eduBillingState[planType] : 'monthly';
   let price = 0;
-  let subjectName = '';
+  let planName = '';
 
-  if (serviceType === 'Внешкольное обучение') {
-    const subjectSelect = document.getElementById('tutoring-subject-select');
-    subjectName = subjectSelect ? subjectSelect.value : 'Английский и иностранные языки';
-    price = eduBillingCycle === 'annual' ? 790 : 90;
-    appState.selectedPlan = `Внешкольное обучение [${subjectName}] (${eduBillingCycle === 'annual' ? 'Годовой' : 'Месячный'})`;
+  if (planType === 'Tutoring') {
+    const subjectEl = document.getElementById('extracurricular-subject-select');
+    const subjectText = subjectEl ? subjectEl.options[subjectEl.selectedIndex].text : 'Предметное ИИ-Репетиторство';
+    price = (cycle === 'annual') ? 790 : 90;
+    planName = `Внешкольное Обучение: ${subjectText}`;
   } else {
-    price = eduBillingCycle === 'annual' ? 4900 : 340;
-    appState.selectedPlan = `Удалённая школа (${eduBillingCycle === 'annual' ? 'Годовой' : 'Месячный'})`;
+    price = (cycle === 'annual') ? 4900 : 340;
+    planName = 'Удалённое Школьное Обучение';
   }
 
+  appState.selectedPlan = planName;
   appState.selectedPrice = price;
-  appState.pendingCheckout = true;
 
-  logClickAnalytics('EduTariff_Selected', appState.selectedPlan, price);
+  logClickAnalytics('EduPlan_Selected', planName + '_' + (cycle === 'annual' ? 'Annual' : 'Monthly'), price);
   openNDAModal();
 }
 
-window.switchEduBillingCycle = switchEduBillingCycle;
-window.handleEduCheckout = handleEduCheckout;
+function downloadStandardMorningAudio() {
+  logClickAnalytics('Download_Standard_Morning_Audio', 'meditation_good_morning1.mp3', 0);
+  const link = document.createElement('a');
+  link.href = MORNING_AUDIO_STANDARD_URL;
+  link.download = 'meditation_good_morning1.mp3';
+  link.target = '_blank';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+window.setEduBillingCycle = setEduBillingCycle;
+window.submitEduSubjectOrder = submitEduSubjectOrder;
+window.downloadStandardMorningAudio = downloadStandardMorningAudio;
+
 
